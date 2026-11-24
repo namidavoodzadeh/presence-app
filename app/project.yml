@@ -43,8 +43,41 @@ targets:
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1"
+  PresenceTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/Snapshots
+        excludes: ["__Snapshots__/**"]
+    dependencies:
+      - target: Presence
+      - package: Flows
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.namidavoodzadeh.presence.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Presence.app/Presence"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+  PresenceUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/UI
+        excludes: ["permissions.txt"]
+    dependencies:
+      - target: Presence
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.namidavoodzadeh.presence.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Presence
 schemes:
   Presence:
     build:
       targets:
         Presence: all
+    test:
+      targets:
+        - PresenceTests
+        - PresenceUITests
+      gatherCoverageData: false

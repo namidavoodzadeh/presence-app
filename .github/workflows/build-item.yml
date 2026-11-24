@@ -1,0 +1,90 @@
+name: build-item
+# An issue labelled `ready` (by the owner) starts one Claude Code session on the Mac. The change goes up as a PR.
+# CI round 1 red: a second session gets the failure log. CI round 2 red: the issue is labelled `returned` and stops.
+on:
+  issues:
+    types: [labeled]
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+concurrency:
+  group: mac-mini          # shared with every workflow, so at most one session runs at a time (stricter than per track)
+  cancel-in-progress: false
+permissions:
+  contents: read
+env:
+  XCODE_PATH: /Applications/Xcode.app
+  XCODE_VERSION: "27.2"
+  SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
+  DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  CI_BUILD_ROOT: /Volumes/PresenceSSD/build/ci
+  GH_TOKEN: ${{ secrets.FACTORY_TOKEN }}          # pushes and PRs must trigger ci.yml, which GITHUB_TOKEN cannot
+  CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+jobs:
+  start:
+    if: >-
+      github.event_name == 'issues' && github.event.label.name == 'ready' &&
+      github.event.sender.login == github.repository_owner
+    runs-on: [self-hosted, mac-mini]
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.FACTORY_TOKEN }}
+      - name: Toolchain (pinned)
+        run: tools/ci-preflight.sh
+      - name: Clean build output
+        run: tools/ci-clean.sh
+      - name: Builder session, round 1
+        run: |
+          n=${{ github.event.issue.number }}
+          git checkout -B "item/$n"
+          # Labels like path:contract/ allow that protected path for this session only.
+          PROTECT_ALLOW="$(gh issue view "$n" --json labels --jq '[.labels[].name | select(startswith("path:")) | ltrimstr("path:")] | join(":")')"
+          export PROTECT_ALLOW
+          tools/item-prompt.sh "$n" 1 > "$CI_BUILD_ROOT/prompt.md"
+          claude -p "$(cat "$CI_BUILD_ROOT/prompt.md")" --permission-mode acceptEdits \
+            --allowedTools "Bash Edit Write Read Glob Grep" --max-turns 200
+      - name: Open the change
+        run: tools/item-publish.sh ${{ github.event.issue.number }} 1
+  round:
+    if: >-
+      github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure' &&
+      startsWith(github.event.workflow_run.head_branch, 'item/') &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: [self-hosted, mac-mini]
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.FACTORY_TOKEN }}
+          ref: ${{ github.event.workflow_run.head_branch }}
+      - name: Toolchain (pinned)
+        run: tools/ci-preflight.sh
+      - name: Clean build output
+        run: tools/ci-clean.sh
+      - name: Count CI rounds
+        id: count
+        run: |
+          branch="${{ github.event.workflow_run.head_branch }}"
+          reds=$(gh run list --workflow ci.yml --branch "$branch" --event pull_request --limit 50 --json conclusion \
+            --jq '[.[] | select(.conclusion == "failure")] | length')
+          echo "n=${branch#item/}" >> "$GITHUB_OUTPUT"; echo "reds=$reds" >> "$GITHUB_OUTPUT"; echo "red CI rounds: $reds"
+      - name: Second red, return the issue
+        if: steps.count.outputs.reds >= 2
+        run: |
+          n=${{ steps.count.outputs.n }}
+          gh issue edit "$n" --add-label returned --remove-label ready
+          gh issue comment "$n" --body "Returned after two red CI rounds (${{ github.event.workflow_run.html_url }}). Treat as a package defect: say what the package or the item got wrong."
+          gh pr close "item/$n" --comment "Stopped: second red CI round. See issue #$n."
+      - name: Builder session, round 2
+        if: steps.count.outputs.reds == 1
+        run: |
+          n=${{ steps.count.outputs.n }}
+          gh run view ${{ github.event.workflow_run.id }} --log-failed > "$CI_BUILD_ROOT/failed.log" || true
+          PROTECT_ALLOW="$(gh issue view "$n" --json labels --jq '[.labels[].name | select(startswith("path:")) | ltrimstr("path:")] | join(":")')"
+          export PROTECT_ALLOW
+          tools/item-prompt.sh "$n" 2 "$CI_BUILD_ROOT/failed.log" > "$CI_BUILD_ROOT/prompt.md"
+          claude -p "$(cat "$CI_BUILD_ROOT/prompt.md")" --permission-mode acceptEdits \
+            --allowedTools "Bash Edit Write Read Glob Grep" --max-turns 200
+          tools/item-publish.sh "$n" 2

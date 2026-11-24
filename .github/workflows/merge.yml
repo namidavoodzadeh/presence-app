@@ -1,0 +1,55 @@
+name: merge
+# Enforces policy/merge-policy.yml. Branch protection on main requires: fast, simulator, risk-review.
+# Low-risk: risk-review passes at once and auto-merge lands the change when CI is green.
+# High-risk paths: risk-review passes only when a model from a different family approves.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, ready_for_review]
+concurrency:
+  group: mac-mini
+  cancel-in-progress: false
+permissions:
+  contents: read
+  pull-requests: write
+env:
+  XCODE_PATH: /Applications/Xcode.app
+  XCODE_VERSION: "27.2"
+  SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
+jobs:
+  risk-review:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, mac-mini]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain (pinned)
+        run: tools/ci-preflight.sh
+      - name: High-risk paths touched
+        id: risk
+        run: |
+          files="$(tools/high-risk-changed.sh "origin/${{ github.base_ref }}" HEAD)"
+          echo "$files"
+          { echo "files<<EOF"; echo "$files"; echo "EOF"; } >> "$GITHUB_OUTPUT"
+      - name: Review by a different model family
+        if: steps.risk.outputs.files != ''
+        env:
+          REVIEW_API_KEY: ${{ secrets.REVIEW_API_KEY }}
+          REVIEW_MODEL: ${{ vars.REVIEW_MODEL }}
+          REVIEW_API_URL: ${{ vars.REVIEW_API_URL }}
+        run: git diff "origin/${{ github.base_ref }}...HEAD" | tools/review-other-family.py
+  auto-merge:
+    if: github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft
+    runs-on: [self-hosted, mac-mini]
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain (pinned)
+        run: tools/ci-preflight.sh
+      - name: Merge automatically when required checks are green
+        # A personal token, so the merge commit triggers release.yml (GITHUB_TOKEN events do not).
+        env:
+          GH_TOKEN: ${{ secrets.FACTORY_TOKEN }}
+        run: gh pr merge "${{ github.event.pull_request.number }}" --auto --squash

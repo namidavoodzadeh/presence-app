@@ -40,7 +40,31 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6A3A58346725A1905FF48351"
+               BuildableName = "PresenceTests.xctest"
+               BlueprintName = "PresenceTests"
+               ReferencedContainer = "container:Presence.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "05B83ECB860CC78DB68AC3E1"
+               BuildableName = "PresenceUITests.xctest"
+               BlueprintName = "PresenceUITests"
+               ReferencedContainer = "container:Presence.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

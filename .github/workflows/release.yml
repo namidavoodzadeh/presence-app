@@ -1,0 +1,74 @@
+name: release
+# A merge to main that touches app/ is archived and uploaded to TestFlight (internal group "Owner").
+on:
+  push:
+    branches: [main]
+    paths: ["app/**"]
+  workflow_dispatch:
+concurrency:
+  group: mac-mini
+  cancel-in-progress: false
+permissions:
+  contents: read
+env:
+  XCODE_PATH: /Applications/Xcode.app
+  XCODE_VERSION: "27.2"
+  SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
+  DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  CI_BUILD_ROOT: /Volumes/PresenceSSD/build/ci
+  CONTRACT_GEN_BUILD: /Volumes/PresenceSSD/build/ci/contract-gen
+jobs:
+  testflight:
+    runs-on: [self-hosted, mac-mini]
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain (pinned)
+        run: tools/ci-preflight.sh
+      - name: Clean build output
+        run: tools/ci-clean.sh
+      - name: App Store Connect key present
+        env:
+          ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
+          ASC_KEY_ID: ${{ vars.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ vars.ASC_ISSUER_ID }}
+        run: |
+          [ -n "$ASC_KEY_PATH" ] && [ -n "$ASC_KEY_ID" ] && [ -n "$ASC_ISSUER_ID" ] \
+            || { echo "::error::Set repository variables ASC_KEY_PATH, ASC_KEY_ID, ASC_ISSUER_ID."; exit 3; }
+          [ -r "$ASC_KEY_PATH" ] || { echo "::error::App Store Connect key not readable at ASC_KEY_PATH on this Mac."; exit 3; }
+      - name: Contract client up to date
+        run: app/Packages/Contract/generate.sh --check
+      - name: Archive
+        env:
+          ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
+          ASC_KEY_ID: ${{ vars.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ vars.ASC_ISSUER_ID }}
+        run: |
+          # Old app reached build 55 under the same bundle id; stay above it.
+          build=$(( ${{ github.run_number }} + 100 ))
+          xcodebuild archive -project app/Presence.xcodeproj -scheme Presence -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath "$CI_BUILD_ROOT/Presence.xcarchive" \
+            -derivedDataPath "$CI_BUILD_ROOT/dd" -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            CURRENT_PROJECT_VERSION="$build"
+      - name: Upload to TestFlight
+        env:
+          ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
+          ASC_KEY_ID: ${{ vars.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ vars.ASC_ISSUER_ID }}
+        run: |
+          cat > "$CI_BUILD_ROOT/ExportOptions.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>UK39PYVJ96</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>testFlightInternalTestingOnly</key><true/>
+          </dict></plist>
+          PLIST
+          xcodebuild -exportArchive -archivePath "$CI_BUILD_ROOT/Presence.xcarchive" \
+            -exportOptionsPlist "$CI_BUILD_ROOT/ExportOptions.plist" -exportPath "$CI_BUILD_ROOT/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"

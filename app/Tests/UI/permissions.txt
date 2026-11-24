@@ -1,0 +1,2 @@
+# One `xcrun simctl privacy` service per line, granted to com.namidavoodzadeh.presence before the journey set.
+# Package 01 names none yet. Example: photos

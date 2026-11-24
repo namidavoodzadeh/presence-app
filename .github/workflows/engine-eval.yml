@@ -1,0 +1,65 @@
+name: engine-eval
+# Runs the offline Bridge evaluation on the change and on main, posts the four numbers, fails if any is worse.
+on:
+  pull_request:
+    branches: [main]
+    paths: ["next/engine/**", "evals/bridge_offline/**"]
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: Variant to run on this branch (main always runs baseline)
+        default: baseline
+concurrency:
+  group: mac-mini
+  cancel-in-progress: false
+permissions:
+  contents: read
+  pull-requests: write
+env:
+  XCODE_PATH: /Applications/Xcode.app
+  XCODE_VERSION: "27.2"
+  SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
+  CI_BUILD_ROOT: /Volumes/PresenceSSD/build/ci
+  EVAL_CACHE: /Volumes/PresenceSSD/build/eval-cache   # model replies, content-addressed; kept between jobs
+jobs:
+  eval:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, mac-mini]
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain (pinned)
+        run: tools/ci-preflight.sh
+      - name: Clean build output
+        run: tools/ci-clean.sh
+      - name: Evaluate main (baseline)
+        run: |
+          mkdir -p "$EVAL_CACHE"
+          git worktree add --detach "$CI_BUILD_ROOT/main" origin/main
+          cd "$CI_BUILD_ROOT/main"
+          rm -rf evals/bridge_offline/cache && ln -s "$EVAL_CACHE" evals/bridge_offline/cache
+          deno run -A evals/bridge_offline/run.ts --variant baseline --no-judge --run-name "ci-main-${{ github.run_id }}-baseline"
+      - name: Evaluate this change
+        run: |
+          variant="${{ inputs.variant || 'baseline' }}"
+          rm -rf evals/bridge_offline/cache && ln -s "$EVAL_CACHE" evals/bridge_offline/cache
+          deno run -A evals/bridge_offline/run.ts --variant "$variant" --no-judge --run-name "ci-change-${{ github.run_id }}-$variant"
+      - name: The four numbers
+        run: |
+          variant="${{ inputs.variant || 'baseline' }}"
+          deno run -A evals/bridge_offline/compare.ts \
+            "$CI_BUILD_ROOT/main/evals/bridge_offline/results/ci-main-${{ github.run_id }}-baseline/metrics.json" \
+            "evals/bridge_offline/results/ci-change-${{ github.run_id }}-$variant/metrics.json" \
+            "$CI_BUILD_ROOT/four.md" && status=0 || status=$?
+          cat "$CI_BUILD_ROOT/four.md" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ github.event.pull_request.number }}" ]; then
+            gh pr comment "${{ github.event.pull_request.number }}" --body-file "$CI_BUILD_ROOT/four.md"
+          fi
+          exit "$status"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Remove main worktree
+        if: always()
+        run: git worktree remove --force "$CI_BUILD_ROOT/main" || true

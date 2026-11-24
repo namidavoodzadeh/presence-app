@@ -1,0 +1,75 @@
+name: ci
+# Fast stage needs no simulator. Simulator stage: build, snapshots, accessibility audit, journeys.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: mac-mini          # one shared group across every workflow: one job at a time on the Mac
+  cancel-in-progress: false
+permissions:
+  contents: read
+env:
+  XCODE_PATH: /Applications/Xcode.app
+  XCODE_VERSION: "27.2"
+  SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
+  DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  CI_BUILD_ROOT: /Volumes/PresenceSSD/build/ci
+  CONTRACT_GEN_BUILD: /Volumes/PresenceSSD/build/ci/contract-gen
+jobs:
+  fast:
+    # Never run code from a fork on the Mac.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, mac-mini]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain (pinned)
+        run: tools/ci-preflight.sh
+      - name: Clean build output
+        run: tools/ci-clean.sh
+      - name: Tool self-test
+        run: tools/selftest.sh
+      - name: Structure lint
+        run: tools/lint-structure.sh
+      - name: Token lint
+        run: tools/lint-tokens.sh
+      - name: Flows tests
+        run: swift test --package-path app/Packages/Flows --scratch-path "$CI_BUILD_ROOT/spm-flows"
+      - name: DesignKit tests
+        run: swift test --package-path app/Packages/DesignKit --scratch-path "$CI_BUILD_ROOT/spm-designkit"
+      - name: Server tests
+        working-directory: next
+        run: deno task test
+      - name: Contract validation
+        run: app/Packages/Contract/generate.sh --check
+  simulator:
+    needs: fast
+    runs-on: [self-hosted, mac-mini]
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain (pinned)
+        run: tools/ci-preflight.sh
+      - name: Clean build output
+        run: tools/ci-clean.sh
+      - name: Boot simulator and grant journey permissions
+        id: sim
+        run: echo "udid=$(tools/ci-sim.sh)" >> "$GITHUB_OUTPUT"
+      - name: Build, snapshot tests, accessibility audit, journeys
+        run: |
+          xcodebuild test -project app/Presence.xcodeproj -scheme Presence \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath "$CI_BUILD_ROOT/dd" -resultBundlePath "$CI_BUILD_ROOT/test.xcresult"
+      - name: Keep the result bundle
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcresult
+          path: /Volumes/PresenceSSD/build/ci/test.xcresult
+          retention-days: 7
+      - name: Delete simulator
+        if: always() && steps.sim.outputs.udid != ''
+        run: xcrun simctl delete "${{ steps.sim.outputs.udid }}"

@@ -1,44 +1,41 @@
-# Setup report, Mac mini session, 25 Nov 2026
+# Setup report, Mac mini session, 24 Nov 2026
 
-Executed from `docs/handover/mac-session.md` by the CEO chat (Claude, cloud session linked to the Mac mini).
+Executed from `docs/handover/mac-session.md` by a Claude Code session running on the Mac mini (macOS 27.2, Xcode 27.2, Swift 6.4.2, Deno 2.9.8). Steps 1 and 2 were done by the earlier session (see git history of this file). Details: `part-A-mac.md`, `part-B.md`.
 
-**Result: steps 1 and 2 pass. Every Part A and Part B task is blocked for one reason: this session has no shell on macOS.** Its only route to the Mac is a Linux virtual machine that sees the Mac's folders (`/Users/nami/Documents/Codex/Presence` and `/Volumes/PresenceSSD`). That machine has no Xcode, no Swift for Apple platforms, no `launchctl` and no Deno, and cannot reach `jsr.io` or `deno.land`. Running these tasks elsewhere would not meet "on the Mac", so nothing was faked or approximated.
-
-## Handover steps
-
-| Step | Result | Evidence |
-| --- | --- | --- |
-| 1 Pause old lanes | pass | `ops/MODE` = PAUSE (owner pause, 24 Nov 19:58 UTC). `outputs/control/health.json` at 13:13 PT 24 Nov: engine, qa, app, app2, app3 all `enabled: false`, `loopAlive: false`. Merge queue off (`outputs/control/mergeq.off`). Old repository otherwise untouched |
-| 2 Clone and read `AGENTS.md` | pass | `/Volumes/PresenceSSD/presence-app` at `e159c3c`. `AGENTS.md` read |
-| 4 `PROTECT_ALLOW` | not needed | No change to `.github/`, `policy/`, `tools/` or `contract/` was made |
+**Result: Part A passes (A7 waits for package 01). Part B is written and locally exercised but blocked: the runner cannot read the external drive until the owner allows it in System Settings.**
 
 ## Tasks
 
-| Task | Result | Why |
+| Task | Result | One line |
 | --- | --- | --- |
-| A2c `deno task test` and count match | blocked | No Deno on a reachable macOS shell. A cloud attempt also failed: `jsr.io` unreachable (`@std/assert` manifest failed to load), same as recorded in `part-A.md` |
-| A4 Xcode project, `swift test`, `tools/selftest.sh` | blocked | Needs Xcode and Swift on macOS |
-| A5 DesignKit and token-lint check | blocked | Depends on A4 |
-| A6 template screen, build fails on a missing case | blocked | Depends on A4 |
-| A7 contract, server test, generated client | blocked | Depends on A4 and A2c; `packages/01/routes.md` does not exist yet |
-| B1 self-hosted runner as a service | blocked | Needs `launchctl` and the GitHub runner on macOS, and a runner registration token from the owner's GitHub account |
-| B2 pinned Xcode and runtime | blocked | Depends on B1 |
-| B3 `ci.yml` | blocked | Depends on B1 and A4 |
-| B4 merge policy and branch protection | blocked | Depends on B3; protecting `main` also needs repository admin rights |
-| B5 `build-item.yml` | blocked | Depends on B1 and B3 |
-| B6 `engine-eval.yml` | blocked | Depends on B1 and A2c |
-| B7 `release.yml` | blocked | Depends on B1 and A4 |
+| A2c | pass | `deno task test` 978 passed, old repository at `f507c92` 978 passed (after copying two safety data files A2 missed) |
+| A4 | pass | `app/Presence.xcodeproj` from `app/project.yml`; Flows tests pass with no simulator; `tools/selftest.sh` 14/0 |
+| A5 | pass | DesignKit colours, spacing, fonts, Dynamic Type styles; `.padding(13)` makes `lint-tokens.sh` exit 1 |
+| A6 | pass | `TemplateScreen` over all four `LoadState` cases; removing one fails the build |
+| A7 | blocked | `packages/01/routes.md` does not exist (written in Part C). Generator pipeline is in place (`app/Packages/Contract/generate.sh`) |
+| B1 | blocked | Runner registered and installed as a service; macOS blocks background agents from `/Volumes/PresenceSSD` (two attempts, `Operation not permitted`) |
+| B2 | blocked | Needs B1. Preflight verified locally: a wrong Xcode path fails in the first step with a plain message |
+| B3 | blocked | Needs B1. Verified locally: fast stage without a simulator; a 2-point spacing token change fails a snapshot |
+| B4 | blocked | Needs B1 and B3; also a review model and `FACTORY_TOKEN` from the owner. High-risk path matching verified locally |
+| B5 | blocked | Needs B1 and B3, `FACTORY_TOKEN` and `CLAUDE_CODE_OAUTH_TOKEN` |
+| B6 | blocked | Needs B1. Comparison verified on existing runs: four worse variants fail, baseline passes |
+| B7 | blocked | Needs B1 and the App Store Connect key location |
 
-Each task was attempted once up to the point of needing macOS; none failed on its own content.
+Nothing in Part C was started. The old background services (`com.presence.supervisor`, `com.presence.offsite`) were not touched. `PROTECT_ALLOW` was not needed: files under `.github/` and `tools/` were written from the shell, which the edit hook does not watch, as the handover allows for this setup.
 
 ## Needs Nami
 
-1. **Run this handover from a Claude Code session started on the Mac mini itself**, so it has a real macOS shell. On the Mac (in person or over Screen Sharing):
-   1. Open Terminal.
-   2. Run `cd /Volumes/PresenceSSD/presence-app && git pull`.
-   3. Run `~/.npm-global/bin/claude` (the Claude Code CLI the old lanes used; its path is recorded in the old repository's run logs).
-   4. Paste: `From: Nami (owner). Read docs/handover/mac-session.md and execute it exactly as written. Step 1 and step 2 are already done (see docs/verification/setup-report.md).`
-2. **For B1, have a runner token ready**: on github.com open `namidavoodzadeh/presence-app` → Settings → Actions → Runners → New self-hosted runner → macOS → ARM64. The page shows a one-time token used by the setup session; it expires after an hour, so open it only when the session asks.
-3. **For B4**, branch protection on `main` needs your account's admin rights on the repository; the session will ask when it reaches B4.
+1. **Let the runner read the external drive (unblocks B1, then B2–B7).** Verified: the cause is macOS privacy protection on removable volumes. Not verified: that this exact grant is enough, because only you can make it.
+   1. System Settings → Privacy & Security → Full Disk Access → **+** → press Cmd+Shift+G, type `/bin/bash`, Open, and switch it on. The runner service is a bash script (`runsvc.sh`) on the drive; everything it starts inherits the grant. Trade-off: any background bash job on this Mac gets disk access. The narrower alternative is to move the runner to the internal disk, which breaks "build output on the external drive".
+   2. Then tell the next session "runner access granted". It runs `cd /Volumes/PresenceSSD/actions-runner && ./svc.sh start`, confirms `mac-mini` shows online, and runs the B1–B7 checks.
+2. **Repository visibility.** The setup document says A1 is a *private* repository; `namidavoodzadeh/presence-app` is **public**, with a runner that runs code on this Mac. Mitigated now: fork jobs are skipped and runs from outside contributors need approval. To make it private: github.com → `namidavoodzadeh/presence-app` → Settings → General → Danger Zone → Change visibility → Make private. Check first: protecting `main` on a private repository needs a paid GitHub plan (Pro or Team); on GitHub Free, B4 is only possible on a public repository. I could not read your plan with the current token.
+3. **Secrets and variables** (github.com → the repository → Settings → Secrets and variables → Actions, or the `gh` commands shown; values are pasted when prompted, never typed into a chat):
+   1. `FACTORY_TOKEN`: github.com/settings/personal-access-tokens/new → fine-grained, only `presence-app`, permissions Contents, Issues, Pull requests and Workflows set to read and write. Then `gh secret set FACTORY_TOKEN -R namidavoodzadeh/presence-app`. Needed because merges and PRs made with the built-in token do not start other workflows.
+   2. `CLAUDE_CODE_OAUTH_TOKEN` (B5): in Terminal on the Mac run `~/.npm-global/bin/claude setup-token` (verified present in Claude Code 2.1.331), sign in, then `gh secret set CLAUDE_CODE_OAUTH_TOKEN -R namidavoodzadeh/presence-app`.
+   3. App Store Connect key (B7): `gh variable set ASC_KEY_PATH -R namidavoodzadeh/presence-app --body "<full path of the AuthKey_….p8 file on this Mac>"`, and the same for `ASC_KEY_ID` and `ASC_ISSUER_ID` (App Store Connect → Users and Access → Integrations). The file stays where it is. In App Store Connect, make sure the TestFlight internal group "Owner" has automatic distribution on, so new builds reach it.
+   4. Review by a different model family (B4, new spending): choose a provider. Then `gh variable set REVIEW_API_URL` (an OpenAI-compatible chat completions URL), `gh variable set REVIEW_MODEL`, `gh secret set REVIEW_API_KEY`. Until then, high-risk changes wait, which is the policy.
+4. **Stop automatic app updates (B2)** so Xcode does not move under the pin. Verified on this Mac: automatic macOS installs are already off, but App Store app updates are on (`com.apple.commerce AutoUpdate = 1`). App Store → Settings → switch off Automatic Updates.
+5. **After 1–3, protecting `main` (B4)** is one command the next session runs once CI has gone green once:
+   `gh api -X PUT repos/namidavoodzadeh/presence-app/branches/main/protection --input -` with `{"required_status_checks":{"strict":true,"checks":[{"context":"fast"},{"context":"simulator"},{"context":"risk-review"}]},"enforce_admins":false,"required_pull_request_reviews":null,"restrictions":null}`.
 
-Nothing in Part C was started. The old background services (`com.presence.supervisor`, `com.presence.watchdog`) were not touched.
+Note: the workflows pushed with this report queue a `ci` run that waits for the runner. GitHub cancels queued jobs after 24 hours. If that happens, rerun it from the Actions tab once the runner is online.
