@@ -1,6 +1,6 @@
 # Package 01: the thinnest version of the whole chain
 
-Confirmed by the owner on 24 Nov 2026. Status: scope set, contents not yet written, not frozen.
+Confirmed by the owner on 24 Nov 2026. Status: scope set; contents written 24 Nov 2026 (`screens.md`, `flows/`, `states.md`, `behaviour.md`, `copy.md`, `routes.md`, `tokens.md`, `QUESTIONS.md`); not frozen.
 
 The app is useless without knowledge about the person, so the first package covers the full chain once, as thin as it can be while working end to end:
 
