@@ -22,9 +22,9 @@ public struct LoadFailure: Error, Equatable, Sendable {
 
 extension LoadState: Equatable where Value: Equatable {}
 
-public extension LoadState {
+public extension LoadState where Value: Collection {
     /// Build from a fetched collection: an empty collection is `.empty`, never `.loaded([])`.
-    static func from<C: Collection & Sendable>(_ items: C) -> LoadState<C> where Value == C {
+    static func from(_ items: Value) -> LoadState {
         items.isEmpty ? .empty : .loaded(items)
     }
 }
