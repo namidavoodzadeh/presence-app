@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p05",
+  "first_name": "Mara",
+  "beliefs": [
+    {
+      "id": "p05-b1",
+      "label": "If Useful,",
+      "statement": "If I am not useful, I worry I take up too much room.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A customer asked me to redo wedding menus after closing. I stayed two hours because I could not bear leaving her stranded at the counter.",
+          "sessionId": "p05-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Dev offered to carry boxes upstairs, and I said no even though my wrist hurt. I told him I had it, then spent the evening wishing I had let him help.",
+          "sessionId": "p05-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p05-b2",
+      "label": "Asking Plainly",
+      "statement": "Asking plainly is kinder than hoping someone guesses.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I told Dev, \"I want company at the market Saturday.\" He met me by the flower stalls and I felt relieved I had asked.",
+          "sessionId": "p05-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "When my landlord delayed the repair, I wrote exactly what was broken and what date I needed. The reply came that afternoon.",
+          "sessionId": "p05-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p05-b3",
+      "label": "Good Life",
+      "statement": "A good life needs unscheduled hours in it.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I left the shop dark on Monday and sat on the porch with no errand planned. Nothing collapsed while I watched the rain.",
+          "sessionId": "p05-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I turned down a Sunday market booth because I wanted an empty afternoon. I made soup slowly and read half a novel.",
+          "sessionId": "p05-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p05-b4",
+      "label": "Check Calendar",
+      "statement": "I check my calendar before I promise help.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Dev asked me to help paint his new room on Saturday. I opened my calendar, saw the delivery shift, and offered Sunday morning instead.",
+          "sessionId": "p05-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A coworker wanted me to cover her close. I checked the printer pickup first and said I could trade next Tuesday.",
+          "sessionId": "p05-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p05-b5",
+      "label": "Trust People",
+      "statement": "I trust people who do the small thing they said they would.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Dev said he would bring the extension cord, and it was coiled by my door before noon. I trusted the whole moving plan after that.",
+          "sessionId": "p05-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My neighbor returned the borrowed ladder with the missing rubber foot replaced. That tiny repair stayed with me all week.",
+          "sessionId": "p05-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p05-b6",
+      "label": "Need One",
+      "statement": "I need one night before answering a sharp message.",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Dev's message about my lateness stung, so I put the phone face down. The next morning I could answer without making it a fight.",
+          "sessionId": "p05-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "After an argument with my mother, I drafted three replies and sent none. I answered after sleeping and kept the point simple.",
+          "sessionId": "p05-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p05-b7",
+      "label": "Work Better",
+      "statement": "Work is better when the craft is visible, not rushed away.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I showed a client two paper weights under the window instead of rushing her choice. She ran her thumb over both and smiled.",
+          "sessionId": "p05-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "The rush order had a crooked margin, so I ran it again rather than hide it in the stack. The second batch left clean.",
+          "sessionId": "p05-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p05-b8",
+      "label": "Change Plan",
+      "statement": "I can change a plan without treating it as a failure.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Rain canceled our picnic, so I moved the sandwiches to my kitchen table. Dev arrived with peaches and we ate by the open window.",
+          "sessionId": "p05-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "The delivery truck broke down, so I changed the workshop to a collage session. Everyone used the leftover magazines and stayed late.",
+          "sessionId": "p05-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p05-p1",
+      "label": "How I mean things",
+      "statement": "I say the point softly but literally."
+    },
+    {
+      "id": "p05-p2",
+      "label": "What feels like care",
+      "statement": "Remembering a practical detail makes me feel held in mind."
+    },
+    {
+      "id": "p05-p3",
+      "label": "How to bring something up with me",
+      "statement": "Be direct, then give me until tomorrow if it is tender."
+    }
+  ]
+}

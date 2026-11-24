@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p01",
+  "first_name": "Mara",
+  "beliefs": [
+    {
+      "id": "p01-b1",
+      "label": "Earn Place",
+      "statement": "I earn my place by noticing what everyone else needs first",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "The reference desk backed up, so I skipped lunch finding a 1978 zoning map for a stranger. My own stack waited untouched.",
+          "sessionId": "p01-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Eli had a flat tire, so I moved my dentist appointment and called the shop before he asked. I arrived late without mentioning it.",
+          "sessionId": "p01-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p01-b2",
+      "label": "Promise Matters",
+      "statement": "A promise matters most in the ordinary follow-through",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Eli promised to call the roofer Tuesday and texted me the appointment that afternoon. The leak felt less lonely.",
+          "sessionId": "p01-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My mother mailed the recipe card she promised, including its missing page. I put both in a sleeve.",
+          "sessionId": "p01-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p01-b3",
+      "label": "Need Little",
+      "statement": "I need a little room to sort my thoughts before I answer",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "At dinner, Eli asked about lending his brother money again. I said I needed overnight before answering.",
+          "sessionId": "p01-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My director challenged an exhibit date while visitors waited. I said I would check the ledger after the tour.",
+          "sessionId": "p01-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p01-b4",
+      "label": "Work Worth",
+      "statement": "Work is worth protecting, but it cannot take every evening",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "During digitization week, I shut my laptop at six and left the last box for morning. The numbers could wait.",
+          "sessionId": "p01-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "The grant report was due Friday, but I declined Thursday's webinar. Eli and I ate porch soup.",
+          "sessionId": "p01-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p01-b5",
+      "label": "Trust Direct",
+      "statement": "I trust a direct request more than a carefully dropped hint",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Eli said he needed recycling taken out tonight. I felt relieved not to decode his face.",
+          "sessionId": "p01-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My sister named Saturday morning and the boxes she needed lifted. I could tell her my hours exactly.",
+          "sessionId": "p01-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p01-b6",
+      "label": "Change Course",
+      "statement": "I can change course when plans move without treating it as a disaster",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Our Seattle train was canceled at Union Station. I found a bus, bought coffees, and texted Eli our arrival.",
+          "sessionId": "p01-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Snow postponed the kitchen estimate. I lifted the tape outline and booked another date.",
+          "sessionId": "p01-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p01-b7",
+      "label": "Making Home",
+      "statement": "Making a home together means sharing the invisible work",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I found the utility bill under mail and paid it while Eli chopped onions. Then we set automatic payment together.",
+          "sessionId": "p01-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Before his sister visited, Eli washed sheets and I planned breakfast. We compared lists at the table.",
+          "sessionId": "p01-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p01-b8",
+      "label": "Right Detail",
+      "statement": "The right detail can keep a person's story from being lost",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A woman brought letters from her grandfather's hardware store. I asked about invoices because missing years changed the story.",
+          "sessionId": "p01-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I matched an unlabeled photograph to a 1964 flood report. A street sign let us describe it honestly.",
+          "sessionId": "p01-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p01-p1",
+      "label": "How I mean things",
+      "statement": "I usually say the important part plainly, though softly."
+    },
+    {
+      "id": "p01-p2",
+      "label": "What feels like care",
+      "statement": "Remembering a small practical thing lands deeply with me."
+    },
+    {
+      "id": "p01-p3",
+      "label": "How to bring something up with me",
+      "statement": "Tell me the point, then give me a minute before asking for an answer."
+    }
+  ]
+}

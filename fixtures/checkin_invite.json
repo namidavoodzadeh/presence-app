@@ -1,0 +1,46 @@
+{
+  "_about": "E33 contract examples for the app (v1.39). Invite, accept, and a bridge parked on the check-in. No note text appears in invites or home rows.",
+  "invites": {
+    "invites": [
+      {
+        "check_in_id": "00000000-0000-4000-8000-0000000000c1",
+        "person_id": "00000000-0000-4000-8000-000000000061",
+        "day": "thursday",
+        "time": "19:00",
+        "tz": "Asia/Tehran",
+        "next_at": "2026-11-12T15:30:00.000Z"
+      }
+    ]
+  },
+  "accept": {
+    "check_in": {
+      "check_in_id": "00000000-0000-4000-8000-0000000000c1",
+      "person_id": "00000000-0000-4000-8000-000000000061",
+      "status": "active",
+      "day": "thursday",
+      "time": "19:00",
+      "tz": "Asia/Tehran",
+      "next_at": "2026-11-12T15:30:00.000Z",
+      "next_in_days": 4,
+      "parked": 0
+    }
+  },
+  "patch_bridge_request": {
+    "deliver_at": "next_checkin"
+  },
+  "patch_bridge_reply_extra": {
+    "parked_on_check_in": true
+  },
+  "errors": {
+    "no_check_in": {
+      "error": "invalid",
+      "field": "deliver_at",
+      "reason": "no_check_in"
+    },
+    "not_accepted": {
+      "error": "invalid",
+      "field": "deliver_at",
+      "reason": "not_accepted"
+    }
+  }
+}

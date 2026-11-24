@@ -1,0 +1,15 @@
+{
+  "rows": 48,
+  "flaw_caught": 33,
+  "flaw_total": 36,
+  "false_alarms": 6,
+  "quiet": 12,
+  "quiet_right": 6,
+  "link_right": 25,
+  "link_total": 36,
+  "wrong_links": 34,
+  "receiver_right": 6,
+  "receiver_total": 6,
+  "law_failures": 0,
+  "errors": 0
+}

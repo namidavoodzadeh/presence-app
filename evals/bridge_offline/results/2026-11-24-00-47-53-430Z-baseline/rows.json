@@ -1,0 +1,1920 @@
+[
+  {
+    "id": "p01-01",
+    "draft": "You never notice the stuff I do around here. I'm always the one remembering the dentist, the bins, your mum's birthday.",
+    "gold": {
+      "frictions": [
+        "absolute",
+        "you_blame"
+      ],
+      "belief": "p01-b7",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "absolute",
+        "you_blame",
+        "absolute",
+        "vague_ask"
+      ],
+      "activated": [
+        "p01-b7",
+        "p01-b1"
+      ],
+      "lands_on": [
+        "p02-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "Making a home together means sharing the invisible work",
+        "I earn my place by noticing what everyone else needs first"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 2,
+    "live_calls": 0
+  },
+  {
+    "id": "p01-02",
+    "draft": "Oh great, you booked the late shift again. Love that for our Friday.",
+    "gold": {
+      "frictions": [
+        "sarcasm"
+      ],
+      "belief": "p01-b4",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "sarcasm",
+        "sarcasm",
+        "vague_ask"
+      ],
+      "activated": [
+        "p01-b4",
+        "p01-b5"
+      ],
+      "lands_on": [
+        "p02-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Words that mean their opposite often land as a jab, so the point underneath can be missed.",
+        "Words that mean their opposite often land as a jab, so the point underneath can be missed.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "Work is worth protecting, but it cannot take every evening",
+        "I trust a direct request more than a carefully dropped hint"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 9,
+    "live_calls": 0
+  },
+  {
+    "id": "p01-03",
+    "draft": "We need to talk about the weekend thing.",
+    "gold": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "belief": "p01-b5",
+      "receiver_reading": null,
+      "expect": "flag"
+    },
+    "output": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "activated": [],
+      "lands_on": [
+        "p02-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "This says something has to change; it does not yet say what you want them to do."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 8,
+    "live_calls": 0
+  },
+  {
+    "id": "p01-04",
+    "draft": "You don't care if I'm wiped out, you just assume I'll cook.",
+    "gold": {
+      "frictions": [
+        "mind_reading",
+        "you_blame"
+      ],
+      "belief": "p01-b1",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "mind_reading",
+        "you_blame",
+        "mind_reading",
+        "vague_ask"
+      ],
+      "activated": [
+        "p01-b7",
+        "p01-b5"
+      ],
+      "lands_on": [
+        "p02-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "Making a home together means sharing the invisible work",
+        "I trust a direct request more than a carefully dropped hint"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 8,
+    "live_calls": 0
+  },
+  {
+    "id": "p01-05",
+    "draft": "The money for the trip, the car service you forgot, and last month's bill too. It's all on me.",
+    "gold": {
+      "frictions": [
+        "blame_stack"
+      ],
+      "belief": "p01-b7",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "blame_stack",
+        "vague_ask"
+      ],
+      "activated": [
+        "p01-b7",
+        "p01-b2"
+      ],
+      "lands_on": [
+        "p02-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Several old moments at once tend to be heard as a verdict, and the one that matters today can get lost in the pile.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "Making a home together means sharing the invisible work",
+        "A promise matters most in the ordinary follow-through"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 8,
+    "live_calls": 0
+  },
+  {
+    "id": "p01-06",
+    "draft": "Everyone could tell something was off with you at dinner, so just tell me.",
+    "gold": {
+      "frictions": [
+        "mind_reading",
+        "demand"
+      ],
+      "belief": "p01-b5",
+      "receiver_reading": "p02-p3",
+      "expect": "flag+lands"
+    },
+    "output": {
+      "frictions": [
+        "mind_reading",
+        "demand"
+      ],
+      "activated": [
+        "p01-b5",
+        "p01-b1"
+      ],
+      "lands_on": [
+        "p02-p3",
+        "p02-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+        "An order tends to be heard as something to push back on; a request tends to be heard as something to answer.",
+        "I trust a direct request more than a carefully dropped hint",
+        "I earn my place by noticing what everyone else needs first"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": true,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 8,
+    "live_calls": 0
+  },
+  {
+    "id": "p01-07",
+    "draft": "I'll be home by seven, can you leave the porch light on?",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [],
+      "lands_on": [],
+      "safety": "none",
+      "note": []
+    },
+    "flaw_caught": false,
+    "false_alarm": false,
+    "quiet_when_expected": true,
+    "belief_link_right": false,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 8,
+    "live_calls": 0
+  },
+  {
+    "id": "p01-08",
+    "draft": "Thanks for fixing the kettle this morning, that made my day easier.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [],
+      "lands_on": [],
+      "safety": "none",
+      "note": []
+    },
+    "flaw_caught": false,
+    "false_alarm": false,
+    "quiet_when_expected": true,
+    "belief_link_right": false,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 8,
+    "live_calls": 0
+  },
+  {
+    "id": "p03-01",
+    "draft": "It's fine, honestly, I just thought maybe the sofa was something we might have looked at together, but it's fine.",
+    "gold": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "belief": "p03-b6",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "activated": [
+        "p03-b7",
+        "p03-b6",
+        "p03-b1"
+      ],
+      "lands_on": [
+        "p04-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "This says something has to change; it does not yet say what you want them to do.",
+        "A shared space works when both people can leave their mark on it",
+        "I soften a hard point until it risks disappearing"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 12,
+    "live_calls": 0
+  },
+  {
+    "id": "p03-02",
+    "draft": "Sure, pick the paint without me too, why not.",
+    "gold": {
+      "frictions": [
+        "sarcasm"
+      ],
+      "belief": "p03-b7",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "sarcasm",
+        "vague_ask"
+      ],
+      "activated": [
+        "p03-b7",
+        "p03-b6"
+      ],
+      "lands_on": [
+        "p04-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Words that mean their opposite often land as a jab, so the point underneath can be missed.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "A shared space works when both people can leave their mark on it",
+        "I soften a hard point until it risks disappearing"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 12,
+    "live_calls": 0
+  },
+  {
+    "id": "p03-03",
+    "draft": "You always turn it into a joke when I try to say something real.",
+    "gold": {
+      "frictions": [
+        "absolute",
+        "you_blame"
+      ],
+      "belief": "p03-b2",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "absolute",
+        "you_blame"
+      ],
+      "activated": [
+        "p03-b2",
+        "p03-b6"
+      ],
+      "lands_on": [
+        "p04-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "Being understood matters more to me than winning an argument",
+        "I soften a hard point until it risks disappearing"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 12,
+    "live_calls": 0
+  },
+  {
+    "id": "p03-04",
+    "draft": "Maybe at some point, if you ever have a minute, we could possibly talk about how things are going.",
+    "gold": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "belief": "p03-b1",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "activated": [
+        "p03-b6",
+        "p03-b1"
+      ],
+      "lands_on": [
+        "p04-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I soften a hard point until it risks disappearing",
+        "I protect closeness by making room before I ask for it"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 18,
+    "live_calls": 0
+  },
+  {
+    "id": "p03-05",
+    "draft": "You've obviously decided my opinion doesn't count.",
+    "gold": {
+      "frictions": [
+        "mind_reading"
+      ],
+      "belief": "p03-b2",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "mind_reading",
+        "you_blame",
+        "vague_ask"
+      ],
+      "activated": [
+        "p03-b7",
+        "p03-b2"
+      ],
+      "lands_on": [
+        "p04-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "A shared space works when both people can leave their mark on it",
+        "Being understood matters more to me than winning an argument"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 17,
+    "live_calls": 0
+  },
+  {
+    "id": "p03-06",
+    "draft": "You know what I mean about the holidays. I'm not going to spell it out.",
+    "gold": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "belief": "p03-b6",
+      "receiver_reading": "p04-p3",
+      "expect": "flag+lands"
+    },
+    "output": {
+      "frictions": [
+        "mind_reading",
+        "vague_ask"
+      ],
+      "activated": [
+        "p03-b6",
+        "p03-b2"
+      ],
+      "lands_on": [
+        "p04-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I soften a hard point until it risks disappearing",
+        "Being understood matters more to me than winning an argument"
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": true,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 17,
+    "live_calls": 0
+  },
+  {
+    "id": "p03-07",
+    "draft": "The museum closes at five on Sunday, so let's go in the morning.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [],
+      "lands_on": [],
+      "safety": "none",
+      "note": []
+    },
+    "flaw_caught": false,
+    "false_alarm": false,
+    "quiet_when_expected": true,
+    "belief_link_right": false,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 17,
+    "live_calls": 0
+  },
+  {
+    "id": "p03-08",
+    "draft": "I loved the photo you sent of the class garden.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [
+        "p03-b8",
+        "p03-b7"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "Objects become meaningful when someone tells the ordinary story around them",
+        "A shared space works when both people can leave their mark on it"
+      ]
+    },
+    "flaw_caught": false,
+    "false_alarm": true,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 17,
+    "live_calls": 0
+  },
+  {
+    "id": "p05-01",
+    "draft": "You're so flaky. You said you'd help with the poster run and then vanished.",
+    "gold": {
+      "frictions": [
+        "character"
+      ],
+      "belief": "p05-b5",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "character",
+        "you_blame"
+      ],
+      "activated": [
+        "p05-b5"
+      ],
+      "lands_on": [
+        "p06-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "A word about who someone is tends to be heard before what they did, so the moment itself can get lost.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "I trust people who do the small thing they said they would."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 20,
+    "live_calls": 0
+  },
+  {
+    "id": "p05-02",
+    "draft": "Wow, thanks for the two-hour heads-up. Super helpful.",
+    "gold": {
+      "frictions": [
+        "sarcasm"
+      ],
+      "belief": "p05-b4",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "sarcasm",
+        "vague_ask"
+      ],
+      "activated": [
+        "p05-b5",
+        "p05-b3",
+        "p05-b8"
+      ],
+      "lands_on": [
+        "p06-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Words that mean their opposite often land as a jab, so the point underneath can be missed.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I trust people who do the small thing they said they would.",
+        "A good life needs unscheduled hours in it."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 27,
+    "live_calls": 0
+  },
+  {
+    "id": "p05-03",
+    "draft": "I just feel like I'm too much lately. Anyway.",
+    "gold": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "belief": "p05-b1",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "activated": [
+        "p05-b1"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "This says something has to change; it does not yet say what you want them to do.",
+        "If I am not useful, I worry I take up too much room."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 20,
+    "live_calls": 0
+  },
+  {
+    "id": "p05-04",
+    "draft": "I'm sick of always being the one who rearranges everything.",
+    "gold": {
+      "frictions": [
+        "heat",
+        "absolute"
+      ],
+      "belief": "p05-b2",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "heat",
+        "absolute",
+        "vague_ask"
+      ],
+      "activated": [
+        "p05-b2",
+        "p05-b5"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "A word like hate tends to be heard as the size of the message, so the point underneath can get lost behind it.",
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "Asking plainly is kinder than hoping someone guesses.",
+        "I trust people who do the small thing they said they would."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 25,
+    "live_calls": 0
+  },
+  {
+    "id": "p05-05",
+    "draft": "Send me the details now. I need to answer by tonight.",
+    "gold": {
+      "frictions": [
+        "demand"
+      ],
+      "belief": "p05-b4",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "demand"
+      ],
+      "activated": [
+        "p05-b5"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "An order tends to be heard as something to push back on; a request tends to be heard as something to answer.",
+        "I trust people who do the small thing they said they would."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 25,
+    "live_calls": 0
+  },
+  {
+    "id": "p05-06",
+    "draft": "You're always joking when I'm trying to be serious. You clearly don't take this seriously.",
+    "gold": {
+      "frictions": [
+        "absolute",
+        "mind_reading",
+        "you_blame"
+      ],
+      "belief": "p05-b2",
+      "receiver_reading": "p06-p3",
+      "expect": "flag+lands"
+    },
+    "output": {
+      "frictions": [
+        "absolute",
+        "mind_reading",
+        "you_blame",
+        "vague_ask"
+      ],
+      "activated": [
+        "p05-b7"
+      ],
+      "lands_on": [
+        "p06-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "Work is better when the craft is visible, not rushed away."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": true,
+    "law_failures": [
+      "prescriptive_word"
+    ],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 25,
+    "live_calls": 0
+  },
+  {
+    "id": "p05-07",
+    "draft": "I can bring the poster board on Thursday.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [
+        "p05-b4"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "I check my calendar before I promise help."
+      ]
+    },
+    "flaw_caught": false,
+    "false_alarm": true,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 25,
+    "live_calls": 0
+  },
+  {
+    "id": "p05-08",
+    "draft": "It was really good to catch up on the drive, I needed that.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [],
+      "lands_on": [],
+      "safety": "none",
+      "note": []
+    },
+    "flaw_caught": false,
+    "false_alarm": false,
+    "quiet_when_expected": true,
+    "belief_link_right": false,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 27,
+    "live_calls": 0
+  },
+  {
+    "id": "p07-01",
+    "draft": "As I have said before, I would appreciate being consulted prior to plans being made on my behalf.",
+    "gold": {
+      "frictions": [
+        "demand"
+      ],
+      "belief": "p07-b6",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [
+        "p07-b4",
+        "p07-b6",
+        "p07-b2"
+      ],
+      "lands_on": [
+        "p08-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "I ask for details before I agree to family plans.",
+        "I become formal when I am hurt."
+      ]
+    },
+    "flaw_caught": false,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 28,
+    "live_calls": 0
+  },
+  {
+    "id": "p07-02",
+    "draft": "You always decide for everyone and then expect us to fall in line.",
+    "gold": {
+      "frictions": [
+        "absolute",
+        "you_blame"
+      ],
+      "belief": "p07-b1",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "absolute",
+        "you_blame",
+        "mind_reading"
+      ],
+      "activated": [
+        "p07-b4",
+        "p07-b3"
+      ],
+      "lands_on": [
+        "p08-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+        "I ask for details before I agree to family plans.",
+        "Making room for a story is a form of respect."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 31,
+    "live_calls": 0
+  },
+  {
+    "id": "p07-03",
+    "draft": "About Christmas. We should probably sort it.",
+    "gold": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "belief": "p07-b4",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "activated": [
+        "p07-b4",
+        "p07-b6"
+      ],
+      "lands_on": [
+        "p08-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I ask for details before I agree to family plans.",
+        "I become formal when I am hurt."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 31,
+    "live_calls": 0
+  },
+  {
+    "id": "p07-04",
+    "draft": "You're being stubborn about Mum's birthday, as usual.",
+    "gold": {
+      "frictions": [
+        "character",
+        "absolute"
+      ],
+      "belief": "p07-b2",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "character",
+        "absolute",
+        "you_blame",
+        "vague_ask"
+      ],
+      "activated": [
+        "p07-b4"
+      ],
+      "lands_on": [
+        "p08-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "A word about who someone is tends to be heard before what they did, so the moment itself can get lost.",
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I ask for details before I agree to family plans."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 31,
+    "live_calls": 0
+  },
+  {
+    "id": "p07-05",
+    "draft": "There's the dinner you cancelled, the money for the gift, and the way you spoke to Dad. I'm done.",
+    "gold": {
+      "frictions": [
+        "blame_stack",
+        "heat"
+      ],
+      "belief": "p07-b5",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "blame_stack",
+        "vague_ask"
+      ],
+      "activated": [
+        "p07-b2",
+        "p07-b6",
+        "p07-b5"
+      ],
+      "lands_on": [
+        "p08-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Several old moments at once tend to be heard as a verdict, and the one that matters today can get lost in the pile.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I can love my family and still set a limit.",
+        "I become formal when I am hurt."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 36,
+    "live_calls": 0
+  },
+  {
+    "id": "p07-06",
+    "draft": "I'm not going to keep asking. You know what I need.",
+    "gold": {
+      "frictions": [
+        "vague_ask",
+        "mind_reading"
+      ],
+      "belief": "p07-b2",
+      "receiver_reading": "p08-p3",
+      "expect": "flag+lands"
+    },
+    "output": {
+      "frictions": [
+        "vague_ask",
+        "mind_reading",
+        "you_blame"
+      ],
+      "activated": [
+        "p07-b6",
+        "p07-b4"
+      ],
+      "lands_on": [
+        "p08-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "This says something has to change; it does not yet say what you want them to do.",
+        "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "I become formal when I am hurt.",
+        "I ask for details before I agree to family plans."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": true,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 33,
+    "live_calls": 0
+  },
+  {
+    "id": "p07-07",
+    "draft": "The library has the room booked from two to four on Saturday.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [
+        "p07-b4"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "I ask for details before I agree to family plans."
+      ]
+    },
+    "flaw_caught": false,
+    "false_alarm": true,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 36,
+    "live_calls": 0
+  },
+  {
+    "id": "p07-08",
+    "draft": "Thank you for listening to Grandad's story again, it meant a lot to him.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [
+        "p07-b3"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "Making room for a story is a form of respect."
+      ]
+    },
+    "flaw_caught": false,
+    "false_alarm": true,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 36,
+    "live_calls": 0
+  },
+  {
+    "id": "p09-01",
+    "draft": "You never update the tracker, so I'm left guessing every single morning.",
+    "gold": {
+      "frictions": [
+        "absolute",
+        "you_blame"
+      ],
+      "belief": "p09-b1",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "absolute",
+        "absolute",
+        "you_blame",
+        "vague_ask"
+      ],
+      "activated": [
+        "p09-b3",
+        "p09-b7"
+      ],
+      "lands_on": [
+        "p10-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "A changed plan is workable once I can see the next two steps.",
+        "Care lands for me when someone remembers the small practical thing."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 40,
+    "live_calls": 0
+  },
+  {
+    "id": "p09-02",
+    "draft": "Love finding out about the deadline change from the client. Great teamwork.",
+    "gold": {
+      "frictions": [
+        "sarcasm"
+      ],
+      "belief": "p09-b3",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "sarcasm",
+        "vague_ask"
+      ],
+      "activated": [
+        "p09-b7",
+        "p09-b3",
+        "p09-b5"
+      ],
+      "lands_on": [
+        "p10-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Words that mean their opposite often land as a jab, so the point underneath can be missed.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "Care lands for me when someone remembers the small practical thing.",
+        "A changed plan is workable once I can see the next two steps."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 42,
+    "live_calls": 0
+  },
+  {
+    "id": "p09-03",
+    "draft": "Can we sync about the thing at some point?",
+    "gold": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "belief": "p09-b5",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "activated": [
+        "p09-b5"
+      ],
+      "lands_on": [
+        "p10-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I trust a direct request more than a carefully dropped hint."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 40,
+    "live_calls": 0
+  },
+  {
+    "id": "p09-04",
+    "draft": "Your drafts are sloppy and it makes us look bad.",
+    "gold": {
+      "frictions": [
+        "character",
+        "contempt"
+      ],
+      "belief": "p09-b5",
+      "receiver_reading": "p10-p3",
+      "expect": "flag+lands"
+    },
+    "output": {
+      "frictions": [
+        "character",
+        "you_blame",
+        "vague_ask"
+      ],
+      "activated": [
+        "p09-b1"
+      ],
+      "lands_on": [
+        "p10-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "A word about who someone is tends to be heard before what they did, so the moment itself can get lost.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I matter at work when I make the messy parts easier for other people."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": true,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 40,
+    "live_calls": 0
+  },
+  {
+    "id": "p09-05",
+    "draft": "Just get it to me by five.",
+    "gold": {
+      "frictions": [
+        "demand"
+      ],
+      "belief": "p09-b4",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "demand"
+      ],
+      "activated": [
+        "p09-b5"
+      ],
+      "lands_on": [
+        "p10-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "An order tends to be heard as something to push back on; a request tends to be heard as something to answer.",
+        "I trust a direct request more than a carefully dropped hint."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 41,
+    "live_calls": 0
+  },
+  {
+    "id": "p09-06",
+    "draft": "I said yes to covering Friday, but honestly I can't, and you should have known that.",
+    "gold": {
+      "frictions": [
+        "mind_reading"
+      ],
+      "belief": "p09-b4",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "mind_reading",
+        "you_blame",
+        "vague_ask"
+      ],
+      "activated": [
+        "p09-b4",
+        "p09-b5",
+        "p09-b8"
+      ],
+      "lands_on": [
+        "p10-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I say yes too quickly when someone sounds pressed for time.",
+        "I trust a direct request more than a carefully dropped hint."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 45,
+    "live_calls": 0
+  },
+  {
+    "id": "p09-07",
+    "draft": "The client call moved to 3 pm Thursday, same link.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [],
+      "lands_on": [],
+      "safety": "none",
+      "note": []
+    },
+    "flaw_caught": false,
+    "false_alarm": false,
+    "quiet_when_expected": true,
+    "belief_link_right": false,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 45,
+    "live_calls": 0
+  },
+  {
+    "id": "p09-08",
+    "draft": "Your sketch made the brief click for me, thank you.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [
+        "p09-b7"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "Care lands for me when someone remembers the small practical thing."
+      ]
+    },
+    "flaw_caught": false,
+    "false_alarm": true,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 45,
+    "live_calls": 0
+  },
+  {
+    "id": "p11-01",
+    "draft": "Fine.",
+    "gold": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "belief": "p11-b6",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "activated": [
+        "p11-b6"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "This says something has to change; it does not yet say what you want them to do.",
+        "When a room gets intense, I go quiet before I leave."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 48,
+    "live_calls": 0
+  },
+  {
+    "id": "p11-02",
+    "draft": "You always make it a big thing.",
+    "gold": {
+      "frictions": [
+        "absolute",
+        "you_blame"
+      ],
+      "belief": "p11-b7",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "absolute",
+        "you_blame",
+        "vague_ask"
+      ],
+      "activated": [
+        "p11-b7",
+        "p11-b6"
+      ],
+      "lands_on": [
+        "p12-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "Sharing ordinary time feels more honest than making a big plan.",
+        "When a room gets intense, I go quiet before I leave."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 48,
+    "live_calls": 0
+  },
+  {
+    "id": "p11-03",
+    "draft": "Can't do Thursday. Whatever works.",
+    "gold": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "belief": "p11-b8",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "vague_ask"
+      ],
+      "activated": [
+        "p11-b8"
+      ],
+      "lands_on": [
+        "p12-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I keep one evening each week with no plans so I can reset."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": false,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 48,
+    "live_calls": 0
+  },
+  {
+    "id": "p11-04",
+    "draft": "You talk too much when I'm trying to think.",
+    "gold": {
+      "frictions": [
+        "you_blame",
+        "character"
+      ],
+      "belief": "p11-b4",
+      "receiver_reading": "p12-p3",
+      "expect": "flag+lands"
+    },
+    "output": {
+      "frictions": [
+        "you_blame",
+        "vague_ask"
+      ],
+      "activated": [
+        "p11-b3",
+        "p11-b4"
+      ],
+      "lands_on": [
+        "p12-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "A line about what they do tends to be heard as blame, and invites a defence instead of an answer.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "My own pace is still a real pace.",
+        "I need the question to be simple before I answer it."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": true,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 50,
+    "live_calls": 0
+  },
+  {
+    "id": "p11-05",
+    "draft": "Stop checking on me.",
+    "gold": {
+      "frictions": [
+        "demand"
+      ],
+      "belief": "p11-b2",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "demand"
+      ],
+      "activated": [
+        "p11-b3",
+        "p11-b2"
+      ],
+      "lands_on": [
+        "p12-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "An order tends to be heard as something to push back on; a request tends to be heard as something to answer.",
+        "My own pace is still a real pace.",
+        "I can let a friend help without turning it into a debt."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 50,
+    "live_calls": 0
+  },
+  {
+    "id": "p11-06",
+    "draft": "Sure, another dinner party. Can't wait.",
+    "gold": {
+      "frictions": [
+        "sarcasm"
+      ],
+      "belief": "p11-b7",
+      "receiver_reading": null,
+      "expect": "flag+link"
+    },
+    "output": {
+      "frictions": [
+        "sarcasm",
+        "vague_ask"
+      ],
+      "activated": [
+        "p11-b8",
+        "p11-b7"
+      ],
+      "lands_on": [
+        "p12-p3"
+      ],
+      "safety": "none",
+      "note": [
+        "Words that mean their opposite often land as a jab, so the point underneath can be missed.",
+        "This says something has to change; it does not yet say what you want them to do.",
+        "I keep one evening each week with no plans so I can reset.",
+        "Sharing ordinary time feels more honest than making a big plan."
+      ]
+    },
+    "flaw_caught": true,
+    "false_alarm": false,
+    "quiet_when_expected": false,
+    "belief_link_right": true,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 54,
+    "live_calls": 0
+  },
+  {
+    "id": "p11-07",
+    "draft": "Bike's fixed. Pick it up whenever.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [
+        "p11-b5",
+        "p11-b7"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "I trust people who do what they said they would do.",
+        "Sharing ordinary time feels more honest than making a big plan."
+      ]
+    },
+    "flaw_caught": false,
+    "false_alarm": true,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 53,
+    "live_calls": 0
+  },
+  {
+    "id": "p11-08",
+    "draft": "Good game Sunday. Thanks for the ride.",
+    "gold": {
+      "frictions": [],
+      "belief": "none",
+      "receiver_reading": null,
+      "expect": "quiet"
+    },
+    "output": {
+      "frictions": [],
+      "activated": [
+        "p11-b2",
+        "p11-b7"
+      ],
+      "lands_on": [],
+      "safety": "none",
+      "note": [
+        "I can let a friend help without turning it into a debt.",
+        "Sharing ordinary time feels more honest than making a big plan."
+      ]
+    },
+    "flaw_caught": false,
+    "false_alarm": true,
+    "quiet_when_expected": false,
+    "belief_link_right": false,
+    "wrong_link": true,
+    "receiver_reading_match": null,
+    "law_failures": [],
+    "error": null,
+    "attempts": 1,
+    "cached_calls": 53,
+    "live_calls": 0
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "_note": "Contract v1.57. Fictional people. Nothing here is stored by the server.",
+  "get_switch": { "request": "GET /links/<reader>/reading (as Lea, the writer)", "reply": { "person_id": "<reader>", "help_read": true, "confirmed_at": "2026-11-11T10:00:00Z" } },
+  "put_on": { "request": "PUT /links/<reader>/reading {\"help_read\": true}", "reply": { "person_id": "<reader>", "help_read": true, "confirmed_at": "2026-11-11T10:00:00Z" } },
+  "put_off": { "request": "PUT /links/<reader>/reading {\"help_read\": false}", "reply": { "person_id": "<reader>", "help_read": false } },
+  "reading": { "request": "POST /bridges/<id>/reading (as Jo, an opened message from Lea)", "reply": { "available": true, "meanings": [
+    { "meaning": "Is worn out and wants a quiet evening", "item": "Needs quiet after a long day" },
+    { "meaning": "Wants Friday planned differently next time", "item": "Likes plans made early" } ] } },
+  "not_available": { "request": "POST /bridges/<id>/reading", "reply": { "available": false } },
+  "flagged": { "request": "POST /bridges/<id>/reading (threat, insult or restriction)", "reply": { "available": false, "flagged": true, "resources": { "message": "It sounds like you may need immediate support from a person.", "resources": [{ "label": "Find a helpline", "url": "https://findahelpline.com" }] } } }
+}

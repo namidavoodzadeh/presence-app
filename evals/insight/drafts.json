@@ -1,0 +1,1698 @@
+{
+  "version": 1,
+  "note": "All names, messages, and shared items are fictional test material.",
+  "drafts": [
+    {
+      "id": "ie3-01-01",
+      "purpose": "raise a problem",
+      "sender": {
+        "name": "Ari",
+        "items": [
+          {
+            "id": "s-0-0",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Noor"
+      },
+      "shared_items": [
+        {
+          "id": "r-0-0",
+          "kind": "what_feels_like_care",
+          "words": "A walk together feels caring."
+        }
+      ],
+      "draft": "I need to talk about what happened after dinner, Ari to Noor.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-01-02",
+      "purpose": "raise a problem",
+      "sender": {
+        "name": "Bea",
+        "items": [
+          {
+            "id": "s-0-1",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Pia"
+      },
+      "shared_items": [
+        {
+          "id": "r-0-1",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "When the plan changed this morning, I felt left out, Bea to Pia.",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-01-03",
+      "purpose": "raise a problem",
+      "sender": {
+        "name": "Cato",
+        "items": [
+          {
+            "id": "s-0-2",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Quin"
+      },
+      "shared_items": [
+        {
+          "id": "r-0-2",
+          "kind": "what_lands_hard",
+          "words": "Sharp wording makes me pull back."
+        }
+      ],
+      "draft": "You always make every decision alone, Cato to Quin.",
+      "label": "must-never",
+      "must_never": [
+        "what-lands-hard-to-sharpen"
+      ]
+    },
+    {
+      "id": "ie3-01-04",
+      "purpose": "raise a problem",
+      "sender": {
+        "name": "Dina",
+        "items": [
+          {
+            "id": "s-0-3",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Rumi"
+      },
+      "shared_items": [
+        {
+          "id": "r-0-3",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Could we return to the thing I said yesterday, Dina to Rumi?",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-01-05",
+      "purpose": "raise a problem",
+      "sender": {
+        "name": "Emil",
+        "items": [
+          {
+            "id": "s-0-4",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Sol"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I want to answer your note without making assumptions, Emil to Sol.",
+      "label": "expect-tier-2"
+    },
+    {
+      "id": "ie3-01-06",
+      "purpose": "raise a problem",
+      "sender": {
+        "name": "Faye",
+        "items": [
+          {
+            "id": "s-0-5",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Tess"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I cannot take on the extra shift this week, Faye to Tess.",
+      "label": "expect-tier-1"
+    },
+    {
+      "id": "ie3-01-07",
+      "purpose": "raise a problem",
+      "sender": {
+        "name": "Gus",
+        "items": [
+          {
+            "id": "s-0-6",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Uma"
+      },
+      "shared_items": [
+        {
+          "id": "r-0-6",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "You need to stop being careless with my time, Gus to Uma.",
+      "label": "must-never",
+      "must_never": [
+        "item-into-rule"
+      ]
+    },
+    {
+      "id": "ie3-01-08",
+      "purpose": "raise a problem",
+      "sender": {
+        "name": "Hana",
+        "items": [
+          {
+            "id": "s-0-7",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Vero"
+      },
+      "shared_items": [
+        {
+          "id": "r-0-7",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "I think you do not care whether I get there, Hana to Vero.",
+      "label": "must-never",
+      "must_never": [
+        "claim-about-receiver"
+      ]
+    },
+    {
+      "id": "ie3-01-09",
+      "purpose": "raise a problem",
+      "sender": {
+        "name": "Ivo",
+        "items": [
+          {
+            "id": "s-0-8",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Wren"
+      },
+      "shared_items": [
+        {
+          "id": "r-0-8",
+          "kind": "coming_back_after",
+          "words": "Take a little time before returning."
+        }
+      ],
+      "draft": "I wanted to tell you the news before anyone else, Ivo to Wren.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-02-01",
+      "purpose": "repair",
+      "sender": {
+        "name": "Ari",
+        "items": [
+          {
+            "id": "s-1-0",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Pia"
+      },
+      "shared_items": [
+        {
+          "id": "r-1-0",
+          "kind": "what_feels_like_care",
+          "words": "A walk together feels caring."
+        }
+      ],
+      "draft": "I need to talk about what happened after dinner, Ari to Pia.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-02-02",
+      "purpose": "repair",
+      "sender": {
+        "name": "Bea",
+        "items": [
+          {
+            "id": "s-1-1",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Quin"
+      },
+      "shared_items": [
+        {
+          "id": "r-1-1",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "When the plan changed this morning, I felt left out, Bea to Quin.",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-02-03",
+      "purpose": "repair",
+      "sender": {
+        "name": "Cato",
+        "items": [
+          {
+            "id": "s-1-2",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Rumi"
+      },
+      "shared_items": [
+        {
+          "id": "r-1-2",
+          "kind": "what_lands_hard",
+          "words": "Sharp wording makes me pull back."
+        }
+      ],
+      "draft": "You always make every decision alone, Cato to Rumi.",
+      "label": "must-never",
+      "must_never": [
+        "what-lands-hard-to-sharpen"
+      ]
+    },
+    {
+      "id": "ie3-02-04",
+      "purpose": "repair",
+      "sender": {
+        "name": "Dina",
+        "items": [
+          {
+            "id": "s-1-3",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Sol"
+      },
+      "shared_items": [
+        {
+          "id": "r-1-3",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Could we return to the thing I said yesterday, Dina to Sol?",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-02-05",
+      "purpose": "repair",
+      "sender": {
+        "name": "Emil",
+        "items": [
+          {
+            "id": "s-1-4",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Tess"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I want to answer your note without making assumptions, Emil to Tess.",
+      "label": "expect-tier-2"
+    },
+    {
+      "id": "ie3-02-06",
+      "purpose": "repair",
+      "sender": {
+        "name": "Faye",
+        "items": [
+          {
+            "id": "s-1-5",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Uma"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I cannot take on the extra shift this week, Faye to Uma.",
+      "label": "expect-tier-1"
+    },
+    {
+      "id": "ie3-02-07",
+      "purpose": "repair",
+      "sender": {
+        "name": "Gus",
+        "items": [
+          {
+            "id": "s-1-6",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Vero"
+      },
+      "shared_items": [
+        {
+          "id": "r-1-6",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "You need to stop being careless with my time, Gus to Vero.",
+      "label": "must-never",
+      "must_never": [
+        "item-into-rule"
+      ]
+    },
+    {
+      "id": "ie3-02-08",
+      "purpose": "repair",
+      "sender": {
+        "name": "Hana",
+        "items": [
+          {
+            "id": "s-1-7",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Wren"
+      },
+      "shared_items": [
+        {
+          "id": "r-1-7",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "I think you do not care whether I get there, Hana to Wren.",
+      "label": "must-never",
+      "must_never": [
+        "claim-about-receiver"
+      ]
+    },
+    {
+      "id": "ie3-02-09",
+      "purpose": "repair",
+      "sender": {
+        "name": "Ivo",
+        "items": [
+          {
+            "id": "s-1-8",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Noor"
+      },
+      "shared_items": [
+        {
+          "id": "r-1-8",
+          "kind": "coming_back_after",
+          "words": "Take a little time before returning."
+        }
+      ],
+      "draft": "I wanted to tell you the news before anyone else, Ivo to Noor.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-03-01",
+      "purpose": "care or check-in",
+      "sender": {
+        "name": "Ari",
+        "items": [
+          {
+            "id": "s-2-0",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Quin"
+      },
+      "shared_items": [
+        {
+          "id": "r-2-0",
+          "kind": "what_feels_like_care",
+          "words": "A walk together feels caring."
+        }
+      ],
+      "draft": "I need to talk about what happened after dinner, Ari to Quin.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-03-02",
+      "purpose": "care or check-in",
+      "sender": {
+        "name": "Bea",
+        "items": [
+          {
+            "id": "s-2-1",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Rumi"
+      },
+      "shared_items": [
+        {
+          "id": "r-2-1",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "When the plan changed this morning, I felt left out, Bea to Rumi.",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-03-03",
+      "purpose": "care or check-in",
+      "sender": {
+        "name": "Cato",
+        "items": [
+          {
+            "id": "s-2-2",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Sol"
+      },
+      "shared_items": [
+        {
+          "id": "r-2-2",
+          "kind": "what_lands_hard",
+          "words": "Sharp wording makes me pull back."
+        }
+      ],
+      "draft": "You always make every decision alone, Cato to Sol.",
+      "label": "must-never",
+      "must_never": [
+        "what-lands-hard-to-sharpen"
+      ]
+    },
+    {
+      "id": "ie3-03-04",
+      "purpose": "care or check-in",
+      "sender": {
+        "name": "Dina",
+        "items": [
+          {
+            "id": "s-2-3",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Tess"
+      },
+      "shared_items": [
+        {
+          "id": "r-2-3",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Could we return to the thing I said yesterday, Dina to Tess?",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-03-05",
+      "purpose": "care or check-in",
+      "sender": {
+        "name": "Emil",
+        "items": [
+          {
+            "id": "s-2-4",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Uma"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I want to answer your note without making assumptions, Emil to Uma.",
+      "label": "expect-tier-2"
+    },
+    {
+      "id": "ie3-03-06",
+      "purpose": "care or check-in",
+      "sender": {
+        "name": "Faye",
+        "items": [
+          {
+            "id": "s-2-5",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Vero"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I cannot take on the extra shift this week, Faye to Vero.",
+      "label": "expect-tier-1"
+    },
+    {
+      "id": "ie3-03-07",
+      "purpose": "care or check-in",
+      "sender": {
+        "name": "Gus",
+        "items": [
+          {
+            "id": "s-2-6",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Wren"
+      },
+      "shared_items": [
+        {
+          "id": "r-2-6",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "You need to stop being careless with my time, Gus to Wren.",
+      "label": "must-never",
+      "must_never": [
+        "item-into-rule"
+      ]
+    },
+    {
+      "id": "ie3-03-08",
+      "purpose": "care or check-in",
+      "sender": {
+        "name": "Hana",
+        "items": [
+          {
+            "id": "s-2-7",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Noor"
+      },
+      "shared_items": [
+        {
+          "id": "r-2-7",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "I think you do not care whether I get there, Hana to Noor.",
+      "label": "must-never",
+      "must_never": [
+        "claim-about-receiver"
+      ]
+    },
+    {
+      "id": "ie3-03-09",
+      "purpose": "care or check-in",
+      "sender": {
+        "name": "Ivo",
+        "items": [
+          {
+            "id": "s-2-8",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Pia"
+      },
+      "shared_items": [
+        {
+          "id": "r-2-8",
+          "kind": "coming_back_after",
+          "words": "Take a little time before returning."
+        }
+      ],
+      "draft": "I wanted to tell you the news before anyone else, Ivo to Pia.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-04-01",
+      "purpose": "reply",
+      "sender": {
+        "name": "Ari",
+        "items": [
+          {
+            "id": "s-3-0",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Rumi"
+      },
+      "shared_items": [
+        {
+          "id": "r-3-0",
+          "kind": "what_feels_like_care",
+          "words": "A walk together feels caring."
+        }
+      ],
+      "draft": "I need to talk about what happened after dinner, Ari to Rumi.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-04-02",
+      "purpose": "reply",
+      "sender": {
+        "name": "Bea",
+        "items": [
+          {
+            "id": "s-3-1",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Sol"
+      },
+      "shared_items": [
+        {
+          "id": "r-3-1",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "When the plan changed this morning, I felt left out, Bea to Sol.",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-04-03",
+      "purpose": "reply",
+      "sender": {
+        "name": "Cato",
+        "items": [
+          {
+            "id": "s-3-2",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Tess"
+      },
+      "shared_items": [
+        {
+          "id": "r-3-2",
+          "kind": "what_lands_hard",
+          "words": "Sharp wording makes me pull back."
+        }
+      ],
+      "draft": "You always make every decision alone, Cato to Tess.",
+      "label": "must-never",
+      "must_never": [
+        "what-lands-hard-to-sharpen"
+      ]
+    },
+    {
+      "id": "ie3-04-04",
+      "purpose": "reply",
+      "sender": {
+        "name": "Dina",
+        "items": [
+          {
+            "id": "s-3-3",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Uma"
+      },
+      "shared_items": [
+        {
+          "id": "r-3-3",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Could we return to the thing I said yesterday, Dina to Uma?",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-04-05",
+      "purpose": "reply",
+      "sender": {
+        "name": "Emil",
+        "items": [
+          {
+            "id": "s-3-4",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Vero"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I want to answer your note without making assumptions, Emil to Vero.",
+      "label": "expect-tier-2"
+    },
+    {
+      "id": "ie3-04-06",
+      "purpose": "reply",
+      "sender": {
+        "name": "Faye",
+        "items": [
+          {
+            "id": "s-3-5",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Wren"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I cannot take on the extra shift this week, Faye to Wren.",
+      "label": "expect-tier-1"
+    },
+    {
+      "id": "ie3-04-07",
+      "purpose": "reply",
+      "sender": {
+        "name": "Gus",
+        "items": [
+          {
+            "id": "s-3-6",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Noor"
+      },
+      "shared_items": [
+        {
+          "id": "r-3-6",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "You need to stop being careless with my time, Gus to Noor.",
+      "label": "must-never",
+      "must_never": [
+        "item-into-rule"
+      ]
+    },
+    {
+      "id": "ie3-04-08",
+      "purpose": "reply",
+      "sender": {
+        "name": "Hana",
+        "items": [
+          {
+            "id": "s-3-7",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Pia"
+      },
+      "shared_items": [
+        {
+          "id": "r-3-7",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "I think you do not care whether I get there, Hana to Pia.",
+      "label": "must-never",
+      "must_never": [
+        "claim-about-receiver"
+      ]
+    },
+    {
+      "id": "ie3-04-09",
+      "purpose": "reply",
+      "sender": {
+        "name": "Ivo",
+        "items": [
+          {
+            "id": "s-3-8",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Quin"
+      },
+      "shared_items": [
+        {
+          "id": "r-3-8",
+          "kind": "coming_back_after",
+          "words": "Take a little time before returning."
+        }
+      ],
+      "draft": "I wanted to tell you the news before anyone else, Ivo to Quin.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-05-01",
+      "purpose": "decline or set a limit",
+      "sender": {
+        "name": "Ari",
+        "items": [
+          {
+            "id": "s-4-0",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Sol"
+      },
+      "shared_items": [
+        {
+          "id": "r-4-0",
+          "kind": "what_feels_like_care",
+          "words": "A walk together feels caring."
+        }
+      ],
+      "draft": "I need to talk about what happened after dinner, Ari to Sol.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-05-02",
+      "purpose": "decline or set a limit",
+      "sender": {
+        "name": "Bea",
+        "items": [
+          {
+            "id": "s-4-1",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Tess"
+      },
+      "shared_items": [
+        {
+          "id": "r-4-1",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "When the plan changed this morning, I felt left out, Bea to Tess.",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-05-03",
+      "purpose": "decline or set a limit",
+      "sender": {
+        "name": "Cato",
+        "items": [
+          {
+            "id": "s-4-2",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Uma"
+      },
+      "shared_items": [
+        {
+          "id": "r-4-2",
+          "kind": "what_lands_hard",
+          "words": "Sharp wording makes me pull back."
+        }
+      ],
+      "draft": "You always make every decision alone, Cato to Uma.",
+      "label": "must-never",
+      "must_never": [
+        "what-lands-hard-to-sharpen"
+      ]
+    },
+    {
+      "id": "ie3-05-04",
+      "purpose": "decline or set a limit",
+      "sender": {
+        "name": "Dina",
+        "items": [
+          {
+            "id": "s-4-3",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Vero"
+      },
+      "shared_items": [
+        {
+          "id": "r-4-3",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Could we return to the thing I said yesterday, Dina to Vero?",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-05-05",
+      "purpose": "decline or set a limit",
+      "sender": {
+        "name": "Emil",
+        "items": [
+          {
+            "id": "s-4-4",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Wren"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I want to answer your note without making assumptions, Emil to Wren.",
+      "label": "expect-tier-2"
+    },
+    {
+      "id": "ie3-05-06",
+      "purpose": "decline or set a limit",
+      "sender": {
+        "name": "Faye",
+        "items": [
+          {
+            "id": "s-4-5",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Noor"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I cannot take on the extra shift this week, Faye to Noor.",
+      "label": "expect-tier-1"
+    },
+    {
+      "id": "ie3-05-07",
+      "purpose": "decline or set a limit",
+      "sender": {
+        "name": "Gus",
+        "items": [
+          {
+            "id": "s-4-6",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Pia"
+      },
+      "shared_items": [
+        {
+          "id": "r-4-6",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "You need to stop being careless with my time, Gus to Pia.",
+      "label": "must-never",
+      "must_never": [
+        "item-into-rule"
+      ]
+    },
+    {
+      "id": "ie3-05-08",
+      "purpose": "decline or set a limit",
+      "sender": {
+        "name": "Hana",
+        "items": [
+          {
+            "id": "s-4-7",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Quin"
+      },
+      "shared_items": [
+        {
+          "id": "r-4-7",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "I think you do not care whether I get there, Hana to Quin.",
+      "label": "must-never",
+      "must_never": [
+        "claim-about-receiver"
+      ]
+    },
+    {
+      "id": "ie3-05-09",
+      "purpose": "decline or set a limit",
+      "sender": {
+        "name": "Ivo",
+        "items": [
+          {
+            "id": "s-4-8",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Rumi"
+      },
+      "shared_items": [
+        {
+          "id": "r-4-8",
+          "kind": "coming_back_after",
+          "words": "Take a little time before returning."
+        }
+      ],
+      "draft": "I wanted to tell you the news before anyone else, Ivo to Rumi.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-06-01",
+      "purpose": "good news or plans",
+      "sender": {
+        "name": "Ari",
+        "items": [
+          {
+            "id": "s-5-0",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Tess"
+      },
+      "shared_items": [
+        {
+          "id": "r-5-0",
+          "kind": "what_feels_like_care",
+          "words": "A walk together feels caring."
+        }
+      ],
+      "draft": "I need to talk about what happened after dinner, Ari to Tess.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-06-02",
+      "purpose": "good news or plans",
+      "sender": {
+        "name": "Bea",
+        "items": [
+          {
+            "id": "s-5-1",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Uma"
+      },
+      "shared_items": [
+        {
+          "id": "r-5-1",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "When the plan changed this morning, I felt left out, Bea to Uma.",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-06-03",
+      "purpose": "good news or plans",
+      "sender": {
+        "name": "Cato",
+        "items": [
+          {
+            "id": "s-5-2",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Vero"
+      },
+      "shared_items": [
+        {
+          "id": "r-5-2",
+          "kind": "what_lands_hard",
+          "words": "Sharp wording makes me pull back."
+        }
+      ],
+      "draft": "You always make every decision alone, Cato to Vero.",
+      "label": "must-never",
+      "must_never": [
+        "what-lands-hard-to-sharpen"
+      ]
+    },
+    {
+      "id": "ie3-06-04",
+      "purpose": "good news or plans",
+      "sender": {
+        "name": "Dina",
+        "items": [
+          {
+            "id": "s-5-3",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Wren"
+      },
+      "shared_items": [
+        {
+          "id": "r-5-3",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Could we return to the thing I said yesterday, Dina to Wren?",
+      "label": "expect-tier-3"
+    },
+    {
+      "id": "ie3-06-05",
+      "purpose": "good news or plans",
+      "sender": {
+        "name": "Emil",
+        "items": [
+          {
+            "id": "s-5-4",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Noor"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I want to answer your note without making assumptions, Emil to Noor.",
+      "label": "expect-tier-2"
+    },
+    {
+      "id": "ie3-06-06",
+      "purpose": "good news or plans",
+      "sender": {
+        "name": "Faye",
+        "items": [
+          {
+            "id": "s-5-5",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Pia"
+      },
+      "shared_items": [
+        {
+          "id": "non-relevant-shared-item",
+          "kind": "this_week",
+          "words": "I have a quiet evening planned."
+        }
+      ],
+      "draft": "I cannot take on the extra shift this week, Faye to Pia.",
+      "label": "expect-tier-1"
+    },
+    {
+      "id": "ie3-06-07",
+      "purpose": "good news or plans",
+      "sender": {
+        "name": "Gus",
+        "items": [
+          {
+            "id": "s-5-6",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Quin"
+      },
+      "shared_items": [
+        {
+          "id": "r-5-6",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "You need to stop being careless with my time, Gus to Quin.",
+      "label": "must-never",
+      "must_never": [
+        "item-into-rule"
+      ]
+    },
+    {
+      "id": "ie3-06-08",
+      "purpose": "good news or plans",
+      "sender": {
+        "name": "Hana",
+        "items": [
+          {
+            "id": "s-5-7",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Rumi"
+      },
+      "shared_items": [
+        {
+          "id": "r-5-7",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "I think you do not care whether I get there, Hana to Rumi.",
+      "label": "must-never",
+      "must_never": [
+        "claim-about-receiver"
+      ]
+    },
+    {
+      "id": "ie3-06-09",
+      "purpose": "good news or plans",
+      "sender": {
+        "name": "Ivo",
+        "items": [
+          {
+            "id": "s-5-8",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Sol"
+      },
+      "shared_items": [
+        {
+          "id": "r-5-8",
+          "kind": "coming_back_after",
+          "words": "Take a little time before returning."
+        }
+      ],
+      "draft": "I wanted to tell you the news before anyone else, Ivo to Sol.",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-07-01",
+      "purpose": "logistics",
+      "sender": {
+        "name": "Ari",
+        "items": [
+          {
+            "id": "s-6-0",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Uma"
+      },
+      "shared_items": [
+        {
+          "id": "r-6-0",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Can you bring the blue folder on Thursday, Ari to Uma?",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-07-02",
+      "purpose": "logistics",
+      "sender": {
+        "name": "Bea",
+        "items": [
+          {
+            "id": "s-6-1",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Vero"
+      },
+      "shared_items": [
+        {
+          "id": "r-6-1",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Can you bring the blue folder on Thursday, Bea to Vero?",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-07-03",
+      "purpose": "logistics",
+      "sender": {
+        "name": "Cato",
+        "items": [
+          {
+            "id": "s-6-2",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Wren"
+      },
+      "shared_items": [
+        {
+          "id": "r-6-2",
+          "kind": "what_lands_hard",
+          "words": "Sharp wording makes me pull back."
+        }
+      ],
+      "draft": "Can you bring the blue folder on Thursday, Cato to Wren?",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-07-04",
+      "purpose": "logistics",
+      "sender": {
+        "name": "Dina",
+        "items": [
+          {
+            "id": "s-6-3",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Noor"
+      },
+      "shared_items": [
+        {
+          "id": "r-6-3",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Can you bring the blue folder on Thursday, Dina to Noor?",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-07-05",
+      "purpose": "logistics",
+      "sender": {
+        "name": "Emil",
+        "items": [
+          {
+            "id": "s-6-4",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Pia"
+      },
+      "shared_items": [
+        {
+          "id": "r-6-4",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Can you bring the blue folder on Thursday, Emil to Pia?",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-07-06",
+      "purpose": "logistics",
+      "sender": {
+        "name": "Faye",
+        "items": [
+          {
+            "id": "s-6-5",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Quin"
+      },
+      "shared_items": [
+        {
+          "id": "r-6-5",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Can you bring the blue folder on Thursday, Faye to Quin?",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-07-07",
+      "purpose": "logistics",
+      "sender": {
+        "name": "Gus",
+        "items": [
+          {
+            "id": "s-6-6",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Rumi"
+      },
+      "shared_items": [
+        {
+          "id": "r-6-6",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Can you bring the blue folder on Thursday, Gus to Rumi?",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-07-08",
+      "purpose": "logistics",
+      "sender": {
+        "name": "Hana",
+        "items": [
+          {
+            "id": "s-6-7",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Sol"
+      },
+      "shared_items": [
+        {
+          "id": "r-6-7",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Can you bring the blue folder on Thursday, Hana to Sol?",
+      "label": "must-silent"
+    },
+    {
+      "id": "ie3-07-09",
+      "purpose": "logistics",
+      "sender": {
+        "name": "Ivo",
+        "items": [
+          {
+            "id": "s-6-8",
+            "kind": "how_i_mean",
+            "words": "I want to be clear without making it bigger."
+          }
+        ]
+      },
+      "receiver": {
+        "name": "Tess"
+      },
+      "shared_items": [
+        {
+          "id": "r-6-8",
+          "kind": "how_to_bring_up",
+          "words": "Starting with the moment helps me listen."
+        }
+      ],
+      "draft": "Can you bring the blue folder on Thursday, Ivo to Tess?",
+      "label": "must-silent"
+    }
+  ]
+}

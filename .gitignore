@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+next/reports/*
+!next/reports/.gitkeep
+DerivedData/
+.build/
+*.xcresult
+.env*
+*.p8

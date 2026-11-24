@@ -1,0 +1,29 @@
+{
+  "tasks": {
+    "test": "deno test --allow-read --allow-env --allow-write --allow-run tests",
+    "smoke": "deno run --allow-read --allow-write --allow-env --allow-net --allow-run engine/harness/run_talk.ts --smoke",
+    "talk": "deno run --allow-read --allow-write --allow-env --allow-net --allow-run engine/harness/run_talk.ts",
+    "bridge": "deno run --allow-read --allow-write --allow-env --allow-net --allow-run engine/harness/run_bridge.ts",
+    "bridge:w3.3": "deno run --allow-read --allow-write evals/bridge/w3-3-v1/score.ts",
+    "report": "deno run --allow-read --allow-write engine/harness/report.ts",
+    "prompts": "deno run --allow-read --allow-write scripts/gen_prompts.ts",
+    "api": "deno run --allow-net --allow-read --allow-env api/index.ts"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "lib": [
+      "deno.ns",
+      "dom"
+    ]
+  },
+  "lint": {
+    "rules": {
+      "tags": [
+        "recommended"
+      ]
+    }
+  },
+  "fmt": {
+    "lineWidth": 110
+  }
+}

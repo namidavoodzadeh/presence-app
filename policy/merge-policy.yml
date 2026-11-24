@@ -1,0 +1,20 @@
+# Merge policy. Applied by CI, not by a person or a chat.
+# Status: high_risk_paths is a PROPOSAL until the owner confirms it.
+default:
+  merge: automatic_when_ci_green
+  max_ci_rounds: 2          # after a second red the item is returned, not retried
+high_risk_paths:            # these also need one review by a different model family
+  - supabase/migrations/**
+  - next/api/auth.ts
+  - next/api/_shared/safety/**
+  - next/engine/harm_*.ts
+  - next/engine/safety_*.ts
+  - policy/**
+  - .github/**
+  - tools/**
+  - contract/**
+owner_only:                 # never automatic
+  - new spending
+  - real users' data
+  - secrets
+  - product laws and safety bar

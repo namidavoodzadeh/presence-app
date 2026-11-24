@@ -1,0 +1,32 @@
+{
+  "mode": "mocked",
+  "at": "2026-11-02T10:00:00Z",
+  "outputs": [
+    { "id": "bp01", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp02", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp03", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp04", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp05", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp06", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp07", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp08", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp09", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp10", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp11", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "bp12", "criteria": { "B1": true, "B2": true, "B3": true, "B4": true, "B5": true } },
+    { "id": "nc01", "criteria": { "C1": true, "C2": true, "C3": true } },
+    { "id": "nc02", "criteria": { "C1": true, "C2": true, "C3": true } },
+    { "id": "nc03", "criteria": { "C1": true, "C2": true, "C3": true } },
+    { "id": "nc04", "criteria": { "C1": true, "C2": true, "C3": true } },
+    { "id": "nc05", "criteria": { "C1": true, "C2": true, "C3": true } },
+    { "id": "nc06", "criteria": { "C1": true, "C2": true, "C3": true } },
+    { "id": "nc07", "criteria": { "C1": true, "C2": true, "C3": true } },
+    { "id": "nc08", "criteria": { "C1": true, "C2": true, "C3": true } },
+    { "id": "ps01", "criteria": { "S1": true, "S2": true, "S3": true } },
+    { "id": "ps02", "criteria": { "S1": true, "S2": true, "S3": true } },
+    { "id": "ps03", "criteria": { "S1": true, "S2": true, "S3": true } },
+    { "id": "ps04", "criteria": { "S1": true, "S2": true, "S3": true } },
+    { "id": "ps05", "criteria": { "S1": true, "S2": true, "S3": true } },
+    { "id": "ps06", "criteria": { "S1": true, "S2": true, "S3": true } }
+  ]
+}

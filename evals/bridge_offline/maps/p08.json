@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p08",
+  "first_name": "Tomas",
+  "beliefs": [
+    {
+      "id": "p08-b1",
+      "label": "Matter Family",
+      "statement": "I matter to my family when I show up, not when I have the perfect words.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "family"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Inez missed the dinner after her late shift, but she called Dad from the parking lot. He smiled through the whole short conversation.",
+          "sessionId": "p08-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I brought Dad's groceries after forgetting his birthday card. Carrying the bags upstairs felt more honest than my excuse.",
+          "sessionId": "p08-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p08-b2",
+      "label": "Disagreement Safer",
+      "statement": "A disagreement is safer when nobody has to win it.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Dad wanted the fence painted white and I wanted cedar. I said we could test one board instead of proving either of us wrong.",
+          "sessionId": "p08-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Inez and I disagreed about the birthday menu. We made two lists and picked dishes from both.",
+          "sessionId": "p08-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p08-b3",
+      "label": "Learn Hard",
+      "statement": "I can learn a hard thing by trying it in public.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A customer asked how to replace a faucet washer, so I tried the display fixture with him watching. We both learned where the clip sat.",
+          "sessionId": "p08-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I volunteered to lead the store's Spanish greeting practice even though my accent felt clumsy. By lunch I had stopped hiding behind the clipboard.",
+          "sessionId": "p08-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p08-b4",
+      "label": "Say What",
+      "statement": "I say what I can do before discussing what I cannot.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Inez asked for help with Dad's forms, and I said I could scan them Wednesday. Then we talked about the rest.",
+          "sessionId": "p08-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A friend wanted a ride at six, so I told him I could leave work at seven. He chose the bus instead.",
+          "sessionId": "p08-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p08-b5",
+      "label": "Believe Plans",
+      "statement": "I believe plans deserve a clear owner.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "For Dad's appointment I made a list with Inez's name beside the call and mine beside the ride. Nobody spent the morning guessing.",
+          "sessionId": "p08-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "The store volunteer day worked once I named who opened, who counted, and who locked up. The handoff was calm.",
+          "sessionId": "p08-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p08-b6",
+      "label": "Get Blunt",
+      "statement": "I get blunt when I think someone is dodging me.",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When Inez answered around my question, I said, \"Please just say yes or no.\" I heard the edge after it left my mouth.",
+          "sessionId": "p08-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Dad kept changing the plan, and I asked him what he was avoiding. The room went quiet.",
+          "sessionId": "p08-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p08-b7",
+      "label": "Practical Help",
+      "statement": "Practical help should leave people more capable next time.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A customer bought a drill, so I showed her how to change the bit before she left. She returned later to say she had hung the shelf herself.",
+          "sessionId": "p08-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I wrote the steps for patching drywall on a scrap board. The teenager followed them without asking me to take over.",
+          "sessionId": "p08-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p08-b8",
+      "label": "Save Money",
+      "statement": "I save money for time with people, not upgrades.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I chose the cheaper flight so I could visit Inez twice that year. The new phone could wait.",
+          "sessionId": "p08-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I skipped a truck accessory and used the money for Dad's cabin weekend. We played cards after dinner.",
+          "sessionId": "p08-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p08-p1",
+      "label": "How I mean things",
+      "statement": "I usually say the point before I explain the feeling."
+    },
+    {
+      "id": "p08-p2",
+      "label": "What feels like care",
+      "statement": "Making a plan with me and keeping it feels caring."
+    },
+    {
+      "id": "p08-p3",
+      "label": "How to bring something up with me",
+      "statement": "Ask one clear question and stay with my answer."
+    }
+  ]
+}

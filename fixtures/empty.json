@@ -1,0 +1,43 @@
+{
+  "owner": "00000000-0000-4000-8000-000000000001",
+  "fictional": true,
+  "transcript": "Yesterday I asked a colleague for help and we finished together.",
+  "map": {
+    "graphVersion": 1,
+    "generation": 0,
+    "nodes": [],
+    "edges": [],
+    "layout": {
+      "layoutVersion": "level-rows-v1",
+      "positionsByNodeId": {}
+    },
+    "derived": {
+      "centrality": {},
+      "foundations": [
+        "84af6368-d313-522d-9bcd-288f26869510",
+        "50861ea1-8e86-537e-85df-d2694223ecfd",
+        "3beb0218-9cbc-5fae-aa50-8f2a9661ec15"
+      ]
+    },
+    "confirmationQueue": [],
+    "deferredQueue": [],
+    "migrationInbox": [],
+    "revisionProposals": [],
+    "excluded": [],
+    "rejectedRevisions": []
+  },
+  "bridges": [],
+  "session": {
+    "sessionId": "12500b32-cadd-57ec-86fc-5b0273633474",
+    "state": "open",
+    "stopEpoch": 0,
+    "turnSeq": 0,
+    "turns": []
+  },
+  "bridged": {
+    "original": "I want us to make time to talk.",
+    "bridged": "I want us to make time to talk.",
+    "receipts": [],
+    "fictional": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "_note": "Contract v1.53 shared check-in session. Fictional people. Ids are placeholders. Everything below is deleted when the session ends.",
+  "open": {
+    "request": "POST /checkin/jan/session",
+    "reply": { "session": { "id": "s-1", "person_id": "jan", "phase": "appreciations", "opened_by_me": true, "expires_at": "2026-11-12T22:00:00Z",
+      "mine": { "appreciation": null, "brought": [], "eligible": [], "can_bring_more": false },
+      "theirs": { "appreciation": null, "brought": [] } } }
+  },
+  "open_without_check_in": { "request": "POST /checkin/jan/session", "reply": { "error": "conflict", "reason": "no_check_in" } },
+  "appreciation": {
+    "request": "PUT /checkin/session/s-1/appreciation {\"text\": \"Thank you for the Sunday walk\"}",
+    "reply": { "state": "ok", "line": null, "resources": null, "session": { "id": "s-1", "phase": "appreciations", "mine": { "appreciation": "Thank you for the Sunday walk" }, "theirs": { "appreciation": null, "brought": [] } } }
+  },
+  "appreciation_risk": {
+    "request": "PUT /checkin/session/s-1/appreciation {\"text\": \"…\"}",
+    "reply": { "state": "risk", "session": null, "line": "(the resources line)", "resources": { "message": "…" } }
+  },
+  "appreciation_twice": { "request": "PUT /checkin/session/s-1/appreciation", "reply": { "error": "conflict", "reason": "already_given" } },
+  "items_phase_mine": {
+    "request": "GET /checkin/jan/session (both appreciations are in)",
+    "reply": { "session": { "id": "s-1", "person_id": "jan", "phase": "items", "opened_by_me": true,
+      "mine": { "appreciation": "Thank you for the Sunday walk",
+        "brought": [ { "note_id": "n-1", "text": "I'd like us to plan the trip together", "state": "parked" } ],
+        "eligible": [ { "note_id": "n-2", "text": "The dishes sit a while" } ], "can_bring_more": true },
+      "theirs": { "appreciation": "I liked how you listened last week", "brought": [ { "text": "I get quiet when I'm tired", "state": "talked" } ] } } }
+  },
+  "bring": { "request": "PUT /checkin/session/s-1/items/n-2 {\"bring\": true}", "reply": { "session": "(as items_phase_mine)" } },
+  "bring_before_appreciations": { "request": "PUT /checkin/session/s-1/items/n-2 {\"bring\": true}", "reply": { "error": "conflict", "reason": "appreciation_first" } },
+  "bring_third": { "request": "PUT /checkin/session/s-1/items/n-3 {\"bring\": true}", "reply": { "error": "conflict", "reason": "limit", "max": 2 } },
+  "bring_not_kept": { "request": "PUT /checkin/session/s-1/items/n-parked {\"bring\": true}", "reply": { "error": "not_found", "where": "note" } },
+  "take_back": { "request": "PUT /checkin/session/s-1/items/n-2 {\"bring\": false}", "reply": { "session": "(as items_phase_mine, n-2 back in eligible)" } },
+  "none_open": { "request": "GET /checkin/jan/session", "reply": { "session": null } },
+  "close": { "request": "POST /checkin/session/s-1/close", "reply": { "closed": true } }
+}

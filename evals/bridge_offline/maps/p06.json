@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p06",
+  "first_name": "Dev",
+  "beliefs": [
+    {
+      "id": "p06-b1",
+      "label": "Worth Knowing",
+      "statement": "I am worth knowing even when I am not entertaining.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "At Mara's birthday I went quiet after the first hour. I worried everyone had noticed I was not carrying the table.",
+          "sessionId": "p06-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I skipped telling a story at dinner because I had none ready. I still stayed until the plates were cleared.",
+          "sessionId": "p06-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p06-b2",
+      "label": "Repairing Something",
+      "statement": "Repairing something together can make a relationship stronger.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Mara and I rebuilt the crooked shelf in my kitchen. We laughed when the first bracket landed backward.",
+          "sessionId": "p06-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "After I forgot our errand, I helped Mara haul paper stock upstairs. The work made talking easier.",
+          "sessionId": "p06-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p06-b3",
+      "label": "Need Motion",
+      "statement": "I need motion before I can think clearly.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Before answering my landlord, I rode three miles along the river. By the bridge I knew what I needed to say.",
+          "sessionId": "p06-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A bad customer review sat in my inbox all morning. I walked the greenway before writing back.",
+          "sessionId": "p06-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p06-b4",
+      "label": "Say Favor",
+      "statement": "I say when a favor has become too much.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Mara asked if I could staff her Saturday workshop. I said I had already promised my nephew a ride and offered Monday.",
+          "sessionId": "p06-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "When a neighbor kept adding bikes to my list, I told him I could do two this week. He chose the red one.",
+          "sessionId": "p06-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p06-b5",
+      "label": "Believe Apologies",
+      "statement": "I believe apologies need a changed action behind them.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I apologized to Mara for missing the market, then showed up early for the rescheduled one. I knew words alone would feel thin.",
+          "sessionId": "p06-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A regular customer got a second flat after my repair. I replaced the tube free and checked the rim with him.",
+          "sessionId": "p06-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p06-b6",
+      "label": "Joke First",
+      "statement": "I joke first when I feel exposed.",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When Mara said I had canceled twice, I made a joke about becoming a ghost. Then I admitted I had been avoiding the conversation.",
+          "sessionId": "p06-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My sister asked why I was distant, and I made her laugh first. A minute later I told her I felt embarrassed.",
+          "sessionId": "p06-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p06-b7",
+      "label": "People Deserve",
+      "statement": "People deserve to understand what was fixed and why.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I handed a customer her old chain beside the new one. I showed her the rusted links before she paid.",
+          "sessionId": "p06-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I drew the brake cable route on a receipt for a kid at the clinic. He fixed the next step himself.",
+          "sessionId": "p06-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p06-b8",
+      "label": "Keep One",
+      "statement": "I keep one day each week without appointments.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I blocked Wednesdays on the shop calendar and ignored three booking requests. I went to the woods with a sandwich.",
+          "sessionId": "p06-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A client offered extra money for my day off. I said no and spent the morning at the library.",
+          "sessionId": "p06-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p06-p1",
+      "label": "How I mean things",
+      "statement": "I circle the point with a joke before I say it."
+    },
+    {
+      "id": "p06-p2",
+      "label": "What feels like care",
+      "statement": "Doing a task beside me feels more caring than checking in repeatedly."
+    },
+    {
+      "id": "p06-p3",
+      "label": "How to bring something up with me",
+      "statement": "Tell me what happened, not what kind of person you think I am."
+    }
+  ]
+}

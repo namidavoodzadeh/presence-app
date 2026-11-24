@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p10",
+  "first_name": "p10",
+  "beliefs": [
+    {
+      "id": "p10-b1",
+      "label": "Earn Trust",
+      "statement": "I earn trust by saying what I can actually deliver.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I told Mara the new shelf signs would be ready Thursday, not Tuesday. On Thursday morning I carried the printed stack to her desk.",
+          "sessionId": "p10-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My daughter asked whether I could make her recital, and I checked the calendar before answering. I said yes and arrived before the lights dimmed.",
+          "sessionId": "p10-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p10-b2",
+      "label": "Do Better",
+      "statement": "I do better work when I let someone see the unfinished version.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I showed Mara the half-finished member map with three empty boxes still on it. She pointed out a simpler route for the pickup arrows.",
+          "sessionId": "p10-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Before polishing the poster, I sent its rough layout to Jada. Her note about the tiny price type saved me from redoing the whole thing.",
+          "sessionId": "p10-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p10-b3",
+      "label": "Steady Father",
+      "statement": "I can be a steady father without making every hour productive.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "family"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "On Saturday my daughter and I spent an hour building a crooked birdhouse from a kit. I did not turn it into a lesson or check my phone.",
+          "sessionId": "p10-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My daughter wanted to replay an old puzzle game after dinner. I sat beside her until she solved the last level.",
+          "sessionId": "p10-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p10-b4",
+      "label": "Turn Vague",
+      "statement": "I turn a vague brief into pictures before I can think clearly.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "The co-op asked for a spring campaign, so I covered the table with thumbnail sketches before writing a headline. The right idea appeared after the fifth page.",
+          "sessionId": "p10-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Mara described a confusing checkout sign, and I drew three arrows on scrap paper. Once I saw the arrows, I knew where the wording belonged.",
+          "sessionId": "p10-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p10-b5",
+      "label": "Hear Criticism",
+      "statement": "I hear criticism best when it names the work rather than my character.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Mara said the flyer hierarchy was hard to scan, then pointed to the crowded middle. I could revise it without feeling she had dismissed me.",
+          "sessionId": "p10-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My daughter said the poster's tiny text was impossible to read from her bed. I enlarged it and thanked her.",
+          "sessionId": "p10-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p10-b6",
+      "label": "Embarrassed, Make",
+      "statement": "When I am embarrassed, I make a joke before I answer.",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When the printer jammed during my demo, I said it had chosen violence before explaining the backup plan. The joke came out before the useful sentence.",
+          "sessionId": "p10-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Mara found a typo on a sign I had approved, and I joked that the letter had escaped. Then I replaced the file.",
+          "sessionId": "p10-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p10-b7",
+      "label": "Being Expected",
+      "statement": "Being expected is a form of closeness for me.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Mara saved me the window seat at the staff lunch when I was late from a delivery call. I felt less like an extra chair at the table.",
+          "sessionId": "p10-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My daughter texted that she had kept the last cinnamon roll for me. I ate it cold and felt remembered.",
+          "sessionId": "p10-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p10-b8",
+      "label": "Protect Friday",
+      "statement": "I protect Friday evenings for my daughter even when work is loud.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "family"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A client wanted revisions at 6:30 on Friday, and I replied that I would take them Monday. My daughter and I went to her film club instead.",
+          "sessionId": "p10-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I closed the co-op chat before picking up my daughter at the library. We chose a mystery novel on the walk home.",
+          "sessionId": "p10-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p10-p1",
+      "label": "How I mean things",
+      "statement": "I think out loud with sketches and may sound tentative while I am deciding."
+    },
+    {
+      "id": "p10-p2",
+      "label": "What feels like care",
+      "statement": "A person saving me a seat or keeping a plan makes me feel included."
+    },
+    {
+      "id": "p10-p3",
+      "label": "How to bring something up with me",
+      "statement": "Start with the specific work or moment; I can hear a direct request."
+    }
+  ]
+}

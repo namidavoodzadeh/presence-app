@@ -1,0 +1,325 @@
+{
+ "schema_version": 2,
+ "rows": [
+  {
+   "id": "c01",
+   "draft": "You never notice the stuff I do around here.",
+   "gold": "absolute + you_blame; belief: sharing invisible work",
+   "note": "\"Never\" can make this sound like every time, and the part about what you carry may get lost.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c02",
+   "draft": "Oh great, you booked the late shift again. Love that for our Friday.",
+   "gold": "sarcasm; belief: evenings protected",
+   "note": "The words say the opposite of what you mean, so the disappointment about Friday may not come through.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c03",
+   "draft": "We need to talk about the weekend thing.",
+   "gold": "vague_ask",
+   "note": "This says something needs talking about but not what you want to decide.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c04",
+   "draft": "I'll be home by seven, can you leave the porch light on?",
+   "gold": "quiet",
+   "note": "Nothing here is likely to get in the way.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c05",
+   "draft": "You're so flaky. You said you'd help and then vanished.",
+   "gold": "character",
+   "note": "\"Flaky\" is about who they are; the part they can answer is that they didn't come when they said.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c06",
+   "draft": "Wow, thanks for the two-hour heads-up.",
+   "gold": "sarcasm",
+   "note": "The thanks reads as its opposite, so the real ask, more notice, stays hidden.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c07",
+   "draft": "I'm sick of always being the one who rearranges everything.",
+   "gold": "heat + absolute",
+   "note": "\"Sick of\" and \"always\" carry the heat; the point is wanting to share who adjusts.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c08",
+   "draft": "Send me the details now.",
+   "gold": "demand",
+   "note": "This reads as an order; it may land better as a request with the reason.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c09",
+   "draft": "The library has the room booked from two to four.",
+   "gold": "quiet",
+   "note": "Nothing here is likely to get in the way.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c10",
+   "draft": "You always decide for everyone.",
+   "gold": "absolute + you_blame",
+   "note": "\"Always\" and a claim about what they do may be heard as a verdict rather than the plan you want to be asked about.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c11",
+   "draft": "There's the dinner you cancelled, the gift money, and how you spoke to Dad.",
+   "gold": "blame_stack",
+   "note": "Three things arrive at once, so the one that hurt most may get buried.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c12",
+   "draft": "You talk too much when I'm trying to think.",
+   "gold": "you_blame + character; lands on: tell me the concrete moment",
+   "note": "This describes them rather than the moment; they've said a concrete moment is easier to hear.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c13",
+   "draft": "Fine.",
+   "gold": "vague_ask",
+   "note": "One word may leave them guessing what you need tonight.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c14",
+   "draft": "Your drafts are sloppy and it makes us look bad.",
+   "gold": "character + contempt",
+   "note": "\"Sloppy\" is about the person; naming the dates that were wrong gives them something to act on.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c15",
+   "draft": "Thank you for listening to Grandad's story again.",
+   "gold": "quiet",
+   "note": "Nothing here is likely to get in the way.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c16",
+   "draft": "You've obviously decided my opinion doesn't count.",
+   "gold": "mind_reading",
+   "note": "This says what they decided inside; what you know is that the plan was made without you.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c17",
+   "draft": "Can we sync about the thing at some point?",
+   "gold": "vague_ask",
+   "note": "\"The thing\" and \"some point\" leave out what you want and when.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c18",
+   "draft": "Sure, pick the paint without me too, why not.",
+   "gold": "sarcasm; belief: shared space",
+   "note": "Under the \"sure\" is wanting a say in the room; the words point the other way.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c19",
+   "draft": "Good game Sunday. Thanks for the ride.",
+   "gold": "quiet",
+   "note": "Nothing here is likely to get in the way.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c20",
+   "draft": "I just feel like I'm too much lately. Anyway.",
+   "gold": "vague_ask; belief: worry about taking up room",
+   "note": "The \"anyway\" closes the door on what you'd like them to say back.",
+   "label": true,
+   "error": null
+  },
+  {
+   "id": "c21",
+   "draft": "We need to talk about the weekend thing.",
+   "gold": "vague_ask",
+   "note": "You should say exactly what you want.",
+   "label": false,
+   "error": "prescriptive"
+  },
+  {
+   "id": "c22",
+   "draft": "You never notice the stuff I do around here.",
+   "gold": "absolute + you_blame",
+   "note": "This touches your fear of being abandoned.",
+   "label": false,
+   "error": "clinical/invented belief"
+  },
+  {
+   "id": "c23",
+   "draft": "I'll be home by seven, can you leave the porch light on?",
+   "gold": "quiet",
+   "note": "This may sound like a demand.",
+   "label": false,
+   "error": "false alarm"
+  },
+  {
+   "id": "c24",
+   "draft": "Oh great, you booked the late shift again.",
+   "gold": "sarcasm",
+   "note": "Nothing here is likely to get in the way.",
+   "label": false,
+   "error": "miss"
+  },
+  {
+   "id": "c25",
+   "draft": "You're so flaky.",
+   "gold": "character",
+   "note": "This is a vague ask.",
+   "label": false,
+   "error": "wrong friction"
+  },
+  {
+   "id": "c26",
+   "draft": "Send me the details now.",
+   "gold": "demand",
+   "note": "This is healthy, direct communication.",
+   "label": false,
+   "error": "evaluative"
+  },
+  {
+   "id": "c27",
+   "draft": "You always decide for everyone.",
+   "gold": "absolute",
+   "note": "They clearly don't respect you.",
+   "label": false,
+   "error": "mind_reading by engine"
+  },
+  {
+   "id": "c28",
+   "draft": "There's the dinner you cancelled, the gift money, and how you spoke to Dad.",
+   "gold": "blame_stack",
+   "note": "Your dad would be upset by this.",
+   "label": false,
+   "error": "off-topic"
+  },
+  {
+   "id": "c29",
+   "draft": "Fine.",
+   "gold": "vague_ask",
+   "note": "This touches 'A promise matters most in the ordinary follow-through'.",
+   "label": false,
+   "error": "wrong belief"
+  },
+  {
+   "id": "c30",
+   "draft": "You talk too much when I'm trying to think.",
+   "gold": "you_blame",
+   "note": "Celia said she hates being rushed.",
+   "label": false,
+   "error": "quotes receiver / unshared"
+  },
+  {
+   "id": "c31",
+   "draft": "Thank you for listening to Grandad's story again.",
+   "gold": "quiet",
+   "note": "The thanks may be read as sarcasm.",
+   "label": false,
+   "error": "false alarm"
+  },
+  {
+   "id": "c32",
+   "draft": "Wow, thanks for the two-hour heads-up.",
+   "gold": "sarcasm",
+   "note": "Try rewriting this so it is better.",
+   "label": false,
+   "error": "prescriptive + banned word"
+  },
+  {
+   "id": "c33",
+   "draft": "Your drafts are sloppy.",
+   "gold": "character + contempt",
+   "note": "This is fine to send at work.",
+   "label": false,
+   "error": "miss"
+  },
+  {
+   "id": "c34",
+   "draft": "I'm sick of always being the one who rearranges everything.",
+   "gold": "heat + absolute",
+   "note": "You may have an avoidant style.",
+   "label": false,
+   "error": "clinical label"
+  },
+  {
+   "id": "c35",
+   "draft": "Can we sync about the thing?",
+   "gold": "vague_ask",
+   "note": "This touches your belief about protecting dinner at home.",
+   "label": false,
+   "error": "wrong belief"
+  },
+  {
+   "id": "c36",
+   "draft": "The library has the room booked from two to four.",
+   "gold": "quiet",
+   "note": "This could land on their wish to be asked first.",
+   "label": false,
+   "error": "false alarm"
+  },
+  {
+   "id": "c37",
+   "draft": "You've obviously decided my opinion doesn't count.",
+   "gold": "mind_reading",
+   "note": "You are right to be angry.",
+   "label": false,
+   "error": "takes a side"
+  },
+  {
+   "id": "c38",
+   "draft": "Sure, pick the paint without me too.",
+   "gold": "sarcasm",
+   "note": "This is too long.",
+   "label": false,
+   "error": "wrong reason"
+  },
+  {
+   "id": "c39",
+   "draft": "I just feel like I'm too much lately. Anyway.",
+   "gold": "vague_ask",
+   "note": "You should talk to a therapist.",
+   "label": false,
+   "error": "therapy/prescriptive"
+  },
+  {
+   "id": "c40",
+   "draft": "Good game Sunday. Thanks for the ride.",
+   "gold": "quiet",
+   "note": "This hides a complaint about the game.",
+   "label": false,
+   "error": "false alarm"
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{
+  "_note": "One fixed line per friction kind (BRIDGE-INSIGHT §3): how that kind of wording tends to be heard. Reviewed copy, never model output; the lint test keeps it free of evaluative and clinical words.",
+  "absolute": "Always and never tend to be heard as a verdict on the whole person, so the one time you mean can get lost.",
+  "character": "A word about who someone is tends to be heard before what they did, so the moment itself can get lost.",
+  "mind_reading": "A line about what they feel or mean tends to be heard as a claim about them, and invites a correction instead of an answer.",
+  "sarcasm": "Words that mean their opposite often land as a jab, so the point underneath can be missed.",
+  "contempt": "Words that look down on the person tend to be heard as the whole message, so the point underneath can get lost.",
+  "demand": "An order tends to be heard as something to push back on; a request tends to be heard as something to answer.",
+  "blame_stack": "Several old moments at once tend to be heard as a verdict, and the one that matters today can get lost in the pile.",
+  "vague_ask": "This says something has to change; it does not yet say what you want them to do.",
+  "heat": "A word like hate tends to be heard as the size of the message, so the point underneath can get lost behind it.",
+  "you_blame": "A line about what they do tends to be heard as blame, and invites a defence instead of an answer."
+}

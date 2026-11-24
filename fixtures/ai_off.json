@@ -1,0 +1,13 @@
+{
+  "_about": "Kill switch replies (contract v1.42). A switched-off AI feature answers 503 ai_off; no model call, no cost. Fictional ids.",
+  "talk_turn_off": {
+    "status": 503,
+    "body": {"error": "ai_off", "ref": "K7QM", "message": "Talk can't read this just now. What you said is saved.", "scope": "talk", "saved": true, "message_id": "00000000-0000-4000-8000-0000000000a1"},
+    "app_does": "show the saved words, no cards, no retry loop; Talk works again when the switch is on"
+  },
+  "bridge_insight_off": {
+    "status": 503,
+    "body": {"error": "ai_off", "ref": "R2WD", "message": "Bridging is paused. You can send it as written.", "scope": "bridge"},
+    "app_does": "hide insight and the bridged version; keep Send as written available"
+  }
+}

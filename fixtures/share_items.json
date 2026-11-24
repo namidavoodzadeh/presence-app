@@ -1,0 +1,30 @@
+{
+  "_note": "Contract v1.52 per-item sharing. Fictional people. Ids are placeholders.",
+  "get_share": {
+    "request": "GET /links/jan/share",
+    "reply": {
+      "person_id": "jan",
+      "items": [
+        { "belief_id": "b-1", "area": "relationships", "label": "Needs time", "wording": "I need a little time before I can talk about something hard", "shared": true, "shared_wording": "I need a little time before I can talk about something hard", "shared_at": "2026-11-10T12:00:00Z" },
+        { "belief_id": "b-2", "area": "work", "label": "Doing it right", "wording": "I should get it right the first time", "shared": false, "shared_wording": null, "shared_at": null }
+      ],
+      "shared_count": 1
+    }
+  },
+  "put_share_with_wording": {
+    "request": "PUT /links/jan/share/items/b-2 {\"shared\": true, \"wording\": \"I like to get things right\"}",
+    "reply": { "item": { "belief_id": "b-2", "shared": true, "shared_wording": "I like to get things right" } }
+  },
+  "put_revoke": {
+    "request": "PUT /links/jan/share/items/b-2 {\"shared\": false}",
+    "reply": { "item": { "belief_id": "b-2", "shared": false, "shared_wording": null } }
+  },
+  "put_guess_refused": {
+    "request": "PUT /links/jan/share/items/b-guess {\"shared\": true}",
+    "reply": { "error": "forbidden", "reason": "not_confirmed" }
+  },
+  "preview": {
+    "request": "GET /links/jan/share/preview",
+    "reply": { "person_id": "jan", "items": [ { "item_id": "b-1", "area": "relationships", "wording": "I need a little time before I can talk about something hard", "shared_at": "2026-11-10T12:00:00Z" } ], "receipts": false }
+  }
+}

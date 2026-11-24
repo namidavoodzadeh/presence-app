@@ -1,0 +1,16 @@
+name: Item
+description: One screen or one route from a frozen package
+labels: [item]
+body:
+  - type: input
+    id: package
+    attributes: { label: Package and screen or route, placeholder: "01 / write" }
+    validations: { required: true }
+  - type: dropdown
+    id: track
+    attributes: { label: Track, options: [app, engine] }
+    validations: { required: true }
+  - type: textarea
+    id: acceptance
+    attributes: { label: Acceptance tests, description: "Paths of tests written from the package before any code. They fail now and pass when the item is done." }
+    validations: { required: true }

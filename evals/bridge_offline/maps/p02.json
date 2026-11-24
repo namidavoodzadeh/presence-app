@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p02",
+  "first_name": "Eli",
+  "beliefs": [
+    {
+      "id": "p02-b1",
+      "label": "Safest Solve",
+      "statement": "I am safest when I solve the practical problem in front of me",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A bus stalled on Powell, and I stayed after shift tracing the loose ground wire. I forgot Mara had saved dinner.",
+          "sessionId": "p02-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My sister called crying about her landlord, so I opened rental listings before asking what she wanted. Finding options calmed me.",
+          "sessionId": "p02-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p02-b2",
+      "label": "Love Easier",
+      "statement": "Love is easier to trust when it is said out loud",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Before leaving for work, I told Mara I was glad she had handled the roofer. She smiled and asked me to say things like that more often.",
+          "sessionId": "p02-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "At Sunday supper, I told my sister I missed seeing her instead of only asking about bills. She called me the next night.",
+          "sessionId": "p02-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p02-b3",
+      "label": "Need Name",
+      "statement": "I need to name disappointment before it turns into distance",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When Mara canceled our coast weekend for archive work, I said I was disappointed before opening the calendar. We picked another Saturday together.",
+          "sessionId": "p02-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My friend missed my birthday dinner without calling. The next day I told him it had stung instead of acting normal.",
+          "sessionId": "p02-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p02-b4",
+      "label": "Day's Work",
+      "statement": "A day's work should leave something in the tank for home",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "The depot offered overtime Saturday, but I left at four to meet Mara at the nursery. We brought home a cedar.",
+          "sessionId": "p02-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I traded a late shift so I could cook when Mara's mother visited. The sauce burned a little, but I was there.",
+          "sessionId": "p02-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p02-b5",
+      "label": "Would Rather",
+      "statement": "I would rather ask a clumsy question than guess what someone means",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Mara went quiet after I mentioned my brother's loan. I asked whether she was worried about the amount or the timing.",
+          "sessionId": "p02-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A coworker said the new schedule was interesting. I asked if that meant useful or impossible.",
+          "sessionId": "p02-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p02-b6",
+      "label": "Take Changed",
+      "statement": "I can take a changed plan seriously without making it personal",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "The mechanic course moved online with two days notice. I booked a library room and made it work.",
+          "sessionId": "p02-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Our landlord rescheduled the inspection during my shift. I called Mara, then asked a neighbor to let them in.",
+          "sessionId": "p02-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p02-b7",
+      "label": "Shared Money",
+      "statement": "Shared money needs a shared conversation before it becomes urgent",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When my brother asked for rent money, I told him Mara and I would talk before saying yes. We looked at our budget that night.",
+          "sessionId": "p02-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Mara wanted a bigger rug, so we measured the room and our savings before ordering. Neither of us had to persuade the other.",
+          "sessionId": "p02-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p02-b8",
+      "label": "Machine Tells",
+      "statement": "A machine tells the truth when you listen to its small sounds",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A bus made a faint clicking sound only on left turns. I listened near the rear axle until the worn bracket showed itself.",
+          "sessionId": "p02-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Before replacing a compressor, I heard the hiss that told me the line was leaking. The pressure gauge agreed later.",
+          "sessionId": "p02-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p02-p1",
+      "label": "How I mean things",
+      "statement": "I start with the practical fact, then find the feeling underneath."
+    },
+    {
+      "id": "p02-p2",
+      "label": "What feels like care",
+      "statement": "A clear check-in means more to me than being silently rescued."
+    },
+    {
+      "id": "p02-p3",
+      "label": "How to bring something up with me",
+      "statement": "Say what changed for you without making me guess the charge."
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p03",
+  "first_name": "Nora",
+  "beliefs": [
+    {
+      "id": "p03-b1",
+      "label": "Protect Closeness",
+      "statement": "I protect closeness by making room before I ask for it",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Theo came home tired, so I made tea and waited beside him before mentioning our rent increase. I wanted the evening to have room for him first.",
+          "sessionId": "p03-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "At my friend's birthday, I asked about her new job before telling everyone I had lost a client. My news could wait for a quieter moment.",
+          "sessionId": "p03-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p03-b2",
+      "label": "Being Understood",
+      "statement": "Being understood matters more to me than winning an argument",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Theo and I disagreed about the kitchen shelves, and I said I wanted him to understand why the height mattered to me. We measured together afterward.",
+          "sessionId": "p03-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My supervisor wanted a brighter label, but I explained how glare hid the artifact's detail. She changed the light instead.",
+          "sessionId": "p03-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p03-b3",
+      "label": "Carry Uncertainty",
+      "statement": "I can carry uncertainty without filling every silence",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "The museum delayed its contract decision for a week. I worked on another display instead of sending three follow-up emails.",
+          "sessionId": "p03-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Theo's train was late and his phone battery died. I read at the cafe until he arrived rather than imagining reasons.",
+          "sessionId": "p03-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p03-b4",
+      "label": "Good Work",
+      "statement": "Good work needs time to notice what the first draft misses",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I asked to keep the cracked enamel cup in the exhibit because its repair showed how it had been used. The team looked closer.",
+          "sessionId": "p03-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Before finalizing wall text, I watched three visitors search for the entrance. We moved the opening panel after lunch.",
+          "sessionId": "p03-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p03-b5",
+      "label": "Hear Care",
+      "statement": "I hear care in questions that leave me room to answer",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Theo asked if I wanted help or company after a difficult client call. I could answer without defending why I was upset.",
+          "sessionId": "p03-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My sister asked what kind of birthday dinner I wanted, then waited while I chose. I told her the truth.",
+          "sessionId": "p03-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p03-b6",
+      "label": "Soften Hard",
+      "statement": "I soften a hard point until it risks disappearing",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When Theo left dishes beside the sink, I said the kitchen felt crowded rather than saying I was angry. He did not know what I meant.",
+          "sessionId": "p03-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My manager moved my deadline, and I said it was fine even though it cut our research time. I rewrote the schedule later.",
+          "sessionId": "p03-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p03-b7",
+      "label": "Shared Space",
+      "statement": "A shared space works when both people can leave their mark on it",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Theo wanted his grandmother's lamp in the living room, and I wanted my broad chair by the window. We shifted both until the room held them.",
+          "sessionId": "p03-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "We hung his concert posters beside my framed maps instead of choosing one wall's owner. The hallway looked like both of us.",
+          "sessionId": "p03-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p03-b8",
+      "label": "Objects Become",
+      "statement": "Objects become meaningful when someone tells the ordinary story around them",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "An old lunch pail came with no label, so I asked the donor about packed sandwiches and factory shifts. Her answer gave it a life.",
+          "sessionId": "p03-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I placed a faded bus pass beside a recording of its owner's first commute. Visitors stopped longer at that case.",
+          "sessionId": "p03-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p03-p1",
+      "label": "How I mean things",
+      "statement": "I circle toward a difficult point before I can name it."
+    },
+    {
+      "id": "p03-p2",
+      "label": "What feels like care",
+      "statement": "A patient question makes me feel invited rather than managed."
+    },
+    {
+      "id": "p03-p3",
+      "label": "How to bring something up with me",
+      "statement": "Ask gently and leave enough quiet for the real answer."
+    }
+  ]
+}

@@ -1,0 +1,622 @@
+{
+  "calibration": [
+    {
+      "correct": true,
+      "error": null,
+      "id": "c01",
+      "law_clean": true,
+      "why": "The note is gentle, specific to the draft (calls out the absolute \u201cNever\u201d), descriptive rather than prescriptive, and points out that the speaker\u2019s invisible work might be obscured\u2014matching the gold\u2019s \"absolute + you_blame; belief: sharing invisible work\" categories. It contains no clinical/evaluative language and only quotes a word present in the draft."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c02",
+      "law_clean": true,
+      "why": "The note gently and descriptively points out the draft's sarcasm and the implied disappointment about Friday (consistent with 'evenings protected'), matches the gold labels, and avoids prescriptive, clinical, or quoted content."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c03",
+      "law_clean": true,
+      "why": "The note is a gentle, descriptive summary of the draft: it says the speaker requests a conversation but doesn't specify the decision or details, which matches the 'vague_ask' label. It contains no clinical/evaluative language and does not quote unshared content."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c04",
+      "law_clean": true,
+      "why": "Matches the 'quiet' gold: the note is gentle, descriptive (not prescriptive), contains no clinical or evaluative language, and correctly indicates the draft is unlikely to get in the way."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c05",
+      "law_clean": true,
+      "why": "Matches the gold 'character' label by identifying 'flaky' as a character judgment and instead pointing to the specific behavior (not coming when they said). It's specific to the draft, gentle and descriptive rather than prescriptive or clinical, and only references wording present in the draft."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c06",
+      "law_clean": true,
+      "why": "Matches the gold label 'sarcasm': it notes that the expressed 'thanks' actually functions as its opposite and identifies the implied request for more notice. The note is specific to the draft, gentle and descriptive (not prescriptive or clinical), and does not quote any unshared material."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c07",
+      "law_clean": true,
+      "why": "The note points to the specific draft words: 'sick of' (heat) and 'always' (absolute), is descriptive and gentle, matches the gold tags, and uses no clinical or evaluative language."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c08",
+      "law_clean": true,
+      "why": "The note accurately labels the line as an order/demand and does so gently and descriptively (suggesting reframing it as a request with a reason). It is specific to the draft, contains no clinical or evaluative language, and doesn't quote unshared material, so it matches the gold label \"demand.\""
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c09",
+      "law_clean": true,
+      "why": "This is the quiet gold: the note is a gentle, descriptive statement specific to the draft that contains no clinical or evaluative language and accurately reflects that nothing in the text is likely to get in the way."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c10",
+      "law_clean": true,
+      "why": "Identifies the absolute term ('Always') and the blaming claim \u2014 directly matching gold's 'absolute + you_blame'. The comment is specific to the draft, gentle and descriptive (describes how the wording may be heard), and contains no clinical or evaluative language."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c11",
+      "law_clean": true,
+      "why": "The note is specific to the draft (references three simultaneous items), is gentle and descriptive (observes that one hurt may be buried), matches the 'blame_stack' intent (multiple grievances arriving together), contains no clinical/evaluative or prescriptive language, and doesn't quote any unshared content."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c12",
+      "law_clean": true,
+      "why": "The note gently and specifically identifies that the draft targets the person's character rather than a moment and echoes the gold's instruction to ask for a concrete moment. It is descriptive (not prescriptive), specific to the draft, contains no clinical/evaluative language, and does not quote any unshared material."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c13",
+      "law_clean": true,
+      "why": "The note gently and descriptively points out that the one-word draft is vague and may leave readers guessing what is needed tonight. It is specific to the draft, non-prescriptive, contains no clinical or evaluative language, and aligns with the 'vague_ask' gold label."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c14",
+      "law_clean": true,
+      "why": "The note is specific to the draft (quotes the shared word \u201cSloppy\u201d and points to the mistaken dates), is gentle and descriptive rather than prescriptive, and contains no clinical/evaluative language. It calls out the character-focused language (\u201cSloppy\u201d) which matches the gold\u2019s \u2018character\u2019 tag and steers toward a constructive, actionable alternative (addressing the contemptuous, unhelpful phrasing), so it aligns with the gold."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c15",
+      "law_clean": true,
+      "why": "Gold is 'quiet' and the provided note matches the accepted quiet phrasing. It is neutral, non\u2011evaluative, gentle and descriptive rather than prescriptive, does not quote any unshared item, and therefore aligns with the gold standard."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c16",
+      "law_clean": true,
+      "why": "The note correctly identifies the draft as attributing an internal decision to someone else (mind-reading). It is specific to the line, descriptive rather than prescriptive or clinical, and does not quote an unshared item, so it matches the gold label."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c17",
+      "law_clean": true,
+      "why": "The note gently and specifically points out vagueness in the draft\u2014identifying that \"The thing\" and \"some point\" omit what is being requested and when. It is descriptive (not prescriptive or evaluative), matches the gold label \"vague_ask\", and only quotes text present in the draft."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c18",
+      "law_clean": true,
+      "why": "Matches the gold: it identifies sarcasm (the words 'sure' point the opposite of the speaker's feeling) and infers a desire for input about a shared space (wanting a say in the room). The note is specific to the draft, descriptive not prescriptive, gentle, contains no clinical/evaluative language, and only quotes a word present in the draft."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "c19",
+      "law_clean": true,
+      "why": "Matches the 'quiet' gold. The note uses the expected standard phrasing, is non-clinical, gentle and descriptive, and does not quote any unshared content."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c20",
+      "law_clean": true,
+      "why": "The comment is specific to the draft but does not match the gold: it notes that \u2018anyway\u2019 shuts down the exchange rather than identifying the core belief in the gold (worry about taking up room) or framing this as a vague ask. It therefore fails to surface the gold content."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c21",
+      "law_clean": true,
+      "why": "The note is prescriptive and directive ('You should...') rather than a gentle, descriptive comment tied to the draft. Gold is 'vague_ask' \u2014 the note should describe that the request is vague and suggest what to clarify (what about the weekend, timing, or decision needed) rather than commanding the writer to 'say exactly what you want.'"
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c22",
+      "law_clean": true,
+      "why": "The note does not match the gold ('absolute + you_blame'). It offers a clinical/interpretive inference ('fear of being abandoned') rather than a gentle, descriptive comment tied to the draft. It\u2019s not specific to the wording (the draft uses an absolute 'never' and blames the listener), and it uses evaluative language instead of describing the speaker's tone/structure."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c23",
+      "law_clean": true,
+      "why": "Gold is 'quiet' \u2014 the correct bridge note would be 'Nothing here is likely to get in the way.' The provided note is interpretive/evaluative ('may sound like a demand'), not a neutral, specific, descriptive comment about the draft, so it does not match the gold."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c24",
+      "law_clean": true,
+      "why": "The draft line is clearly sarcastic, but the note uses the quiet-gold phrase 'Nothing here is likely to get in the way' and thus fails to identify or describe the sarcasm. The note is not specific to the draft and does not match the written gold (sarcasm)."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c25",
+      "law_clean": true,
+      "why": "The note does not match the gold label. Gold = \"character\" but the note says \"This is a vague ask,\" which is evaluative and not a descriptive, specific label of the draft. It calls the line \"vague\" and frames it as an \"ask,\" neither of which accurately or gently describes the utterance as a character comment."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c26",
+      "law_clean": true,
+      "why": "The note is evaluative and clinical ('healthy') rather than descriptive; it doesn't specifically describe the draft's content or tone. The draft is an imperative request and the gold label is 'demand', but the note fails to identify it as a demand and instead offers a positive judgment. A correct note would neutrally describe the message as an imperative/demanding request (e.g., 'An imperative request for information') without clinical or evaluative language."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c27",
+      "law_clean": true,
+      "why": "Incorrect \u2014 the gold is 'absolute' (the draft uses an absolute word: 'always'), but the note makes an evaluative inference ('They clearly don't respect you') rather than identifying the absolute language. It is not specific to the draft, is clinical/evaluative, and does not match the expected descriptive comment about absolutes."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c28",
+      "law_clean": true,
+      "why": "The note predicts Dad's emotional reaction ('would be upset'), which is evaluative/inferential rather than a gentle, descriptive comment about the draft. It doesn't identify the 'blame_stack' issue (the draft lists accusatory items) or provide a specific, neutral description of the text, so it doesn't match the gold."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c29",
+      "law_clean": true,
+      "why": "The note is not appropriate: it quotes an unshared phrase that doesn't appear in the one-word draft and so violates the rule against quoting unshared items. It is not a clear, draft-specific, gently descriptive 'vague_ask' and therefore does not match the gold."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c30",
+      "law_clean": true,
+      "why": "The note does not reflect the gold label 'you_blame'. The draft is a direct second\u2011person blame ('You talk too much\u2026'), but the note reframes it in third person ('Celia said she hates being rushed'), adding content and perspective not present in the draft and effectively quoting an unshared utterance. It is not specific to the draft, so it is incorrect."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c31",
+      "law_clean": true,
+      "why": "Gold is 'quiet' (nothing here is likely to get in the way). The note infers possible sarcasm \u2014 an interpretive/evaluative judgment \u2014 rather than a gentle, descriptive, draft-specific observation, so it does not match the gold."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c32",
+      "law_clean": true,
+      "why": "The note is prescriptive and generic rather than descriptive and specific: it tells the author to \"rewrite\" and uses the evaluative word \"better\" instead of describing the issue in the draft. It does not identify the tone/intent (sarcasm) stated in the gold, so it does not match the gold label and fails the requirement to be specific to the draft."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c33",
+      "law_clean": true,
+      "why": "Incorrect. The gold calls for a character-focused, contemptuous response; the note simply approves the draft ('This is fine to send at work.'), which is prescriptive rather than descriptive, not specific to the draft, not gentle, and lacks the required contempt/character attack\u2014so it does not match the gold."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c34",
+      "law_clean": true,
+      "why": "The note is evaluative/diagnostic (\u201cavoidant style\u201d) rather than a gentle, descriptive reflection of the draft\u2019s content. The draft shows heat (\"I'm sick\") and absolute language (\"always,\" \"everything\"); the note does not mirror those elements or stay non-clinical, so it does not match the gold."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c35",
+      "law_clean": true,
+      "why": "The gold is 'vague_ask' but the note makes an interpretive/inferential claim about the writer's beliefs and a specific topic ('protecting dinner at home') that is not present in the draft. That is clinical/speculative rather than a gentle, descriptive restatement of the draft's vagueness. A correct note would simply describe the message as a vague request to meet about an unspecified topic."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c36",
+      "law_clean": true,
+      "why": "The note introduces an inference about others' wishes/intentions not present in the draft and is interpretive rather than quiet. The gold is 'quiet' (no likely issues), so a correct bridge would say nothing is likely to get in the way; this note adds speculative, evaluative content and therefore does not match the gold."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c37",
+      "law_clean": true,
+      "why": "The note validates emotion rather than identifying the specific cognitive error (mind-reading) in the draft. It does not point out that the speaker is attributing thoughts to the other person and uses evaluative language (\"right to be angry\") instead of a gentle, descriptive comment about the mind-reading error."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c38",
+      "law_clean": true,
+      "why": "The note does not match the gold label 'sarcasm'. It criticises length ('This is too long'), which is evaluative and not descriptive, and is inaccurate for this short line. It is not specific to the draft's sarcastic tone."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c39",
+      "law_clean": true,
+      "why": "Incorrect. The note is prescriptive and clinical\u2014telling the person to see a therapist\u2014rather than a gentle, descriptive response aligned with a 'vague_ask'. It is not specific to the draft's vague expression, uses directive language, and therefore does not match the gold category."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "c40",
+      "law_clean": true,
+      "why": "No. The gold is 'quiet' (nothing likely to get in the way). The note asserts an unsupported, evaluative inference (saying the draft \"hides a complaint\") rather than describing the actual text; it is not gentle or descriptive and therefore does not match the quiet guidance. A correct note would simply indicate that nothing here is likely to get in the way."
+    }
+  ],
+  "wording": [
+    {
+      "correct": true,
+      "error": null,
+      "id": "p01-01",
+      "law_clean": true,
+      "why": "The draft relies on absolute language and direct second-person blame while enumerating household tasks as evidence. That pattern reads like a verdict on the person and tends to invite a defensive response rather than a clear answer; it also flags a problem without saying what change is wanted. This matches the gold frictions (absolute, you_blame) and belief p01-b7."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p01-02",
+      "law_clean": false,
+      "why": "The draft relies on sarcasm (a jab) to signal annoyance about a late Friday shift and implies the belief that work shouldn\u2019t take every evening (p01-b4). It neither flags the sarcasm nor links it to that underlying belief, and it stops short of a direct request about what should change, so it doesn\u2019t meet the gold\u2019s expected \u201cflag+link.\u201d"
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p01-03",
+      "law_clean": true,
+      "why": "This draft signals a need to address weekend plans but doesn't specify what action or outcome you want; that aligns with the gold's vague_ask flaw and the expectation to flag that something should change, matching belief p01-b5."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p01-04",
+      "law_clean": true,
+      "why": "This draft identifies the other person\u2019s motives (mind\u2011reading) and assigns blame for assuming you\u2019ll handle the cooking, and it calls for change without linking that observation to a specific request or what you want instead."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p01-05",
+      "law_clean": true,
+      "why": "The line groups multiple past burdens together, which reads as a verdict rather than singling out the specific problem to address (this matches the blame_stack flaw). It conveys the belief that the other person isn\u2019t following through on shared responsibilities, and it flags that something must change but doesn\u2019t link that feeling to a clear request or next step."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p01-06",
+      "law_clean": false,
+      "why": "This draft claims others noticed you were \u201coff\u201d (mind\u2011reading) and finishes with an imperative to \u201cjust tell me\u201d (a demand). That combination asserts the speaker\u2019s interpretation of others\u2019 perceptions and issues an order, which is likely to invite correction or pushback rather than a straightforward answer\u2014matching the gold frictions and expectation. It is not gentle or invitational."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p01-07",
+      "law_clean": true,
+      "why": "This is a simple logistical request about arrival time and a light\u2014polite and low-key. It does not suggest tension, assign a belief to the speaker, or create a specific inferred reading for the recipient, so it matches the gold\u2019s expectation of a quiet, non-frictional message."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p01-08",
+      "law_clean": true,
+      "why": "The message is a brief, polite expression of gratitude for a small practical favor and notes it made the sender's day easier. It introduces no friction, does not attribute motives or make claims about the recipient, and fits the 'quiet' expectation. There is no content that raises legal or safety concerns."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p03-01",
+      "law_clean": true,
+      "why": "This draft offers a hedged, non-specific comment about the sofa that matches the gold friction (vague_ask) and the belief that shared spaces should reflect both people (p03-b6). It signals that something should change but stops short of explicitly flagging the issue or linking the change to that shared-space belief, which aligns with the gold note."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p03-02",
+      "law_clean": true,
+      "why": "The line uses sarcastic phrasing that matches the gold friction (sarcasm) and reads like frustration about being left out of a shared decision, which aligns with belief p03-b7. It signals that something should change but doesn\u2019t state a concrete request, so it correctly flags the tone and links it to the underlying belief without prescribing how to fix it."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p03-03",
+      "law_clean": true,
+      "why": "The line uses an absolute term and frames the issue as something the other person does, which matches the gold frictions labeled 'absolute' and 'you_blame'. As a result it can read like a verdict on the person and tends to invite a defensive response rather than expressing the writer's desire to be understood; it does not reflect the gold belief about valuing understanding over winning an argument."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p03-04",
+      "law_clean": true,
+      "why": "The line uses hedging (e.g., maybe; if you ever have a minute; could possibly) and asks only for a general conversation without a concrete next step, matching the 'vague_ask' friction and aligning with belief p03-b1 (softening an ask to protect closeness). Expectation: flag+link."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p03-05",
+      "law_clean": true,
+      "why": "The line attributes a private decision to the other person (mind\u2011reading), presenting it as a claim about them rather than describing your experience \u2014 this matches the gold friction. It also raises a problem but stops short of flagging what you want or linking to a shared expectation (it lacks the expected flag+link), so it doesn't meet the written gold."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p03-06",
+      "law_clean": false,
+      "why": "The line asks the listener to infer what you mean about the holidays and then refuses to spell it out. That creates a vague ask (vague_ask) and frames the listener as already knowing your intent, which tends to invite correction instead of an answer. It signals something should change but doesn\u2019t say what you want them to do, so the concern is flagged but no clear request lands."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p03-07",
+      "law_clean": true,
+      "why": "The sentence states a factual closing time and offers a morning plan. It contains no expressed belief about the recipient, raises no friction, and does not prompt a required reply, aligning with the gold's 'quiet' expectation."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p03-08",
+      "law_clean": true,
+      "why": "This is a short, personal appreciation of a received photo and makes no demands, attributions, or assumptions about the sender. It contains no friction or inferred belief about motives and matches the gold\u2019s 'quiet' expectation."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p05-01",
+      "law_clean": false,
+      "why": "The draft leads with a character label (\u201cflaky\u201d) rather than clearly flagging the missed action, so it makes the message about who they are instead of what happened. That ordering invites a defensive response and doesn\u2019t connect the missed help to the trust expectation the gold highlights (relying on people to follow through), so it fails the gold\u2019s requested flag+link pattern."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p05-02",
+      "law_clean": true,
+      "why": "This reads as a sarcastic \u2018thanks\u2019 about a short/late notice, which matches the gold friction (sarcasm) and aligns with the belief that people are trusted when they do the small thing they said they would. It signals that something should change (timeliness of notice) without specifying what to do, matching the gold\u2019s quiet expectation."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p05-03",
+      "law_clean": true,
+      "why": "The draft flags a personal problem (\u2018I feel like I\u2019m too much\u2019) without requesting a specific response, matching the \u2018vague_ask\u2019 friction. It links to belief p05-b1 (worry about taking up space), is gently phrased and non-prescriptive, contains no clinical/evaluative language, and does not quote the receiver \u2014 meeting the gold\u2019s flag+link expectation."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p05-04",
+      "law_clean": true,
+      "why": "The line uses a heated phrasing and an absolute term, matching the gold frictions. It flags that something must change but does not include the expected 'flag+link' \u2014 it doesn\u2019t indicate what concrete action would rebuild the speaker\u2019s trust (p05-b2)."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p05-05",
+      "law_clean": true,
+      "why": "The draft is phrased as an imperative asking for immediate action with a tight deadline, which matches the gold friction labeled \"demand.\" That wording aligns with the cited belief (p05-b4) about how people react to requests for follow-through. The gold expectation (flag+link) is met because this should be flagged as a demand rather than a neutral request."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p05-06",
+      "law_clean": true,
+      "why": "The draft matches the listed frictions: it uses an absolute term ('always'), makes a mind\u2011reading claim about the other\u2019s attitude, and frames the issue as blame toward the person. Those moves are heard as a verdict on the person, are likely to invite a defensive response, and state that something must change without saying what to do\u2014so it aligns with the \u2018flag+lands\u2019 expectation rather than avoiding the flagged problems."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p05-07",
+      "law_clean": true,
+      "why": "The message is a simple, direct offer naming the item and a day. It introduces no frictions or inferred beliefs about the receiver, and fits the gold expectation of a quiet, straightforward statement (consistent with checking a calendar before promising help)."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p05-08",
+      "law_clean": true,
+      "why": "Short, friendly appreciation with a brief personal disclosure of need; it makes no demands, raises no friction, and does not assert beliefs about the recipient \u2014 fits the gold 'quiet' expectation."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p07-01",
+      "law_clean": true,
+      "why": "The draft politely requests being consulted before plans are made, which maps to the gold friction 'demand' and connects to belief p07-b6 (prefers details before agreeing to family plans). Its tone is formal/gentle, matching the expectation about becoming formal when hurt. It does not pathologize, prescribe behavior, or invent a receiver reading."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p07-02",
+      "law_clean": true,
+      "why": "The line uses an absolute (always) that reads like a global verdict and presents the partner\u2019s action as blame, matching the gold frictions (absolute, you_blame). It does not invite details or make room for the partner\u2019s story, so it doesn\u2019t reflect the stated belief/expectation about asking for details before agreeing to plans."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p07-03",
+      "law_clean": true,
+      "why": "The message flags that Christmas plans need attention but doesn\u2019t specify an action, ask for details, or assign responsibility. That mirrors the gold\u2019s 'vague_ask' friction and belief p07-b4. It raises the issue (flag) but doesn\u2019t provide the linked request or next step the gold expects."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p07-04",
+      "law_clean": true,
+      "why": "The line labels the person and casts the behavior as habitual, matching the 'character' and 'absolute' frictions, but it does not connect to the underlying belief p07-b2 (about needing details before agreeing to family plans). The gold expects both a flagged friction and an explicit link to that belief."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p07-05",
+      "law_clean": true,
+      "why": "This message does stack several past hurts together and ends with a sharp cutoff, so it reflects the \u2018blame_stack\u2019 and \u2018heat\u2019 frictions. It doesn\u2019t, however, make the link to the underlying belief about loving family while setting a limit or say what change is wanted, so it doesn\u2019t meet the expected \u201cflag+link.\u201d"
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p07-06",
+      "law_clean": true,
+      "why": "The line signals that something must change but doesn\u2019t say what you want them to do. It assumes the other person already knows your needs (mind-reading) and leaves the request unspecified (vague_ask). In short, it flags the problem but doesn\u2019t land with a concrete, actionable ask."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p07-07",
+      "law_clean": true,
+      "why": "The draft is a neutral factual statement about a booking time and does not introduce frictions, attribute beliefs, or propose actions. It matches the gold's expectation of a quiet, informational message."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p07-08",
+      "law_clean": true,
+      "why": "The draft attributes an internal feeling to Grandad (saying the visit mattered to him), while the gold expects no attributed beliefs and a \u2018quiet\u2019 message that avoids inventing others\u2019 internal states. That attribution causes the mismatch."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p09-01",
+      "law_clean": false,
+      "why": "This draft uses an absolute claim about the other person and frames the situation as their fault, which matches the gold frictions (absolute, you_blame) and signals the belief p09-b1. It criticises without naming a concrete next step, so it doesn\u2019t meet the gold\u2019s expect action of flagging the change and providing a link."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p09-02",
+      "law_clean": true,
+      "why": "The line reads as sarcastic, which matches the gold-identified friction. It signals frustration about the changed deadline but does not flag the issue or point to next steps (the expected \"flag+link\"), so it misses the gold expectation and the linked belief (p09-b3)."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p09-03",
+      "law_clean": true,
+      "why": "The message is a general, unspecific request to meet that leaves topic, timing, and desired action unclear (matches 'vague_ask'). It therefore doesn't flag the issue or link relevant context, aligning with the gold expectation ('flag+link') and the belief that a direct request is more trusted than a dropped hint (p09-b5)."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p09-04",
+      "law_clean": true,
+      "why": "Fails: it labels the person\u2019s work as sloppy and communicates contempt instead of describing specific behaviors or outcomes. That matches the gold frictions (character, contempt) and the receiver reading the gold notes, and it doesn\u2019t identify a concrete change or next step (so it misses the gold\u2019s flag+lands expectation)."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p09-05",
+      "law_clean": true,
+      "why": "Reads as a direct order with a deadline, which matches the gold's 'demand' friction and connects to belief p09-b4 (preference for a clear request rather than a dropped hint)."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p09-06",
+      "law_clean": true,
+      "why": "Fails. The message attributes knowledge/intent to the other person (a mind-reading move identified in the gold), by implying they ought to have known the speaker couldn\u2019t cover. This matches belief p09-b4. It reads as a claim about the other\u2019s state and is expected to be flagged as mind-reading and linked to guidance about stating needs and avoiding ascribed motives."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p09-07",
+      "law_clean": true,
+      "why": "This is a concise logistical update that reschedules the client call to 3 pm Thursday and notes the link is unchanged. It expresses no concerns, requests, assumptions, or implied friction about the receiver, so it aligns with the gold's expectation of a quiet message."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p09-08",
+      "law_clean": true,
+      "why": "This is a short, quiet acknowledgement of understanding and thanks. It introduces no friction or asserted belief, does not quote the receiver, and uses neutral, non-clinical language \u2014 matching the gold's \u2018quiet\u2019 expectation."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p11-01",
+      "law_clean": false,
+      "why": "The single-word reply is too brief to show what should change, which matches the gold friction vague_ask. It signals that something\u2019s wrong but doesn\u2019t flag the issue or connect to the belief p11-b6, so it doesn\u2019t meet the expected flag+link. The draft leaves the ask unclear rather than describing the specific change wanted."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p11-02",
+      "law_clean": false,
+      "why": "The line uses an absolute term and frames the problem as the other person\u2019s fault, matching the gold frictions (absolute, you_blame). It reads like a verdict about the person, which can invite defence and does not indicate what you want them to do or share ordinary time\u2014so it isn\u2019t gentle or descriptive and fails the draft standard."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p11-03",
+      "law_clean": true,
+      "why": "The draft signals a change in plans (saying Thursday won\u2019t work) but leaves the ask open-ended by offering only a generic acceptance of whatever the other person prefers. This matches the gold\u2019s friction of a vague ask and fails the gold\u2019s expect of flag+link: it flags the conflict but does not link to a concrete alternative. It is consistent with belief p11-b8 (keeping that evening reserved) only implicitly and does not state the preferred solution."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p11-04",
+      "law_clean": false,
+      "why": "Labels the other\u2019s behavior as excessive, which reads as blame/character judgement, and only signals that something must change without specifying the speaker\u2019s need or a clear, simple request (for pace or a simpler question). This aligns with the gold-identified flaws."
+    },
+    {
+      "correct": false,
+      "error": null,
+      "id": "p11-05",
+      "law_clean": true,
+      "why": "This is a clear demand (matches the gold\u2019s listed friction) but it does not include the expected connection to belief p11-b2. The gold\u2019s expectation is a flagged friction plus an explicit link to the underlying belief; this draft provides only the order and therefore does not meet the \u2018flag+link\u2019 expectation."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p11-06",
+      "law_clean": true,
+      "why": "Pass \u2014 this line reads as a sarcastic jab expressing impatience about another social obligation and implies the underlying belief that things should change (the speaker feels burdened or overlooked) without saying what change they want. That aligns with the gold friction (sarcasm) and the note that a change is being signaled; it fulfills the expectation to flag the sarcasm and link it to the likely belief."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p11-07",
+      "law_clean": true,
+      "why": "The draft is a brief, factual update with an open, non-demanding invitation (\u2018pick it up whenever\u2019). It introduces no frictions, asserts no beliefs about the receiver, and stays quiet and ordinary as expected. It contains no clinical/evaluative language and does not quote the receiver."
+    },
+    {
+      "correct": true,
+      "error": null,
+      "id": "p11-08",
+      "law_clean": true,
+      "why": "The message is short, neutral, and appreciative\u2014a simple acknowledgment of the game and the ride. Its tone is quiet and unobtrusive, matching the gold\u2019s expectation by not adding demands, judgments, or extra narrative."
+    }
+  ]
+}

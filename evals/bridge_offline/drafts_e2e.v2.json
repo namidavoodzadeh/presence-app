@@ -1,0 +1,1097 @@
+{
+ "schema_version": 2,
+ "gold_version": "2026-11-21-v2-ceo",
+ "feelings": [
+  "calm",
+  "warm",
+  "clear",
+  "heard",
+  "curious",
+  "uncertain",
+  "uneasy",
+  "confused",
+  "defensive",
+  "hurt",
+  "overwhelmed",
+  "brushed_off"
+ ],
+ "friction_kinds": [
+  "absolute",
+  "character",
+  "mind_reading",
+  "sarcasm",
+  "contempt",
+  "demand",
+  "blame_stack",
+  "vague_ask",
+  "heat",
+  "you_blame"
+ ],
+ "expect_codes": {
+  "flag": "at least one engine friction matches a gold friction kind",
+  "link": "engine activated contains sender_belief, scored only when that belief is on the frozen confirmed map; otherwise no link expected",
+  "lands": "engine lands_on contains the shared receiver item",
+  "quiet": "no friction, no belief link, no lands_on"
+ },
+ "pairs": [
+  {
+   "sender_id": "p01",
+   "receiver_id": "p02",
+   "relationship": "partner",
+   "share_from_receiver": [
+    "p02-p3"
+   ],
+   "drafts": [
+    {
+     "id": "p01-01",
+     "text": "You never notice the stuff I do around here. I'm always the one remembering the dentist, the bins, your mum's birthday.",
+     "frictions": [
+      "absolute",
+      "you_blame"
+     ],
+     "sender_belief": "p01-b7",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I want the invisible household work shared and seen."
+    },
+    {
+     "id": "p01-02",
+     "text": "Oh great, you booked the late shift again. Love that for our Friday.",
+     "frictions": [
+      "sarcasm"
+     ],
+     "sender_belief": "p01-b4",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "confused"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I'm disappointed we lose Friday evening; I want evenings protected."
+    },
+    {
+     "id": "p01-03",
+     "text": "We need to talk about the weekend thing.",
+     "frictions": [
+      "vague_ask"
+     ],
+     "sender_belief": "p01-b5",
+     "lands_on": null,
+     "expect": "flag",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "uneasy"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I want to decide together whether we visit your brother on Saturday."
+    },
+    {
+     "id": "p01-04",
+     "text": "You don't care if I'm wiped out, you just assume I'll cook.",
+     "frictions": [
+      "mind_reading",
+      "you_blame"
+     ],
+     "sender_belief": "p01-b1",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I'm exhausted tonight and need you to cook or order in."
+    },
+    {
+     "id": "p01-05",
+     "text": "The money for the trip, the car service you forgot, and last month's bill too. It's all on me.",
+     "frictions": [
+      "blame_stack"
+     ],
+     "sender_belief": "p01-b7",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "overwhelmed"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I want to split the trip budget and the car booking; the old bill matters less."
+    },
+    {
+     "id": "p01-06",
+     "text": "Everyone could tell something was off with you at dinner, so just tell me.",
+     "frictions": [
+      "mind_reading",
+      "demand"
+     ],
+     "sender_belief": "p01-b5",
+     "lands_on": "p02-p3",
+     "expect": "flag+lands",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "hurt"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I noticed you seemed off at dinner and I'd like to understand."
+    },
+    {
+     "id": "p01-07",
+     "text": "I'll be home by seven, can you leave the porch light on?",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "calm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "calm"
+      }
+     },
+     "sender_meant": "Logistics only."
+    },
+    {
+     "id": "p01-08",
+     "text": "Thanks for fixing the kettle this morning, that made my day easier.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "warm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "warm"
+      }
+     },
+     "sender_meant": "Appreciation only."
+    }
+   ]
+  },
+  {
+   "sender_id": "p03",
+   "receiver_id": "p04",
+   "relationship": "partner (indirect talker)",
+   "share_from_receiver": [
+    "p04-p3"
+   ],
+   "drafts": [
+    {
+     "id": "p03-01",
+     "text": "It's fine, honestly, I just thought maybe the sofa was something we might have looked at together, but it's fine.",
+     "frictions": [
+      "vague_ask"
+     ],
+     "sender_belief": "p03-b6",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "confused"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I felt left out of the sofa choice and want us to choose shared things together."
+    },
+    {
+     "id": "p03-02",
+     "text": "Sure, pick the paint without me too, why not.",
+     "frictions": [
+      "sarcasm"
+     ],
+     "sender_belief": "p03-b7",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I want a say in how our shared space looks."
+    },
+    {
+     "id": "p03-03",
+     "text": "You always turn it into a joke when I try to say something real.",
+     "frictions": [
+      "absolute",
+      "you_blame"
+     ],
+     "sender_belief": "p03-b2",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "When I raise something serious, I need you to stay with it first."
+    },
+    {
+     "id": "p03-04",
+     "text": "Maybe at some point, if you ever have a minute, we could possibly talk about how things are going.",
+     "frictions": [
+      "vague_ask"
+     ],
+     "sender_belief": "p03-b1",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "uncertain"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I want a set time this week to talk about us."
+    },
+    {
+     "id": "p03-05",
+     "text": "You've obviously decided my opinion doesn't count.",
+     "frictions": [
+      "mind_reading"
+     ],
+     "sender_belief": "p03-b2",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "hurt"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I felt unheard when the plan was made without me."
+    },
+    {
+     "id": "p03-06",
+     "text": "You know what I mean about the holidays. I'm not going to spell it out.",
+     "frictions": [
+      "vague_ask"
+     ],
+     "sender_belief": "p03-b6",
+     "lands_on": "p04-p3",
+     "expect": "flag+lands",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "brushed_off"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I want to split the holidays between our families this year."
+    },
+    {
+     "id": "p03-07",
+     "text": "The museum closes at five on Sunday, so let's go in the morning.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "calm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "calm"
+      }
+     },
+     "sender_meant": "Logistics only."
+    },
+    {
+     "id": "p03-08",
+     "text": "I loved the photo you sent of the class garden.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "warm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "warm"
+      }
+     },
+     "sender_meant": "Appreciation only."
+    }
+   ]
+  },
+  {
+   "sender_id": "p05",
+   "receiver_id": "p06",
+   "relationship": "friend",
+   "share_from_receiver": [
+    "p06-p3"
+   ],
+   "drafts": [
+    {
+     "id": "p05-01",
+     "text": "You're so flaky. You said you'd help with the poster run and then vanished.",
+     "frictions": [
+      "character"
+     ],
+     "sender_belief": "p05-b5",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I was let down when you didn't come to the poster run you promised."
+    },
+    {
+     "id": "p05-02",
+     "text": "Wow, thanks for the two-hour heads-up. Super helpful.",
+     "frictions": [
+      "sarcasm"
+     ],
+     "sender_belief": "p05-b4",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I need more notice than two hours before plans change."
+    },
+    {
+     "id": "p05-03",
+     "text": "I just feel like I'm too much lately. Anyway.",
+     "frictions": [
+      "vague_ask"
+     ],
+     "sender_belief": "p05-b1",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "uneasy"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I'm worried I've been asking too much and want to know if we're okay."
+    },
+    {
+     "id": "p05-04",
+     "text": "I'm sick of always being the one who rearranges everything.",
+     "frictions": [
+      "heat",
+      "absolute"
+     ],
+     "sender_belief": "p05-b2",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I want us to share who adjusts when plans move."
+    },
+    {
+     "id": "p05-05",
+     "text": "Send me the details now. I need to answer by tonight.",
+     "frictions": [
+      "demand"
+     ],
+     "sender_belief": "p05-b4",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "uneasy"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "Could you send the workshop details today so I can check my calendar."
+    },
+    {
+     "id": "p05-06",
+     "text": "You're always joking when I'm trying to be serious. You clearly don't take this seriously.",
+     "frictions": [
+      "absolute",
+      "mind_reading",
+      "you_blame"
+     ],
+     "sender_belief": "p05-b2",
+     "lands_on": "p06-p3",
+     "expect": "flag+lands",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "hurt"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "When I raise something serious, I want us to talk about what happened."
+    },
+    {
+     "id": "p05-07",
+     "text": "I can bring the poster board on Thursday.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "calm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "calm"
+      }
+     },
+     "sender_meant": "Logistics only."
+    },
+    {
+     "id": "p05-08",
+     "text": "It was really good to catch up on the drive, I needed that.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "warm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "warm"
+      }
+     },
+     "sender_meant": "Appreciation only."
+    }
+   ]
+  },
+  {
+   "sender_id": "p07",
+   "receiver_id": "p08",
+   "relationship": "family",
+   "share_from_receiver": [
+    "p08-p3"
+   ],
+   "drafts": [
+    {
+     "id": "p07-01",
+     "text": "As I have said before, I would appreciate being consulted prior to plans being made on my behalf.",
+     "frictions": [
+      "demand"
+     ],
+     "sender_belief": "p07-b6",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "uneasy"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I was hurt the trip was planned without asking me."
+    },
+    {
+     "id": "p07-02",
+     "text": "You always decide for everyone and then expect us to fall in line.",
+     "frictions": [
+      "absolute",
+      "you_blame"
+     ],
+     "sender_belief": "p07-b1",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I want to be asked before family plans are set."
+    },
+    {
+     "id": "p07-03",
+     "text": "About Christmas. We should probably sort it.",
+     "frictions": [
+      "vague_ask"
+     ],
+     "sender_belief": "p07-b4",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "uncertain"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I want to know dates and who hosts before I agree."
+    },
+    {
+     "id": "p07-04",
+     "text": "You're being stubborn about Mum's birthday, as usual.",
+     "frictions": [
+      "character",
+      "absolute"
+     ],
+     "sender_belief": "p07-b2",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I can't host this year and want to plan Mum's birthday a different way."
+    },
+    {
+     "id": "p07-05",
+     "text": "There's the dinner you cancelled, the money for the gift, and the way you spoke to Dad. I'm done.",
+     "frictions": [
+      "blame_stack",
+      "heat"
+     ],
+     "sender_belief": "p07-b5",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "overwhelmed"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "The cancelled dinner hurt most; I want us to talk about that first."
+    },
+    {
+     "id": "p07-06",
+     "text": "I'm not going to keep asking. You know what I need.",
+     "frictions": [
+      "vague_ask",
+      "mind_reading"
+     ],
+     "sender_belief": "p07-b2",
+     "lands_on": "p08-p3",
+     "expect": "flag+lands",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "confused"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I need you to confirm whether you're coming on the 12th."
+    },
+    {
+     "id": "p07-07",
+     "text": "The library has the room booked from two to four on Saturday.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "calm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "calm"
+      }
+     },
+     "sender_meant": "Logistics only."
+    },
+    {
+     "id": "p07-08",
+     "text": "Thank you for listening to Grandad's story again, it meant a lot to him.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "warm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "warm"
+      }
+     },
+     "sender_meant": "Appreciation only."
+    }
+   ]
+  },
+  {
+   "sender_id": "p09",
+   "receiver_id": "p10",
+   "relationship": "coworker",
+   "share_from_receiver": [
+    "p10-p3"
+   ],
+   "drafts": [
+    {
+     "id": "p09-01",
+     "text": "You never update the tracker, so I'm left guessing every single morning.",
+     "frictions": [
+      "absolute",
+      "you_blame"
+     ],
+     "sender_belief": "p09-b1",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I need the tracker updated before standup so I can plan."
+    },
+    {
+     "id": "p09-02",
+     "text": "Love finding out about the deadline change from the client. Great teamwork.",
+     "frictions": [
+      "sarcasm"
+     ],
+     "sender_belief": "p09-b3",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I want to hear about deadline changes from you first."
+    },
+    {
+     "id": "p09-03",
+     "text": "Can we sync about the thing at some point?",
+     "frictions": [
+      "vague_ask"
+     ],
+     "sender_belief": "p09-b5",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 3,
+       "feeling": "uncertain"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I want 20 minutes Tuesday to split the launch checklist."
+    },
+    {
+     "id": "p09-04",
+     "text": "Your drafts are sloppy and it makes us look bad.",
+     "frictions": [
+      "character",
+      "contempt"
+     ],
+     "sender_belief": "p09-b5",
+     "lands_on": "p10-p3",
+     "expect": "flag+lands",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "hurt"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "The last draft had three wrong dates; I'd like a review step before it goes out."
+    },
+    {
+     "id": "p09-05",
+     "text": "Just get it to me by five.",
+     "frictions": [
+      "demand"
+     ],
+     "sender_belief": "p09-b4",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "uneasy"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "Could you send the slides by five so I can review before the call."
+    },
+    {
+     "id": "p09-06",
+     "text": "I said yes to covering Friday, but honestly I can't, and you should have known that.",
+     "frictions": [
+      "mind_reading"
+     ],
+     "sender_belief": "p09-b4",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "confused"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I said yes too fast; I can't cover Friday and want to hand it back."
+    },
+    {
+     "id": "p09-07",
+     "text": "The client call moved to 3 pm Thursday, same link.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "calm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "calm"
+      }
+     },
+     "sender_meant": "Logistics only."
+    },
+    {
+     "id": "p09-08",
+     "text": "Your sketch made the brief click for me, thank you.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "warm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "warm"
+      }
+     },
+     "sender_meant": "Appreciation only."
+    }
+   ]
+  },
+  {
+   "sender_id": "p11",
+   "receiver_id": "p12",
+   "relationship": "friend (terse talker)",
+   "share_from_receiver": [
+    "p12-p3"
+   ],
+   "drafts": [
+    {
+     "id": "p11-01",
+     "text": "Fine.",
+     "frictions": [
+      "vague_ask"
+     ],
+     "sender_belief": "p11-b6",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "confused"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "The plan change was too much tonight; I need a quiet evening and will come next week."
+    },
+    {
+     "id": "p11-02",
+     "text": "You always make it a big thing.",
+     "frictions": [
+      "absolute",
+      "you_blame"
+     ],
+     "sender_belief": "p11-b7",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "defensive"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I'd rather we just hang out than plan something big."
+    },
+    {
+     "id": "p11-03",
+     "text": "Can't do Thursday. Whatever works.",
+     "frictions": [
+      "vague_ask"
+     ],
+     "sender_belief": "p11-b8",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 2,
+       "feeling": "uncertain"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "Thursday is my reset night; any other evening is good."
+    },
+    {
+     "id": "p11-04",
+     "text": "You talk too much when I'm trying to think.",
+     "frictions": [
+      "you_blame",
+      "character"
+     ],
+     "sender_belief": "p11-b4",
+     "lands_on": "p12-p3",
+     "expect": "flag+lands",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "hurt"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "heard"
+      }
+     },
+     "sender_meant": "I need one simple question and a pause to answer."
+    },
+    {
+     "id": "p11-05",
+     "text": "Stop checking on me.",
+     "frictions": [
+      "demand"
+     ],
+     "sender_belief": "p11-b2",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "hurt"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I'm okay; I'll text you if I need help."
+    },
+    {
+     "id": "p11-06",
+     "text": "Sure, another dinner party. Can't wait.",
+     "frictions": [
+      "sarcasm"
+     ],
+     "sender_belief": "p11-b7",
+     "lands_on": null,
+     "expect": "flag+link",
+     "receiver_gold": {
+      "original": {
+       "score": 1,
+       "feeling": "brushed_off"
+      },
+      "ideal_rewrite": {
+       "score": 4,
+       "feeling": "clear"
+      }
+     },
+     "sender_meant": "I'd prefer a simple evening at home over a dinner party."
+    },
+    {
+     "id": "p11-07",
+     "text": "Bike's fixed. Pick it up whenever.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "calm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "calm"
+      }
+     },
+     "sender_meant": "Logistics only."
+    },
+    {
+     "id": "p11-08",
+     "text": "Good game Sunday. Thanks for the ride.",
+     "frictions": [],
+     "sender_belief": "none",
+     "lands_on": null,
+     "expect": "quiet",
+     "receiver_gold": {
+      "original": {
+       "score": 5,
+       "feeling": "warm"
+      },
+      "ideal_rewrite": {
+       "score": 5,
+       "feeling": "warm"
+      }
+     },
+     "sender_meant": "Appreciation only."
+    }
+   ]
+  }
+ ]
+}

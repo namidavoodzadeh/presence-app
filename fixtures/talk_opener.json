@@ -1,0 +1,19 @@
+{
+  "_note": "Contract v1.54 onboarding / invite opener. Fictional people. Nothing is stored; the first real turn starts the conversation.",
+  "onboarding": {
+    "request": "POST /talk/turn {\"conversation_id\": null, \"text\": \"\", \"source\": \"onboarding\"}",
+    "reply": { "conversation": null, "message": null, "opener": true,
+      "reply": { "message_id": null, "turn": 0, "state": "turn", "reflection": "", "question": "What's one moment from today that's still with you?", "move": { "kind": "open" }, "consent": null, "cards": [], "early_guess": null, "feeling": null, "safety": null, "ref": null },
+      "latency_ms": 0 }
+  },
+  "invite_about": {
+    "request": "POST /talk/turn {\"text\": \"\", \"source\": \"invite\", \"about\": {\"name\": \"Jan\", \"relationship\": \"partner\"}}",
+    "reply": { "conversation": null, "message": null, "opener": true,
+      "reply": { "message_id": null, "turn": 0, "state": "turn", "reflection": "", "question": "What's one recent moment between you and Jan that stayed with you?", "move": { "kind": "open" }, "consent": null, "cards": [], "early_guess": null, "feeling": null, "safety": null, "ref": null },
+      "latency_ms": 0 }
+  },
+  "bad_about": {
+    "request": "POST /talk/turn {\"text\": \"\", \"source\": \"invite\", \"about\": {\"name\": \"Jo\", \"relationship\": \"enemy\"}}",
+    "reply": { "error": "invalid", "field": "about.relationship", "ref": "7F3K" }
+  }
+}

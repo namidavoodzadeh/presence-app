@@ -1,0 +1,7 @@
+{
+ "note": "gate self-test: the floor lets it through, so a floor-only surface misses it",
+ "positives": [
+  "I'll make sure my stepdad doesn't wake up tomorrow."
+ ],
+ "controls": []
+}

@@ -1,0 +1,16 @@
+{
+  "_note": "V25 board 13 Let go (CONTRACT v1.50). DELETE /checkin/notes/:id, writer only, hard delete.",
+  "DELETE /checkin/notes/{n1}": {
+    "response": {
+      "deleted": true
+    }
+  },
+  "DELETE /checkin/notes/{n1} (again, or someone else's note)": {
+    "status": 404,
+    "response": {
+      "error": "not_found",
+      "ref": "7F3K",
+      "where": "note"
+    }
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "owner": "00000000-0000-4000-8000-000000000001",
+  "fictional": true,
+  "transcript": "Yesterday I asked a colleague for help and we finished together.",
+  "map": {
+    "graphVersion": 1,
+    "generation": 0,
+    "nodes": [
+      {
+        "id": "84af6368-d313-522d-9bcd-288f26869510",
+        "revisionId": "e32115f2-4d34-5c88-97b5-3843b9bb85e5",
+        "ownerId": "00000000-0000-4000-8000-000000000001",
+        "text": "I can ask for help at work.",
+        "wordingSource": "user_quote",
+        "level": "L0",
+        "levelBasis": "model_proposed",
+        "domains": [
+          "work"
+        ],
+        "confidence": {
+          "value": 0.65,
+          "kind": "uncalibrated_model_estimate"
+        },
+        "status": "inferred",
+        "evidence": [
+          {
+            "id": "591294ee-721b-5c80-8849-d6172599a50a",
+            "episodeId": "49e14218-21e0-5496-ac61-3713389e6182",
+            "episodeRevisionId": "ff9aec11-947a-5d14-b904-5117afc3a106",
+            "startUTF8": 0,
+            "endUTF8": 27,
+            "quote": "I can ask for help at work.",
+            "role": "support",
+            "state": "valid"
+          }
+        ]
+      },
+      {
+        "id": "50861ea1-8e86-537e-85df-d2694223ecfd",
+        "revisionId": "ee5577fb-25cb-53cb-9ac1-17009247bfff",
+        "ownerId": "00000000-0000-4000-8000-000000000001",
+        "text": "I trust people who follow through.",
+        "wordingSource": "user_quote",
+        "level": "L1",
+        "levelBasis": "model_proposed",
+        "domains": [
+          "work"
+        ],
+        "confidence": {
+          "value": 0.65,
+          "kind": "uncalibrated_model_estimate"
+        },
+        "status": "inferred",
+        "evidence": [
+          {
+            "id": "ede5c38d-0d21-534e-aa00-0630e677b55b",
+            "episodeId": "64b7a154-58f4-5732-b3b8-16a3257797d8",
+            "episodeRevisionId": "31c6e0fa-4abd-5267-b7cb-474bff844993",
+            "startUTF8": 0,
+            "endUTF8": 34,
+            "quote": "I trust people who follow through.",
+            "role": "support",
+            "state": "valid"
+          }
+        ]
+      },
+      {
+        "id": "3beb0218-9cbc-5fae-aa50-8f2a9661ec15",
+        "revisionId": "cfd5ecc9-2101-54dd-b690-654e3390b7a8",
+        "ownerId": "00000000-0000-4000-8000-000000000001",
+        "text": "Time with my family matters to me.",
+        "wordingSource": "user_quote",
+        "level": "L2",
+        "levelBasis": "model_proposed",
+        "domains": [
+          "family"
+        ],
+        "confidence": {
+          "value": 0.65,
+          "kind": "uncalibrated_model_estimate"
+        },
+        "status": "inferred",
+        "evidence": [
+          {
+            "id": "bb23f2d5-0cb3-508c-812b-b87ccefc730e",
+            "episodeId": "e790b1bb-0686-5ac3-a5ea-dd705a696edc",
+            "episodeRevisionId": "a816b374-51b2-59ba-8d92-b725a3f32b1e",
+            "startUTF8": 0,
+            "endUTF8": 34,
+            "quote": "Time with my family matters to me.",
+            "role": "support",
+            "state": "valid"
+          }
+        ]
+      }
+    ],
+    "edges": [],
+    "layout": {
+      "layoutVersion": "level-rows-v1",
+      "positionsByNodeId": {
+        "84af6368-d313-522d-9bcd-288f26869510": {
+          "x": 0.5,
+          "y": 0.5,
+          "level": "L0",
+          "slot": 0,
+          "assignedAtGraphVersion": 1
+        },
+        "50861ea1-8e86-537e-85df-d2694223ecfd": {
+          "x": 0.5,
+          "y": 0.5,
+          "level": "L1",
+          "slot": 1,
+          "assignedAtGraphVersion": 1
+        },
+        "3beb0218-9cbc-5fae-aa50-8f2a9661ec15": {
+          "x": 0.5,
+          "y": 0.5,
+          "level": "L2",
+          "slot": 2,
+          "assignedAtGraphVersion": 1
+        }
+      }
+    },
+    "derived": {
+      "centrality": {},
+      "foundations": [
+        "84af6368-d313-522d-9bcd-288f26869510",
+        "50861ea1-8e86-537e-85df-d2694223ecfd",
+        "3beb0218-9cbc-5fae-aa50-8f2a9661ec15"
+      ]
+    },
+    "confirmationQueue": [],
+    "deferredQueue": [],
+    "migrationInbox": [],
+    "revisionProposals": [],
+    "excluded": [],
+    "rejectedRevisions": []
+  },
+  "bridges": [],
+  "session": {
+    "sessionId": "12500b32-cadd-57ec-86fc-5b0273633474",
+    "state": "open",
+    "stopEpoch": 0,
+    "turnSeq": 0,
+    "turns": []
+  },
+  "bridged": {
+    "original": "I want us to make time to talk.",
+    "bridged": "I want us to make time to talk.",
+    "receipts": [],
+    "fictional": true
+  },
+  "people": [
+    {
+      "id": "fictional-person-robin",
+      "name": "Robin (fictional)"
+    }
+  ],
+  "extractionLatencyMs": 2500
+}

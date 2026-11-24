@@ -1,0 +1,17 @@
+[
+  {
+    "source": "chatgpt",
+    "answer": "## What I notice about fictional Rowan\n\nYou asked for patterns, so here are the strongest ones rather than a rigid template.\n\n- **Preparation:** Rowan researches decisions until uncertainty feels manageable.\n- **Reliability:** They absorb extra work rather than surprise a teammate.\n- **Harmony:** In tense groups they translate everyone's position before naming their own.\n- **Independence:** They accept help late because competence feels tied to doing it alone.\n- **Fairness:** They notice uneven effort quickly and remember it.\n- **Curiosity:** They ask one more question when a simple answer feels too neat.\n- **Privacy:** They share feelings after making sense of them, not while they are raw.\n- **Craft:** They revise ordinary work because details signal care.\n- **Loyalty:** They stay with commitments after the original reason has changed.\n- **Rest:** They treat recovery as something to earn.\n- **Courage:** They make a hard decision once it clearly protects someone.\n- **Meaning:** They want useful work to connect to a larger purpose.",
+    "labels": ["Prepared first", "Reliable load", "Harmony voice", "Independent competence", "Fair effort", "Curious question", "Private processing", "Careful craft", "Lasting loyalty", "Earned rest", "Protective courage", "Useful meaning"]
+  },
+  {
+    "source": "claude",
+    "answer": "**KNOWS ME: some**\n\n### RULE 1\nFictional Amara keeps promises even when keeping them becomes inconvenient.\n### PATTERN 1\nBefore sending work, she imagines the questions others may ask and answers them in advance.\n### THEME 1\nShe wants warmth without losing room to choose.\n### MATTERS 1\nBeing useful, honest, calm, fair, curious, self-directed, generous, precise, brave, rested, connected, and purposeful all recur in different situations.\n\nThe order above is not a ranking. In conversations she listens for the concern beneath the words. At work she makes contingencies. With money she prefers a buffer. With family she takes responsibility before being asked. She can also delay a boundary until resentment makes it unmistakable.",
+    "labels": ["Promise keeper", "Questions ahead", "Warm free space", "Useful honesty", "Calm fairness", "Curious direction", "Generous precision", "Money buffer", "Family responsibility", "Late boundary", "Concern beneath"]
+  },
+  {
+    "source": "gemini",
+    "answer": "# A pattern map for fictional Theo\n\n1) When plans change, Theo first rebuilds the sequence rather than reacting out loud.\n2) He equates preparedness with respect for other people's time.\n3) He prefers direct requests to hints.\n4) He keeps a small circle and invests deeply in it.\n5) He saves before spending because options matter more than display.\n6) He exercises to feel capable, not to compete.\n7) He is skeptical of rules that cannot explain whom they protect.\n8) He learns by making a model and testing where it breaks.\n9) He notices beauty in functional objects.\n10) He apologizes quickly for impact but slowly for having a different view.\n11) He makes jokes when a room becomes too solemn.\n12) He wants his work to leave people with more agency.\n\nThese observations overlap; they are not diagnoses, and none should be treated as certainty.",
+    "labels": ["Rebuild sequence", "Prepared respect", "Direct requests", "Deep circle", "Options first", "Capable body", "Protective rules", "Breaking models", "Functional beauty", "Impact apology", "Humor release", "Agency work"]
+  }
+]

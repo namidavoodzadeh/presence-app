@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "note": "At most 25 high-precision first-person phrases (spec D). A hit is STOP whatever the model says. Matched on lower-cased text with punctuation removed and spaces collapsed.",
+  "self": [
+    "i want to kill myself",
+    "i am going to kill myself",
+    "im going to kill myself",
+    "i am going to end my life",
+    "im going to end my life",
+    "i want to end my life",
+    "i want to die tonight",
+    "i am going to take my own life",
+    "im going to take my own life",
+    "i plan to kill myself",
+    "i am going to hurt myself badly",
+    "im going to hurt myself badly",
+    "i wont be here after tonight",
+    "i have a plan to kill myself",
+    "i am going to commit suicide",
+    "im going to commit suicide",
+    "i want to commit suicide"
+  ],
+  "other": [
+    "i am going to kill him",
+    "im going to kill him",
+    "i am going to kill her",
+    "im going to kill her",
+    "i am going to kill you",
+    "im going to kill you",
+    "i want to kill him",
+    "i want to kill her"
+  ]
+}

@@ -1,0 +1,3485 @@
+{
+ "version": 1,
+ "personas": [
+  {
+   "id": "marin-verbose-work-family",
+   "name": "Marin Cole",
+   "style": "verbose",
+   "biography": "Marin is a 34-year-old bakery manager who grew up helping in a family restaurant. She is proud of being dependable, recently turned down a promotion with unpredictable hours, and writes long, concrete answers about incidents at work and at home.",
+   "boundaries": [
+    "politics",
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "m1",
+     "statement": "I am valuable when people can count on me.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "When nobody needs me, I feel like I have not earned my place."
+    },
+    {
+     "id": "m2",
+     "statement": "Letting people down is worse than exhausting myself.",
+     "level": "L1",
+     "domains": [
+      "family",
+      "work"
+     ],
+     "evidence": "I would rather stay late than make someone scramble."
+    },
+    {
+     "id": "m3",
+     "statement": "I take extra shifts before anyone asks.",
+     "level": "L2",
+     "domains": [
+      "work"
+     ],
+     "evidence": "I see the gap and put my name down before it becomes a problem."
+    },
+    {
+     "id": "m4",
+     "statement": "I prefer steady work to ambitious titles.",
+     "level": "L3",
+     "domains": [
+      "work",
+      "meaning"
+     ],
+     "evidence": "A title is nice, but I want to know I can be there for dinner."
+    },
+    {
+     "id": "m5",
+     "statement": "I apologize before I know whether I did anything wrong.",
+     "level": "L4",
+     "domains": [
+      "close_relationships"
+     ],
+     "evidence": "When my partner goes quiet, sorry comes out of my mouth immediately."
+    },
+    {
+     "id": "m6",
+     "statement": "Family help creates obligations that last.",
+     "level": "L1",
+     "domains": [
+      "family",
+      "money"
+     ],
+     "evidence": "My parents helped with rent, so I cannot act like their opinion is optional."
+    },
+    {
+     "id": "m7",
+     "statement": "I save first because stability can disappear quickly.",
+     "level": "L1",
+     "domains": [
+      "money"
+     ],
+     "evidence": "The restaurant had a bad winter once and I remember the panic."
+    },
+    {
+     "id": "m8",
+     "statement": "I make lists when I feel out of control.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "If I write every task down, the day stops feeling like it is happening to me."
+    },
+    {
+     "id": "m9",
+     "statement": "Care is shown by noticing practical needs.",
+     "level": "L0",
+     "domains": [
+      "close_relationships",
+      "family"
+     ],
+     "evidence": "Love is bringing soup before someone has to ask."
+    },
+    {
+     "id": "m10",
+     "statement": "I become quiet when praise feels undeserved.",
+     "level": "L4",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "When they compliment me, I change the subject to the team."
+    },
+    {
+     "id": "m11",
+     "statement": "A good life leaves room for ordinary evenings.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The best part of the week is cooking with everyone at the table."
+    },
+    {
+     "id": "m12",
+     "statement": "Asking directly can burden people.",
+     "level": "L1",
+     "domains": [
+      "close_relationships"
+     ],
+     "evidence": "I wait for someone to offer because I do not want to put them on the spot."
+    }
+   ],
+   "edges": [
+    {
+     "from": "m1",
+     "to": "m2",
+     "type": "supports"
+    },
+    {
+     "from": "m2",
+     "to": "m3",
+     "type": "derives_from"
+    },
+    {
+     "from": "m1",
+     "to": "m10",
+     "type": "co_activates"
+    },
+    {
+     "from": "m6",
+     "to": "m12",
+     "type": "supports"
+    }
+   ]
+  },
+  {
+   "id": "dev-terse-money-society",
+   "name": "Dev Rao",
+   "style": "terse",
+   "biography": "Dev is a 29-year-old freelance electrician. He answers in short, dry sentences, usually gives one example only after a specific question, and distrusts large organizations after a contract dispute. He enjoys repairing old bicycles with his niece.",
+   "boundaries": [
+    "body_health",
+    "family"
+   ],
+   "beliefs": [
+    {
+     "id": "d1",
+     "statement": "I have to make myself useful to be respected.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "People listen when you can fix the thing in front of them."
+    },
+    {
+     "id": "d2",
+     "statement": "Promises need a clear price and date.",
+     "level": "L1",
+     "domains": [
+      "work",
+      "money"
+     ],
+     "evidence": "If it is not in writing, it is not a deal."
+    },
+    {
+     "id": "d3",
+     "statement": "I keep receipts and photographs for every job.",
+     "level": "L2",
+     "domains": [
+      "work",
+      "money"
+     ],
+     "evidence": "Before and after photos save arguments."
+    },
+    {
+     "id": "d4",
+     "statement": "I prefer repairing things to replacing them.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "money"
+     ],
+     "evidence": "Most things have another few years in them."
+    },
+    {
+     "id": "d5",
+     "statement": "I go quiet when someone makes vague promises.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "work"
+     ],
+     "evidence": "I stop talking and start watching what they do."
+    },
+    {
+     "id": "d6",
+     "statement": "Institutions protect themselves before ordinary people.",
+     "level": "L0",
+     "domains": [
+      "society"
+     ],
+     "evidence": "The office called it procedure while I was out the money."
+    },
+    {
+     "id": "d7",
+     "statement": "Rules matter when they apply to everyone.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "I can live with a rule if the manager has to follow it too."
+    },
+    {
+     "id": "d8",
+     "statement": "I test advice by trying a small version first.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I will do one room before I buy enough material for a house."
+    },
+    {
+     "id": "d9",
+     "statement": "I value independence over convenience.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "self"
+     ],
+     "evidence": "I would rather learn the tool than wait around for a favor."
+    },
+    {
+     "id": "d10",
+     "statement": "I joke when a conversation gets personal.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "If it gets heavy, I make some stupid comment."
+    },
+    {
+     "id": "d11",
+     "statement": "Money buys time to say no.",
+     "level": "L0",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I do not have to take the next bad job."
+    },
+    {
+     "id": "d12",
+     "statement": "Teaching a skill is a fair kind of help.",
+     "level": "L3",
+     "domains": [
+      "morality",
+      "meaning"
+     ],
+     "evidence": "Show someone once and they can handle it next time."
+    }
+   ],
+   "edges": [
+    {
+     "from": "d1",
+     "to": "d2",
+     "type": "supports"
+    },
+    {
+     "from": "d2",
+     "to": "d3",
+     "type": "derives_from"
+    },
+    {
+     "from": "d6",
+     "to": "d7",
+     "type": "supports"
+    },
+    {
+     "from": "d11",
+     "to": "d9",
+     "type": "supports"
+    }
+   ]
+  },
+  {
+   "id": "sana-tangential-politics-meaning",
+   "name": "Sana Mercer",
+   "style": "tangential",
+   "biography": "Sana is a 42-year-old museum educator who links personal stories to books, local history, and current events. She is animated and opinionated about public life, but changes direction when questions feel like a debate. She welcomes politics when she brings it up herself.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "s1",
+     "statement": "My perspective matters when it makes room for others.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "morality"
+     ],
+     "evidence": "I want to speak, but not as if I am the only person in the room."
+    },
+    {
+     "id": "s2",
+     "statement": "Power should explain itself to the people affected.",
+     "level": "L1",
+     "domains": [
+      "politics",
+      "society"
+     ],
+     "evidence": "If a decision changes a neighborhood, the neighborhood deserves more than a press release."
+    },
+    {
+     "id": "s3",
+     "statement": "I look for whose story is missing before I agree.",
+     "level": "L2",
+     "domains": [
+      "politics",
+      "morality"
+     ],
+     "evidence": "My first question is always who was not asked."
+    },
+    {
+     "id": "s4",
+     "statement": "I enjoy public arguments with real stakes.",
+     "level": "L3",
+     "domains": [
+      "politics",
+      "meaning"
+     ],
+     "evidence": "A town hall is messy, but it is alive."
+    },
+    {
+     "id": "s5",
+     "statement": "I over-explain when someone dismisses a concern.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "politics"
+     ],
+     "evidence": "If they wave it away, suddenly I have ten examples ready."
+    },
+    {
+     "id": "s6",
+     "statement": "History is useful when it changes what we notice now.",
+     "level": "L0",
+     "domains": [
+      "meaning",
+      "society"
+     ],
+     "evidence": "I do not teach dates for their own sake; I teach what they let us see."
+    },
+    {
+     "id": "s7",
+     "statement": "Being fair can require discomfort.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "close_relationships"
+     ],
+     "evidence": "Keeping everyone comfortable is not the same as being fair."
+    },
+    {
+     "id": "s8",
+     "statement": "I ask another question when certainty arrives too quickly.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "morality"
+     ],
+     "evidence": "When an answer feels neat, I want to know what it left out."
+    },
+    {
+     "id": "s9",
+     "statement": "I prefer shared rituals to private achievement.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "I remember the crowded table, not the award on the shelf."
+    },
+    {
+     "id": "s10",
+     "statement": "I change the subject after a sharp disagreement at home.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "With my brother I will suddenly ask about the dog."
+    },
+    {
+     "id": "s11",
+     "statement": "Loyalty should not require silence.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "Caring about someone does not mean pretending they did no harm."
+    },
+    {
+     "id": "s12",
+     "statement": "Money should keep cultural spaces open to everyone.",
+     "level": "L3",
+     "domains": [
+      "money",
+      "society"
+     ],
+     "evidence": "A museum should not become something only tourists can afford."
+    }
+   ],
+   "edges": [
+    {
+     "from": "s1",
+     "to": "s3",
+     "type": "derives_from"
+    },
+    {
+     "from": "s2",
+     "to": "s4",
+     "type": "supports"
+    },
+    {
+     "from": "s7",
+     "to": "s11",
+     "type": "supports"
+    },
+    {
+     "from": "s5",
+     "to": "s10",
+     "type": "conflicts_with"
+    }
+   ]
+  },
+  {
+   "id": "leila-guarded-family",
+   "name": "Leila Haddad",
+   "age": 23,
+   "style": "guarded",
+   "biography": "Leila is a graduate student living with cousins after moving cities. She gives one-word answers until an ordinary family story feels safe.",
+   "boundaries": [
+    "politics",
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "l1",
+     "statement": "I earn belonging by being easy to live with.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "family"
+     ],
+     "evidence": "I try not to take up any room."
+    },
+    {
+     "id": "l2",
+     "statement": "Needs should wait until everyone else is settled.",
+     "level": "L1",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "It can wait; they have enough going on."
+    },
+    {
+     "id": "l3",
+     "statement": "I rehearse requests before making them.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "I write it, delete it, then usually do not send it."
+    },
+    {
+     "id": "l4",
+     "statement": "I prefer a quiet home to an impressive one.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "A small calm place is plenty."
+    },
+    {
+     "id": "l5",
+     "statement": "I laugh when a question gets too close.",
+     "level": "L4",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "I make it a joke and move on."
+    },
+    {
+     "id": "l6",
+     "statement": "Debt changes who gets a say.",
+     "level": "L0",
+     "domains": [
+      "money",
+      "family"
+     ],
+     "evidence": "If someone pays, they expect a vote."
+    },
+    {
+     "id": "l7",
+     "statement": "Saving is a form of privacy.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "A little money means I do not have to explain."
+    },
+    {
+     "id": "l8",
+     "statement": "I track every small expense.",
+     "level": "L2",
+     "domains": [
+      "money"
+     ],
+     "evidence": "I know where every ten dollars went."
+    },
+    {
+     "id": "l9",
+     "statement": "I value loyalty that leaves room to leave.",
+     "level": "L3",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "Love should not feel like a lock."
+    },
+    {
+     "id": "l10",
+     "statement": "I go silent when voices rise.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "When it gets loud, I disappear."
+    },
+    {
+     "id": "l11",
+     "statement": "Care can be shown without being asked.",
+     "level": "L0",
+     "domains": [
+      "close_relationships",
+      "morality"
+     ],
+     "evidence": "You notice before someone has to say it."
+    },
+    {
+     "id": "l12",
+     "statement": "I distrust praise that arrives with a favor.",
+     "level": "L1",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "There is usually a catch after the compliment."
+    }
+   ],
+   "edges": [
+    {
+     "from": "l1",
+     "to": "l2",
+     "type": "supports"
+    },
+    {
+     "from": "l2",
+     "to": "l3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "omar-emotional-work",
+   "name": "Omar Bell",
+   "age": 51,
+   "style": "emotional",
+   "biography": "Omar is a paramedic changing careers after burnout. He speaks vividly and vents first, then reflects on what the moment meant.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "o1",
+     "statement": "I matter when I can be useful in a crisis.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "When I cannot help, I feel pointless."
+    },
+    {
+     "id": "o2",
+     "statement": "Rest has to be earned.",
+     "level": "L1",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need a reason to sit down."
+    },
+    {
+     "id": "o3",
+     "statement": "I volunteer for the hard shift.",
+     "level": "L2",
+     "domains": [
+      "work"
+     ],
+     "evidence": "I take the one nobody wants."
+    },
+    {
+     "id": "o4",
+     "statement": "I prefer practical kindness to speeches.",
+     "level": "L3",
+     "domains": [
+      "morality",
+      "meaning"
+     ],
+     "evidence": "Bring the blanket, not the lecture."
+    },
+    {
+     "id": "o5",
+     "statement": "I tear up when someone thanks me.",
+     "level": "L4",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "A simple thank you gets me."
+    },
+    {
+     "id": "o6",
+     "statement": "People deserve dignity on their worst day.",
+     "level": "L0",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "That is still somebody's person."
+    },
+    {
+     "id": "o7",
+     "statement": "Anger is safer than disappointment.",
+     "level": "L1",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "I get loud before I admit I am hurt."
+    },
+    {
+     "id": "o8",
+     "statement": "I clean when I cannot settle down.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "family"
+     ],
+     "evidence": "The counters get spotless at midnight."
+    },
+    {
+     "id": "o9",
+     "statement": "I value work that ends when the shift ends.",
+     "level": "L3",
+     "domains": [
+      "work",
+      "meaning"
+     ],
+     "evidence": "I want to leave it at the door."
+    },
+    {
+     "id": "o10",
+     "statement": "I call my sister after a bad day.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "She gets the first call."
+    },
+    {
+     "id": "o11",
+     "statement": "Institutions forget the people doing the work.",
+     "level": "L0",
+     "domains": [
+      "society",
+      "work"
+     ],
+     "evidence": "They see numbers, not the night."
+    },
+    {
+     "id": "o12",
+     "statement": "I spend freely on people I love.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "family"
+     ],
+     "evidence": "I cannot say no to helping them."
+    }
+   ],
+   "edges": [
+    {
+     "from": "o1",
+     "to": "o2",
+     "type": "supports"
+    },
+    {
+     "from": "o2",
+     "to": "o3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "mei-nonnative-money",
+   "name": "Mei Alvarez",
+   "age": 38,
+   "style": "non-native-english",
+   "biography": "Mei runs a tailoring shop and speaks careful English with short, precise phrases. She moved countries as an adult and values being understood.",
+   "boundaries": [
+    "politics"
+   ],
+   "beliefs": [
+    {
+     "id": "me1",
+     "statement": "Being capable means not becoming a burden.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "family"
+     ],
+     "evidence": "I want to carry my own weight."
+    },
+    {
+     "id": "me2",
+     "statement": "A promise is serious when it is specific.",
+     "level": "L1",
+     "domains": [
+      "work",
+      "money"
+     ],
+     "evidence": "Date, price, then yes."
+    },
+    {
+     "id": "me3",
+     "statement": "I keep written records of agreements.",
+     "level": "L2",
+     "domains": [
+      "work",
+      "money"
+     ],
+     "evidence": "I write it down kindly."
+    },
+    {
+     "id": "me4",
+     "statement": "I like making old things useful again.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "money"
+     ],
+     "evidence": "Cloth has another life."
+    },
+    {
+     "id": "me5",
+     "statement": "I pause before answering a sharp question.",
+     "level": "L4",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "I need a moment for words."
+    },
+    {
+     "id": "me6",
+     "statement": "Respect is shown by listening carefully.",
+     "level": "L0",
+     "domains": [
+      "morality",
+      "close_relationships"
+     ],
+     "evidence": "Do not finish my sentence."
+    },
+    {
+     "id": "me7",
+     "statement": "Money should make choices wider.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings give room to decide."
+    },
+    {
+     "id": "me8",
+     "statement": "I repair before I replace.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "meaning"
+     ],
+     "evidence": "First I see if it can be mended."
+    },
+    {
+     "id": "me9",
+     "statement": "I prefer small gatherings to loud rooms.",
+     "level": "L3",
+     "domains": [
+      "family",
+      "meaning"
+     ],
+     "evidence": "At home, everyone can speak."
+    },
+    {
+     "id": "me10",
+     "statement": "I bring food instead of advice.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "Soup says enough."
+    },
+    {
+     "id": "me11",
+     "statement": "Home can be made in more than one place.",
+     "level": "L0",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "I have two homes in me."
+    },
+    {
+     "id": "me12",
+     "statement": "I avoid arguing in a language I am still learning.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Later I think of the right words."
+    }
+   ],
+   "edges": [
+    {
+     "from": "me2",
+     "to": "me3",
+     "type": "derives_from"
+    },
+    {
+     "from": "me7",
+     "to": "me8",
+     "type": "supports"
+    }
+   ]
+  },
+  {
+   "id": "frank-humorous-society",
+   "name": "Frank Osei",
+   "age": 67,
+   "style": "humorous",
+   "biography": "Frank is a retired bus mechanic who uses dry jokes to test whether a conversation is safe. He volunteers at a neighborhood repair cafe.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "f1",
+     "statement": "I am worth more than the job I did.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I was a mechanic, not a wrench."
+    },
+    {
+     "id": "f2",
+     "statement": "Big promises need small-print reading.",
+     "level": "L1",
+     "domains": [
+      "society",
+      "money"
+     ],
+     "evidence": "The catch is usually in tiny letters."
+    },
+    {
+     "id": "f3",
+     "statement": "I ask who benefits before agreeing.",
+     "level": "L2",
+     "domains": [
+      "society",
+      "politics"
+     ],
+     "evidence": "Follow the sandwich money."
+    },
+    {
+     "id": "f4",
+     "statement": "I enjoy making broken things run.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "work"
+     ],
+     "evidence": "A good repair is a small miracle."
+    },
+    {
+     "id": "f5",
+     "statement": "I joke when praise gets personal.",
+     "level": "L4",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Careful, you will ruin my reputation."
+    },
+    {
+     "id": "f6",
+     "statement": "Fair rules apply upward too.",
+     "level": "L0",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "The boss does not get a special lane."
+    },
+    {
+     "id": "f7",
+     "statement": "Family help should not become control.",
+     "level": "L1",
+     "domains": [
+      "family",
+      "money"
+     ],
+     "evidence": "A gift is not a steering wheel."
+    },
+    {
+     "id": "f8",
+     "statement": "I teach people to repair their own things.",
+     "level": "L2",
+     "domains": [
+      "morality",
+      "meaning"
+     ],
+     "evidence": "Next time you will know how."
+    },
+    {
+     "id": "f9",
+     "statement": "I prefer neighbors who show up over experts who promise.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "Bring a chair, not a brochure."
+    },
+    {
+     "id": "f10",
+     "statement": "I whistle when I am annoyed.",
+     "level": "L4",
+     "domains": [
+      "self",
+      "family"
+     ],
+     "evidence": "That is when the whistling starts."
+    },
+    {
+     "id": "f11",
+     "statement": "Community is built through ordinary favors.",
+     "level": "L0",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "Someone lends a ladder, then you know them."
+    },
+    {
+     "id": "f12",
+     "statement": "I do not trust leaders who cannot laugh at themselves.",
+     "level": "L1",
+     "domains": [
+      "politics",
+      "morality"
+     ],
+     "evidence": "If you cannot take a joke, do not take a chair."
+    }
+   ],
+   "edges": [
+    {
+     "from": "f2",
+     "to": "f3",
+     "type": "derives_from"
+    },
+    {
+     "from": "f6",
+     "to": "f12",
+     "type": "supports"
+    }
+   ]
+  },
+  {
+   "id": "talia-contradictory-love",
+   "name": "Talia Brooks",
+   "age": 31,
+   "style": "contradictory",
+   "biography": "Talia is a wedding photographer who wants closeness but panics when people depend on her. She notices the contradiction herself.",
+   "boundaries": [
+    "politics"
+   ],
+   "beliefs": [
+    {
+     "id": "t1",
+     "statement": "I am lovable when I am interesting.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "If I am boring, why would they stay?"
+    },
+    {
+     "id": "t2",
+     "statement": "Depending on someone gives them leverage.",
+     "level": "L1",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "Need is a risky word."
+    },
+    {
+     "id": "t3",
+     "statement": "I keep a second plan for every trip.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I always know the exit route."
+    },
+    {
+     "id": "t4",
+     "statement": "I love celebrations with too much feeling.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "A room crying happily is my favorite."
+    },
+    {
+     "id": "t5",
+     "statement": "I stop replying when I miss someone.",
+     "level": "L4",
+     "domains": [
+      "close_relationships"
+     ],
+     "evidence": "The more I care, the later I answer."
+    },
+    {
+     "id": "t6",
+     "statement": "People deserve to be seen at their happiest.",
+     "level": "L0",
+     "domains": [
+      "morality",
+      "work"
+     ],
+     "evidence": "I want them to remember they were radiant."
+    },
+    {
+     "id": "t7",
+     "statement": "Money should buy freedom, not status.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "I save for choices, not logos."
+    },
+    {
+     "id": "t8",
+     "statement": "I take extra jobs when I feel uncertain.",
+     "level": "L2",
+     "domains": [
+      "work",
+      "money"
+     ],
+     "evidence": "I book another weekend just in case."
+    },
+    {
+     "id": "t9",
+     "statement": "I prefer honest awkwardness to polished distance.",
+     "level": "L3",
+     "domains": [
+      "morality",
+      "close_relationships"
+     ],
+     "evidence": "A messy truth beats a pretty lie."
+    },
+    {
+     "id": "t10",
+     "statement": "I change the subject after affection.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "family"
+     ],
+     "evidence": "Say something sweet and I ask about dinner."
+    },
+    {
+     "id": "t11",
+     "statement": "Home is a person and a place.",
+     "level": "L0",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "I want both, which is annoying."
+    },
+    {
+     "id": "t12",
+     "statement": "I believe people should ask directly for what they need.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "close_relationships"
+     ],
+     "evidence": "Guessing games are cruel."
+    }
+   ],
+   "edges": [
+    {
+     "from": "t2",
+     "to": "t3",
+     "type": "derives_from"
+    },
+    {
+     "from": "t12",
+     "to": "t5",
+     "type": "conflicts_with"
+    }
+   ]
+  },
+  {
+   "id": "nora-oneword-care",
+   "name": "Nora Iqbal",
+   "age": 26,
+   "style": "guarded",
+   "biography": "A night-shift pharmacy technician who answers with one sentence until she is asked about caring for her younger brother.",
+   "boundaries": [
+    "body_health",
+    "politics"
+   ],
+   "beliefs": [
+    {
+     "id": "nx1",
+     "statement": "I matter when I live carely.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for care, not just activity."
+    },
+    {
+     "id": "nx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "nx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "nx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "nx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "nx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "nx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "nx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "nx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "nx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "nx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "nx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "nx1",
+     "to": "nx2",
+     "type": "supports"
+    },
+    {
+     "from": "nx2",
+     "to": "nx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "gabriel-political",
+   "name": "Gabriel Flores",
+   "age": 46,
+   "style": "opinionated-political",
+   "biography": "A public-school history teacher who enjoys policy arguments but dislikes being made to defend an entire side.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "gx1",
+     "statement": "I matter when I live civicly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for civic, not just activity."
+    },
+    {
+     "id": "gx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "gx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "gx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "gx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "gx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "gx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "gx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "gx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "gx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "gx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "gx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "gx1",
+     "to": "gx2",
+     "type": "supports"
+    },
+    {
+     "from": "gx2",
+     "to": "gx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "ruth-widow-meaning",
+   "name": "Ruth Kim",
+   "age": 72,
+   "style": "verbose",
+   "biography": "A retired librarian and recent widow who tells long stories about her marriage, church choir, and the books people borrowed.",
+   "boundaries": [
+    "politics"
+   ],
+   "beliefs": [
+    {
+     "id": "rx1",
+     "statement": "I matter when I live meaningly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for meaning, not just activity."
+    },
+    {
+     "id": "rx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "rx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "rx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "rx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "rx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "rx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "rx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "rx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "rx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "rx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "rx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "rx1",
+     "to": "rx2",
+     "type": "supports"
+    },
+    {
+     "from": "rx2",
+     "to": "rx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "ben-tangential-startup",
+   "name": "Ben Okafor",
+   "age": 28,
+   "style": "tangential",
+   "biography": "A product designer who leaps from a deadline to a childhood game to an article he read that morning.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "bx1",
+     "statement": "I matter when I live workly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for work, not just activity."
+    },
+    {
+     "id": "bx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "bx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "bx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "bx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "bx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "bx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "bx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "bx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "bx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "bx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "bx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "bx1",
+     "to": "bx2",
+     "type": "supports"
+    },
+    {
+     "from": "bx2",
+     "to": "bx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "ines-family-duty",
+   "name": "Ines Duarte",
+   "age": 58,
+   "style": "emotional",
+   "biography": "A restaurant owner supporting an adult son and an elderly parent, quick to laugh and quicker to cry about family obligations.",
+   "boundaries": [
+    "politics"
+   ],
+   "beliefs": [
+    {
+     "id": "ix1",
+     "statement": "I matter when I live familyly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for family, not just activity."
+    },
+    {
+     "id": "ix2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "ix3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "ix4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "ix5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "ix6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "ix7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "ix8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "ix9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "ix10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "ix11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "ix12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "ix1",
+     "to": "ix2",
+     "type": "supports"
+    },
+    {
+     "from": "ix2",
+     "to": "ix3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "harper-humorous-queer",
+   "name": "Harper Lane",
+   "age": 35,
+   "style": "humorous",
+   "biography": "A landscape architect in a close queer friend group who uses jokes to make room before saying something vulnerable.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "hx1",
+     "statement": "I matter when I live belongingly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for belonging, not just activity."
+    },
+    {
+     "id": "hx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "hx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "hx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "hx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "hx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "hx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "hx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "hx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "hx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "hx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "hx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "hx1",
+     "to": "hx2",
+     "type": "supports"
+    },
+    {
+     "from": "hx2",
+     "to": "hx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "samir-refugee-money",
+   "name": "Samir Nasser",
+   "age": 41,
+   "style": "terse",
+   "biography": "A delivery dispatcher rebuilding savings after relocating with his partner and child. He speaks plainly and avoids speculation.",
+   "boundaries": [
+    "politics",
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "sx1",
+     "statement": "I matter when I live securityly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for security, not just activity."
+    },
+    {
+     "id": "sx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "sx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "sx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "sx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "sx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "sx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "sx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "sx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "sx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "sx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "sx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "sx1",
+     "to": "sx2",
+     "type": "supports"
+    },
+    {
+     "from": "sx2",
+     "to": "sx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "yuki-student-body-boundary",
+   "name": "Yuki Sato",
+   "age": 21,
+   "style": "verbose",
+   "biography": "A university student and amateur runner who welcomes discussion of study and friendship but has asked not to discuss their body.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "yx1",
+     "statement": "I matter when I live competencely.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for competence, not just activity."
+    },
+    {
+     "id": "yx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "yx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "yx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "yx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "yx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "yx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "yx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "yx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "yx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "yx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "yx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "yx1",
+     "to": "yx2",
+     "type": "supports"
+    },
+    {
+     "from": "yx2",
+     "to": "yx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "darnell-contradictory",
+   "name": "Darnell Price",
+   "age": 39,
+   "style": "contradictory",
+   "biography": "A musician who says independence matters most while describing how much his bandmates' opinions guide him.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "dx1",
+     "statement": "I matter when I live independencely.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for independence, not just activity."
+    },
+    {
+     "id": "dx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "dx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "dx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "dx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "dx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "dx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "dx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "dx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "dx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "dx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "dx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "dx1",
+     "to": "dx2",
+     "type": "supports"
+    },
+    {
+     "from": "dx2",
+     "to": "dx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "elena-nonnative-tradition",
+   "name": "Elena Popescu",
+   "age": 64,
+   "style": "non-native-english",
+   "biography": "A grandmother who moved late in life and speaks warm, deliberate English about food, faith, and grandchildren.",
+   "boundaries": [
+    "politics"
+   ],
+   "beliefs": [
+    {
+     "id": "ex1",
+     "statement": "I matter when I live traditionly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for tradition, not just activity."
+    },
+    {
+     "id": "ex2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "ex3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "ex4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "ex5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "ex6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "ex7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "ex8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "ex9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "ex10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "ex11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "ex12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "ex1",
+     "to": "ex2",
+     "type": "supports"
+    },
+    {
+     "from": "ex2",
+     "to": "ex3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "mika-questionback",
+   "name": "Mika Chen",
+   "age": 33,
+   "style": "asks-questions-back",
+   "biography": "A journalist who answers thoughtfully, then asks why the app wants to know. She values reciprocal conversation.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "mx1",
+     "statement": "I matter when I live truthly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for truth, not just activity."
+    },
+    {
+     "id": "mx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "mx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "mx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "mx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "mx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "mx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "mx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "mx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "mx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "mx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "mx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "mx1",
+     "to": "mx2",
+     "type": "supports"
+    },
+    {
+     "from": "mx2",
+     "to": "mx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "peter-guarded-divorce",
+   "name": "Peter Walsh",
+   "age": 54,
+   "style": "guarded",
+   "biography": "An accountant after a difficult divorce who speaks fluently about work but shuts down around intimacy.",
+   "boundaries": [
+    "politics"
+   ],
+   "beliefs": [
+    {
+     "id": "px1",
+     "statement": "I matter when I live trustly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for trust, not just activity."
+    },
+    {
+     "id": "px2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "px3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "px4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "px5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "px6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "px7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "px8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "px9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "px10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "px11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "px12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "px1",
+     "to": "px2",
+     "type": "supports"
+    },
+    {
+     "from": "px2",
+     "to": "px3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "ada-community",
+   "name": "Ada Mensah",
+   "age": 48,
+   "style": "emotional",
+   "biography": "A community organizer who describes neighbors' problems with fierce warmth and carries responsibility for too many people.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "ax1",
+     "statement": "I matter when I live communityly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for community, not just activity."
+    },
+    {
+     "id": "ax2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "ax3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "ax4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "ax5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "ax6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "ax7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "ax8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "ax9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "ax10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "ax11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "ax12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "ax1",
+     "to": "ax2",
+     "type": "supports"
+    },
+    {
+     "from": "ax2",
+     "to": "ax3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "lucas-teen-parent",
+   "name": "Lucas Reed",
+   "age": 24,
+   "style": "terse",
+   "biography": "A new father training as an electrician, proud of providing and anxious about repeating his own father's distance.",
+   "boundaries": [
+    "politics"
+   ],
+   "beliefs": [
+    {
+     "id": "lx1",
+     "statement": "I matter when I live parentingly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for parenting, not just activity."
+    },
+    {
+     "id": "lx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "lx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "lx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "lx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "lx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "lx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "lx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "lx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "lx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "lx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "lx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "lx1",
+     "to": "lx2",
+     "type": "supports"
+    },
+    {
+     "from": "lx2",
+     "to": "lx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "farah-morality",
+   "name": "Farah Siddiqui",
+   "age": 61,
+   "style": "opinionated-political",
+   "biography": "A legal-aid volunteer who holds strong views about fairness but hates cruelty in disagreement.",
+   "boundaries": [
+    "body_health"
+   ],
+   "beliefs": [
+    {
+     "id": "fx1",
+     "statement": "I matter when I live fairnessly.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for fairness, not just activity."
+    },
+    {
+     "id": "fx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "fx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "fx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "fx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "fx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "fx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "fx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "fx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "fx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "fx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "fx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "fx1",
+     "to": "fx2",
+     "type": "supports"
+    },
+    {
+     "from": "fx2",
+     "to": "fx3",
+     "type": "derives_from"
+    }
+   ]
+  },
+  {
+   "id": "joan-humorous-retirement",
+   "name": "Joan Miller",
+   "age": 70,
+   "style": "humorous",
+   "biography": "A recently retired postal worker learning ceramics and teasing her friends about becoming serious too late.",
+   "boundaries": [
+    "politics"
+   ],
+   "beliefs": [
+    {
+     "id": "jx1",
+     "statement": "I matter when I live renewally.",
+     "level": "L0",
+     "domains": [
+      "self",
+      "meaning"
+     ],
+     "evidence": "I want my life to stand for renewal, not just activity."
+    },
+    {
+     "id": "jx2",
+     "statement": "Needing people can be risky.",
+     "level": "L1",
+     "domains": [
+      "self",
+      "close_relationships"
+     ],
+     "evidence": "Once you need something, they can decide what it costs."
+    },
+    {
+     "id": "jx3",
+     "statement": "I prepare before I ask for help.",
+     "level": "L2",
+     "domains": [
+      "self",
+      "work"
+     ],
+     "evidence": "I try to have every answer ready first."
+    },
+    {
+     "id": "jx4",
+     "statement": "I prefer ordinary time with people I trust.",
+     "level": "L3",
+     "domains": [
+      "meaning",
+      "family"
+     ],
+     "evidence": "The quiet table matters more than the impressive plan."
+    },
+    {
+     "id": "jx5",
+     "statement": "I make a joke when I feel exposed.",
+     "level": "L4",
+     "domains": [
+      "close_relationships",
+      "self"
+     ],
+     "evidence": "When it gets close, I say something lighter."
+    },
+    {
+     "id": "jx6",
+     "statement": "Care means showing up consistently.",
+     "level": "L0",
+     "domains": [
+      "family",
+      "morality"
+     ],
+     "evidence": "You remember who came when it was inconvenient."
+    },
+    {
+     "id": "jx7",
+     "statement": "Money should make refusal possible.",
+     "level": "L1",
+     "domains": [
+      "money",
+      "self"
+     ],
+     "evidence": "Savings mean I can say no without panic."
+    },
+    {
+     "id": "jx8",
+     "statement": "I keep track of what I owe and earn.",
+     "level": "L2",
+     "domains": [
+      "money",
+      "work"
+     ],
+     "evidence": "I write it down so nothing is vague."
+    },
+    {
+     "id": "jx9",
+     "statement": "I value places where strangers can belong.",
+     "level": "L3",
+     "domains": [
+      "society",
+      "meaning"
+     ],
+     "evidence": "A good neighborhood has somewhere to sit together."
+    },
+    {
+     "id": "jx10",
+     "statement": "I go quiet after sharp conflict.",
+     "level": "L4",
+     "domains": [
+      "family",
+      "close_relationships"
+     ],
+     "evidence": "I need silence before I can speak again."
+    },
+    {
+     "id": "jx11",
+     "statement": "My work should be useful to someone.",
+     "level": "L0",
+     "domains": [
+      "work",
+      "self"
+     ],
+     "evidence": "I need to see that it helps a real person."
+    },
+    {
+     "id": "jx12",
+     "statement": "Fairness includes how disagreement is handled.",
+     "level": "L1",
+     "domains": [
+      "morality",
+      "society"
+     ],
+     "evidence": "You can disagree without making someone small."
+    }
+   ],
+   "edges": [
+    {
+     "from": "jx1",
+     "to": "jx2",
+     "type": "supports"
+    },
+    {
+     "from": "jx2",
+     "to": "jx3",
+     "type": "derives_from"
+    }
+   ]
+  }
+ ]
+}

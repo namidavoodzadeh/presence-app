@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p12",
+  "first_name": "p12",
+  "beliefs": [
+    {
+      "id": "p12-b1",
+      "label": "Make Room",
+      "statement": "I make room for people by noticing what they have not said.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Nico stopped answering during dinner, so I asked if he wanted to leave before the plates came. He nodded and we walked outside.",
+          "sessionId": "p12-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A new intern kept rereading the same folder. I offered a quieter desk without making her explain.",
+          "sessionId": "p12-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p12-b2",
+      "label": "Name Need",
+      "statement": "I can name a need before it turns into distance.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I told Celia I missed our walks before I started resenting her late meetings. We put Thursday on the calendar.",
+          "sessionId": "p12-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I texted Nico that I needed company after my father's scan, not a distraction. He brought dumplings and sat down.",
+          "sessionId": "p12-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p12-b3",
+      "label": "Quiet Work",
+      "statement": "Quiet work still counts even when nobody applauds it.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I spent a morning matching unlabeled photographs to a 1978 neighborhood newsletter. Nobody saw it, but the box finally made sense.",
+          "sessionId": "p12-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I repaired a torn map with tissue paper for two hours. The next reader could unfold it safely.",
+          "sessionId": "p12-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p12-b4",
+      "label": "Prepare Hard",
+      "statement": "I prepare a hard conversation on paper before I start it.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Before telling Nico I felt canceled on, I wrote two sentences in my notebook. At the court I said them without making a case against him.",
+          "sessionId": "p12-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I drafted what I needed to say to my manager, then crossed out the angry opening. The meeting stayed about the schedule.",
+          "sessionId": "p12-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p12-b5",
+      "label": "Specific Apology",
+      "statement": "A specific apology means more to me than a grand one.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Celia apologized for missing soup night and said she should have texted before the pot was on. I believed she understood the part that hurt.",
+          "sessionId": "p12-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Nico returned my book with coffee on the cover and named exactly what happened. I could let it go.",
+          "sessionId": "p12-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p12-b6",
+      "label": "Fill Silence",
+      "statement": "I fill silence with details when I am nervous.",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When Celia asked whether I was upset, I explained the whole train delay, the broken kettle, and the weather. I did not answer until the end.",
+          "sessionId": "p12-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My supervisor asked about a missed deadline, and I listed every archive request from that week. The details came faster than my point.",
+          "sessionId": "p12-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p12-b7",
+      "label": "Shared Rituals",
+      "statement": "Shared rituals make friendship feel durable.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Nico and I played basketball every Sunday in February, even when only four people came. The repetition made the winter feel held together.",
+          "sessionId": "p12-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Celia and I made tomato soup on Friday after a difficult week. Chopping onions beside her steadied me.",
+          "sessionId": "p12-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p12-b8",
+      "label": "Leave Work",
+      "statement": "I leave work at work when Celia and I cook together.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A researcher emailed at 6:15, but I closed the archive tab and started soup with Celia. I answered the next morning.",
+          "sessionId": "p12-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I left a box of photos unprocessed at five because Celia was bringing bread home. We ate before the crust cooled.",
+          "sessionId": "p12-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p12-p1",
+      "label": "How I mean things",
+      "statement": "I explain the context before I ask for anything."
+    },
+    {
+      "id": "p12-p2",
+      "label": "What feels like care",
+      "statement": "A remembered ritual or check-in feels deeply kind."
+    },
+    {
+      "id": "p12-p3",
+      "label": "How to bring something up with me",
+      "statement": "Tell me the concrete moment and let me respond without rushing."
+    }
+  ]
+}

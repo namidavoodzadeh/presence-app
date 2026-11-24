@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p04",
+  "first_name": "Theo",
+  "beliefs": [
+    {
+      "id": "p04-b1",
+      "label": "Show Love",
+      "statement": "I show love by making the next step easier",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Nora's exhibit opening ran late, so I packed her dinner in a jar and brought it to the museum. I labeled the lid with reheating instructions.",
+          "sessionId": "p04-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My sister mentioned a clinic appointment, so I drove her and waited with coffee. I had already checked the parking rules.",
+          "sessionId": "p04-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p04-b2",
+      "label": "Want Hard",
+      "statement": "I want hard things named before they become a private story",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When Nora said the kitchen felt crowded, I asked whether she meant the dishes or us. She said she had missed eating together.",
+          "sessionId": "p04-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My brother stopped returning calls, and I told him I was worried instead of sending memes. He called that evening.",
+          "sessionId": "p04-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p04-b3",
+      "label": "Steady Without",
+      "statement": "I can be steady without having every answer",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A student asked whether the bridge design would hold, and I said we could test the weak point together. The model bent but did not break.",
+          "sessionId": "p04-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "The landlord could not say when the elevator would be fixed. I carried groceries upstairs and made another plan for Monday.",
+          "sessionId": "p04-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p04-b4",
+      "label": "Students Deserve",
+      "statement": "Students deserve to see how a question is worked, not just solved",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "In physics lab, I let students show the wrong measurements on the board and asked where the method changed. They found the loose clamp.",
+          "sessionId": "p04-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A student gave the right answer without units, so I asked her to show the path for the class. She caught her own conversion.",
+          "sessionId": "p04-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p04-b5",
+      "label": "Listen Best",
+      "statement": "I listen best when someone says what they need from me",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Nora said she was upset about my late lesson plans, and I asked if she wanted an apology, a schedule, or company. She picked the schedule.",
+          "sessionId": "p04-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My principal asked whether I could help with a parent night. I asked what part needed doing before agreeing.",
+          "sessionId": "p04-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p04-b6",
+      "label": "Reach For",
+      "statement": "I reach for humor when a moment feels exposed",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When Nora asked why I had not called, I joked that the phone had betrayed me. Her face told me the joke had covered the point.",
+          "sessionId": "p04-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A coworker criticized my lab setup, and I made a pun about gravity before admitting I was embarrassed. We fixed the table.",
+          "sessionId": "p04-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p04-b7",
+      "label": "Home Feels",
+      "statement": "Home feels fair when decisions are made together before they are urgent",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Before signing a new lease, Nora and I sat at the table with both pay stubs and listed what each change would mean. We chose the smaller place together.",
+          "sessionId": "p04-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "We decided on a dishwasher only after comparing repair costs and who would be home for delivery. Neither of us found out afterward.",
+          "sessionId": "p04-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p04-b8",
+      "label": "Good Experiment",
+      "statement": "A good experiment includes the result that surprised you",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Our pendulum experiment gave a strange result, so I wrote it beside the expected one and had the class test it again. The second run taught more.",
+          "sessionId": "p04-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A paper bridge collapsed under half the predicted weight. We photographed the buckle before rebuilding it.",
+          "sessionId": "p04-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p04-p1",
+      "label": "How I mean things",
+      "statement": "I often begin with a joke, then say the concrete point."
+    },
+    {
+      "id": "p04-p2",
+      "label": "What feels like care",
+      "statement": "Someone making a plan with me feels more caring than a grand gesture."
+    },
+    {
+      "id": "p04-p3",
+      "label": "How to bring something up with me",
+      "statement": "Tell me what you need, and do not make me solve the hidden version."
+    }
+  ]
+}

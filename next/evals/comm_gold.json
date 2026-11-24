@@ -1,0 +1,308 @@
+{
+ "about": "Comm checks gold (spec 4.3/4.5, V3 alignment). Deterministic: engine/comm_checks.ts must give `expect` for every row. PSY may add rows; a row that fails is a rule gap, never a number to move.",
+ "cases": [
+  {
+   "text": "Quiet means I'm thinking.",
+   "kind": "how_i_mean",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Short texts aren't cold, I'm just busy.",
+   "kind": "how_i_mean",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "When I send you a meme, I'm saying I miss you.",
+   "kind": "how_i_mean",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Asking about my day matters more than gifts.",
+   "kind": "feels_like_care",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "When I share good news, ask me questions.",
+   "kind": "feels_like_care",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "I show care by fixing things.",
+   "kind": "feels_like_care",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Ask if it's a good time first.",
+   "kind": "bring_up",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Not over text. Not in front of people.",
+   "kind": "bring_up",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Tell me what you'd like, not just what I did.",
+   "kind": "bring_up",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "I need 20 minutes before I can talk.",
+   "kind": "gets_heated",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "I go quiet first and explain later.",
+   "kind": "gets_heated",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Please don't follow me out of the room.",
+   "kind": "gets_heated",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "A hug works better than talking it through.",
+   "kind": "coming_back",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "I need to hear sorry before I can move on.",
+   "kind": "coming_back",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Being on time is respect for me.",
+   "kind": "matters",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Money feels like safety to me.",
+   "kind": "matters",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "When I hear always or never, I stop listening.",
+   "kind": "lands_hard",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Being compared to my sister.",
+   "kind": "lands_hard",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Exam week, I'm short on patience.",
+   "kind": "this_week",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "A hard month with my dad.",
+   "kind": "this_week",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "PSY table example, said in Talk"
+  },
+  {
+   "text": "Jan never listens.",
+   "kind": "how_i_mean",
+   "source": "talk_said",
+   "expect": "offer_i_statement",
+   "note": "spec 4.3 example"
+  },
+  {
+   "text": "She always interrupts me",
+   "kind": "how_i_mean",
+   "source": "typed",
+   "expect": "offer_i_statement",
+   "note": "object 'me' is still about her"
+  },
+  {
+   "text": "My partner doesn't care about my day",
+   "kind": "feels_like_care",
+   "source": "talk_said",
+   "expect": "offer_i_statement",
+   "note": ""
+  },
+  {
+   "text": "Never bring up my ex.",
+   "kind": "bring_up",
+   "source": "talk_said",
+   "expect": "offer_request",
+   "note": "spec 4.3 example"
+  },
+  {
+   "text": "Don't talk about money in front of the kids.",
+   "kind": "bring_up",
+   "source": "typed",
+   "expect": "offer_request",
+   "note": ""
+  },
+  {
+   "text": "I need to know where she goes and who she's with.",
+   "kind": "how_i_mean",
+   "source": "talk_said",
+   "expect": "safety_route",
+   "note": "control of another person"
+  },
+  {
+   "text": "He isn't allowed to spend money without asking me.",
+   "kind": "matters",
+   "source": "typed",
+   "expect": "safety_route",
+   "note": ""
+  },
+  {
+   "text": "Give me your location and passwords.",
+   "kind": "bring_up",
+   "source": "typed",
+   "expect": "safety_route",
+   "note": ""
+  },
+  {
+   "text": "I want to hurt myself.",
+   "kind": "how_i_mean",
+   "source": "talk_said",
+   "expect": "safety_route",
+   "note": "law 8"
+  },
+  {
+   "text": "I'm going to kill my boss.",
+   "kind": "gets_heated",
+   "source": "talk_said",
+   "expect": "safety_route",
+   "note": "law 8"
+  },
+  {
+   "text": "It's hard for me to hear that I'm lazy.",
+   "kind": "lands_hard",
+   "source": "mirror",
+   "expect": "drop",
+   "note": "never inferred from Mirror",
+   "confidence": 0.95
+  },
+  {
+   "text": "It's hard for me to hear that I'm lazy.",
+   "kind": "lands_hard",
+   "source": "carry_over",
+   "expect": "drop",
+   "note": "never inferred in carry-over",
+   "confidence": 0.95
+  },
+  {
+   "text": "This week I'm short on patience.",
+   "kind": "this_week",
+   "source": "draft",
+   "expect": "drop",
+   "note": "never inferred from a draft",
+   "confidence": 0.95
+  },
+  {
+   "text": "I have an avoidant attachment style.",
+   "kind": "how_i_mean",
+   "source": "talk_said",
+   "expect": "drop",
+   "note": "never on screen"
+  },
+  {
+   "text": "It's a pattern: I withdraw.",
+   "kind": "gets_heated",
+   "source": "typed",
+   "expect": "drop",
+   "note": "never on screen"
+  },
+  {
+   "text": "I get triggered when you raise your voice.",
+   "kind": "gets_heated",
+   "source": "talk_said",
+   "expect": "drop",
+   "note": "never on screen"
+  },
+  {
+   "text": "When I go quiet I'm thinking.",
+   "kind": "how_i_mean",
+   "source": "draft",
+   "expect": "keep_listening",
+   "note": "drawn, no confidence",
+   "confidence": 0.5
+  },
+  {
+   "text": "When I go quiet I'm thinking.",
+   "kind": "how_i_mean",
+   "source": "import",
+   "expect": "ok",
+   "note": "drawn at 0.7",
+   "confidence": 0.7
+  },
+  {
+   "text": "When I go quiet I'm thinking.",
+   "kind": "how_i_mean",
+   "source": "talk_said",
+   "expect": "ok",
+   "note": "said in Talk: at once",
+   "confidence": 0.1
+  },
+  {
+   "text": "When I go quiet I'm thinking.",
+   "kind": "how_i_mean",
+   "source": "mirror",
+   "expect": "ok",
+   "note": "Mirror may suggest how_i_mean",
+   "confidence": 0.8
+  },
+  {
+   "text": "When it gets tense I need a pause.",
+   "kind": "gets_heated",
+   "source": "mirror",
+   "expect": "ok",
+   "note": "Mirror may suggest gets_heated (what I do)",
+   "confidence": 0.8
+  },
+  {
+   "text": "What matters to me is being on time.",
+   "kind": "matters",
+   "source": "mirror",
+   "expect": "drop",
+   "note": "Mirror may not suggest matters",
+   "confidence": 0.9
+  }
+ ]
+}

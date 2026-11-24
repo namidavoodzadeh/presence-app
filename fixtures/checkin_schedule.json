@@ -1,0 +1,367 @@
+{
+  "_note": "E32 contract examples (CONTRACT §6A Schedule), for the app to build against. Not served by a live route until migration 0035 is deployed.",
+  "PUT /checkin/{jan}/schedule": {
+    "request": {
+      "day": "thursday",
+      "time": "19:00",
+      "remind_other": true
+    },
+    "response": {
+      "schedule": {
+        "id": "c1",
+        "person_id": "jan",
+        "repeats": "weekly",
+        "day": "thursday",
+        "time": "19:00",
+        "tz": "Asia/Tehran",
+        "remind_other": true,
+        "next_at": "2026-11-12T15:30:00.000Z"
+      }
+    }
+  },
+  "GET /checkin": {
+    "response": {
+      "check_ins": [
+        {
+          "check_in_id": "c1",
+          "person_id": "jan",
+          "remind_other": true,
+          "day": "thursday",
+          "time": "19:00",
+          "tz": "Asia/Tehran",
+          "next_at": "2026-11-12T15:30:00.000Z",
+          "next_in_days": 4,
+          "parked": 2
+        }
+      ]
+    }
+  },
+  "POST /checkin/{jan}/notes": {
+    "request": {
+      "text": "Weekend plans with your parents",
+      "origin": "topic"
+    },
+    "response": {
+      "state": "parked",
+      "note": {
+        "id": "n1",
+        "person_id": "jan",
+        "text": "Weekend plans with your parents",
+        "state": "parked",
+        "origin": "topic",
+        "created_at": "2026-11-08T12:00:00Z",
+        "updated_at": "2026-11-08T12:00:00Z"
+      },
+      "line": null,
+      "resources": null
+    }
+  },
+  "POST /bridges (send time)": {
+    "request_fragment": {
+      "deliver_at": "next_checkin"
+    }
+  },
+  "push checkin_reminder": {
+    "aps": {
+      "alert": {
+        "title-loc-key": "PRESENCE_TITLE",
+        "loc-key": "PUSH_CHECKIN_REMINDER"
+      },
+      "category": "CHECKIN_REMINDER"
+    },
+    "presence": {
+      "v": 1,
+      "event": "checkin_reminder",
+      "route": "checkin",
+      "target_id": "<owner id>"
+    }
+  },
+  "PUT /checkin/{jan}/schedule (fortnightly or monthly)": {
+    "request": {
+      "day": "thursday",
+      "time": "19:00",
+      "repeats": "fortnightly"
+    },
+    "response": {
+      "schedule": {
+        "id": "c1",
+        "person_id": "jan",
+        "repeats": "fortnightly",
+        "day": "thursday",
+        "time": "19:00",
+        "tz": "Asia/Tehran",
+        "remind_other": true,
+        "status": "invited",
+        "next_at": "2026-11-12T15:30:00.000Z"
+      }
+    },
+    "_monthly": "repeats monthly = the first Thursday of each month"
+  },
+  "PUT /checkin/{jan}/schedule (one date)": {
+    "request": {
+      "on": "2026-11-20",
+      "time": "19:00"
+    },
+    "response": {
+      "dated": {
+        "id": "d1",
+        "person_id": "jan",
+        "on": "2026-11-20",
+        "time": "19:00",
+        "tz": "Asia/Tehran",
+        "remind_other": true,
+        "status": "invited",
+        "next_at": "2026-11-20T15:30:00.000Z"
+      }
+    },
+    "bad": {
+      "status": 400,
+      "examples": [
+        {
+          "on": "2020-01-01",
+          "field": "on"
+        },
+        {
+          "on": "2026-11-20",
+          "repeats": "weekly",
+          "field": "repeats"
+        }
+      ]
+    }
+  },
+  "GET /checkin (with dated)": {
+    "response": {
+      "check_ins": [
+        {
+          "check_in_id": "c1",
+          "person_id": "jan",
+          "remind_other": true,
+          "status": "active",
+          "repeats": "fortnightly",
+          "day": "thursday",
+          "time": "19:00",
+          "tz": "Asia/Tehran",
+          "next_at": "2026-11-12T15:30:00.000Z",
+          "next_in_days": 4,
+          "parked": 2
+        }
+      ],
+      "dated": [
+        {
+          "id": "d1",
+          "person_id": "jan",
+          "on": "2026-11-20",
+          "time": "19:00",
+          "tz": "Asia/Tehran",
+          "remind_other": true,
+          "status": "active",
+          "next_at": "2026-11-20T15:30:00.000Z"
+        }
+      ]
+    },
+    "_about": "Dated list: one-date check-ins still to come, soonest first. A person may have one repeating check-in plus dated ones."
+  },
+  "PUT /checkin/self/schedule (Just you)": {
+    "_about": "E37. Same bodies as a person's schedule. No link, active at once, never invites, parks or notifies anyone.",
+    "request": {
+      "day": "sunday",
+      "time": "09:00"
+    },
+    "response": {
+      "schedule": {
+        "id": "c9",
+        "person_id": null,
+        "repeats": "weekly",
+        "day": "sunday",
+        "time": "09:00",
+        "tz": "Asia/Tehran",
+        "remind_other": true,
+        "status": "active",
+        "next_at": "2026-11-15T05:30:00.000Z"
+      }
+    },
+    "GET /checkin row": {
+      "check_in_id": "c9",
+      "person_id": null,
+      "remind_other": true,
+      "status": "active",
+      "repeats": "weekly",
+      "day": "sunday",
+      "time": "09:00",
+      "tz": "Asia/Tehran",
+      "next_at": "2026-11-15T05:30:00.000Z",
+      "next_in_days": 6,
+      "parked": 0
+    },
+    "refused": {
+      "POST /checkin/self/notes": {
+        "status": 400,
+        "body": {
+          "error": "invalid",
+          "field": "person_id",
+          "reason": "just_you"
+        }
+      }
+    }
+  },
+  "DELETE /checkin/{jan}/schedule (E39)": {
+    "_about": "The writer's parked items come back as drafts in this reply (the only copy); parked bridges not yet opened are withdrawn; the row leaves Jan's lists; nothing is sent to Jan.",
+    "response": {
+      "deleted": true,
+      "drafts": [
+        {
+          "id": "n1",
+          "person_id": "jan",
+          "origin": "topic",
+          "text": "Weekend plans with your parents",
+          "created_at": "2026-11-08T12:00:00Z"
+        },
+        {
+          "id": "n2",
+          "person_id": "jan",
+          "origin": "bridged",
+          "text": "I felt left out when plans changed.",
+          "created_at": "2026-11-08T12:05:00Z"
+        }
+      ]
+    },
+    "response_when_a_dated_check_in_remains": {
+      "deleted": true,
+      "drafts": []
+    }
+  },
+  "GET /checkin (E40)": {
+    "_about": "accepted_at, moved_at, moved_by on every row; incoming lists accepted check-ins other people started with me.",
+    "response": {
+      "check_ins": [
+        {
+          "check_in_id": "c1",
+          "person_id": "jan",
+          "remind_other": true,
+          "status": "active",
+          "accepted_at": "2026-11-09T09:00:00Z",
+          "moved_at": "2026-11-10T08:00:00Z",
+          "moved_by": "me",
+          "repeats": "weekly",
+          "day": "monday",
+          "time": "19:00",
+          "tz": "Asia/Tehran",
+          "next_at": "2026-11-16T15:30:00.000Z",
+          "next_in_days": 6,
+          "parked": 0
+        }
+      ],
+      "dated": [
+        {
+          "id": "d1",
+          "person_id": "jan",
+          "on": "2026-11-22",
+          "time": "19:00",
+          "tz": "Asia/Tehran",
+          "remind_other": true,
+          "status": "active",
+          "accepted_at": "2026-11-09T09:05:00Z",
+          "next_at": "2026-11-22T15:30:00.000Z"
+        }
+      ],
+      "incoming": [
+        {
+          "check_in_id": "c7",
+          "person_id": "jan",
+          "repeats": "weekly",
+          "day": "sunday",
+          "time": "19:00",
+          "tz": "Asia/Tehran",
+          "next_at": "2026-11-15T15:30:00.000Z",
+          "accepted_at": "2026-11-09T10:00:00Z",
+          "moved_at": "2026-11-10T08:00:00Z",
+          "moved_by": "jan"
+        }
+      ]
+    }
+  },
+  "POST /bridges (next_checkin, E38)": {
+    "_about": "deliver_at next_checkin = the soonest ACCEPTED check-in with that person, repeating or dated. Here a dated one on 22 Nov comes before the next repeating Sunday.",
+    "request_fragment": {
+      "deliver_at": "next_checkin"
+    },
+    "response_fragment": {
+      "parked_on_check_in": true,
+      "held_by_window": false,
+      "bridge": {
+        "deliver_at": "2026-11-14T15:30:00.000Z"
+      }
+    },
+    "errors": {
+      "none": {
+        "status": 400,
+        "body": {
+          "error": "invalid",
+          "field": "deliver_at",
+          "reason": "no_check_in"
+        }
+      },
+      "waiting": {
+        "status": 400,
+        "body": {
+          "error": "invalid",
+          "field": "deliver_at",
+          "reason": "not_accepted"
+        }
+      }
+    }
+  },
+  "GET /threads/{jan} (E41, parked bridge)": {
+    "_about": "The SENDER's row for a bridge parked on a check-in carries parked_on_check_in and checkin_id. The receiver's thread rows never carry either (law 10). A bridge sent at a plain time carries neither.",
+    "sender_view_fragment": {
+      "items": [
+        {
+          "kind": "bridge",
+          "bridge": {
+            "id": "b-parked",
+            "deliver_at": "2026-11-12T15:30:00.000Z",
+            "parked_on_check_in": true,
+            "checkin_id": "ci-jan-weekly"
+          }
+        },
+        {
+          "kind": "bridge",
+          "bridge": {
+            "id": "b-plain",
+            "deliver_at": "2026-11-10T16:00:00.000Z"
+          }
+        }
+      ]
+    },
+    "receiver_view_fragment": {
+      "items": [
+        {
+          "kind": "bridge",
+          "bridge": {
+            "id": "b-parked",
+            "_note": "no parked_on_check_in, no checkin_id, no hint"
+          }
+        }
+      ]
+    }
+  },
+  "PUT /checkin/{jan}/schedule (moves parked bridges, E41)": {
+    "_about": "An accepted repeating check-in moved from Thursday 19:00 to Friday 08:00: every bridge parked on it, not yet delivered or opened, gets the new deliver_at in the same call. The receiver is sent nothing.",
+    "request": {
+      "day": "friday",
+      "time": "08:00"
+    },
+    "response_fragment": {
+      "schedule": {
+        "next_at": "2026-11-13T04:30:00.000Z",
+        "moved_at": "2026-11-10T08:00:00Z",
+        "moved_by": "nami"
+      }
+    },
+    "after": {
+      "GET /threads/{jan}": {
+        "bridge b-parked deliver_at": "2026-11-13T04:30:00.000Z"
+      }
+    }
+  }
+}

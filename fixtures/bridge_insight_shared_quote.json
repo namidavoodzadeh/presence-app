@@ -1,0 +1,70 @@
+{
+  "_about": "Contract v1.51: the 08 insight sheet may quote ONE item the receiver chose to share, word for word, in the wording its owner approved for this sender, labelled 'From what Jan shared:'. Rendered from the live grant on every call; a revoked or edited share gives nulls and the label-only wording. Never private wording, receipts, Talk quotes, notes, Mirror, unrated or inferred items. Fictional text.",
+  "request": {
+    "person_id": "00000000-0000-4000-8000-0000000000b1",
+    "text": "We need to talk about this weekend, you never tell me anything.",
+    "with_wording": true,
+    "seq": 3
+  },
+  "reply_with_quote": {
+    "seq": 3,
+    "state": "insight",
+    "highlights": [
+      {
+        "start": 22,
+        "end": 34,
+        "original": "this weekend",
+        "suggested": "this weekend",
+        "why_line": "This may touch something they've shared with you.",
+        "friction_kind": null,
+        "about": "receiver",
+        "from_you": [],
+        "from_them": [
+          {
+            "belief_id": "00000000-0000-4000-8000-0000000000c1",
+            "wording": "needing time before a hard talk",
+            "item_id": "00000000-0000-4000-8000-0000000000d1",
+            "quote": "I need a little time before I can talk about something hard",
+            "quote_label": "From what Jan shared:"
+          }
+        ]
+      },
+      {
+        "start": 36,
+        "end": 62,
+        "original": "you never tell me anything",
+        "suggested": "I'd like to hear more from you",
+        "why_line": "Absolutes tend to land as a verdict on the person, not the moment.",
+        "friction_kind": "absolute",
+        "about": "wording",
+        "from_you": [],
+        "from_them": []
+      }
+    ]
+  },
+  "reply_after_revoke": {
+    "_app_does": "the share was turned off or edited after the last call: the receiver note is gone from the reply (v1.61 source rule); the wording note stays",
+    "seq": 4,
+    "state": "insight",
+    "highlights": [
+      {
+        "start": 36,
+        "end": 62,
+        "original": "you never tell me anything",
+        "suggested": "I'd like to hear more from you",
+        "why_line": "Absolutes tend to land as a verdict on the person, not the moment.",
+        "friction_kind": "absolute",
+        "about": "wording",
+        "from_you": [],
+        "from_them": []
+      }
+    ]
+  },
+  "reply_receiver_not_readable": {
+    "_app_does": "real receiver whose map is not readable, or no per-person share items yet: from_them is empty, as today",
+    "seq": 5,
+    "state": "insight",
+    "highlights": []
+  },
+  "_about_v1_61": "Contract v1.61: every highlight carries about: 'receiver' (it describes the other person) or 'wording' (the sender's own words). Source rule: a receiver note is written ONLY with one item the receiver shared, quoted; without it the note is not in the reply at all. Wording notes need no source."
+}

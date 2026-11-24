@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p07",
+  "first_name": "Inez",
+  "beliefs": [
+    {
+      "id": "p07-b1",
+      "label": "Keep Peace",
+      "statement": "I keep the peace so nobody has to choose sides.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "family"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "At dinner Tomas and Dad began arguing about the fence. I changed the subject to the tomatoes before either one raised his voice.",
+          "sessionId": "p07-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My aunt asked who agreed with her, and I said we could decide later. I could feel myself smoothing the room again.",
+          "sessionId": "p07-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p07-b2",
+      "label": "Love Family",
+      "statement": "I can love my family and still set a limit.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Tomas wanted me to host twelve people after my long shift. I said I could come to dinner but not cook it.",
+          "sessionId": "p07-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Dad asked me to call the contractor again. I told him I could do it Friday, not during story hour.",
+          "sessionId": "p07-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p07-b3",
+      "label": "Making Room",
+      "statement": "Making room for a story is a form of respect.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A new patron described losing her apartment in fragments. I let her finish before offering the computer sign-up sheet.",
+          "sessionId": "p07-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Tomas told me about his bad meeting on the porch. I put my phone away and listened until he stopped pacing.",
+          "sessionId": "p07-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p07-b4",
+      "label": "Ask For",
+      "statement": "I ask for details before I agree to family plans.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "family"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Tomas suggested Thanksgiving at his place. I asked who was cooking and when we could leave before saying yes.",
+          "sessionId": "p07-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My cousin proposed a road trip, so I asked about rooms, costs, and return time. Then I chose one night.",
+          "sessionId": "p07-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p07-b5",
+      "label": "Trust Consistency",
+      "statement": "I trust consistency more than dramatic promises.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Tomas said he would pick Dad up for his appointment, and he arrived early with water. I trusted him with the next errand.",
+          "sessionId": "p07-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My sister mailed the documents exactly when she said she would. That mattered more than her long apology.",
+          "sessionId": "p07-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p07-b6",
+      "label": "Become Formal",
+      "statement": "I become formal when I am hurt.",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When Tomas forgot my exhibit, I wrote him a very polite message. Every sentence sounded like a library notice.",
+          "sessionId": "p07-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Dad dismissed my plan, and I said, \"Thank you for your input.\" He knew I was hurt immediately.",
+          "sessionId": "p07-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p07-b7",
+      "label": "Public Spaces",
+      "statement": "Public spaces should welcome people who arrive unsure.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A nervous man stood by the printer holding a tax form. I walked him through the first page without rushing him.",
+          "sessionId": "p07-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I moved the bilingual flyers closer to the entrance. Three people picked them up before noon.",
+          "sessionId": "p07-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p07-b8",
+      "label": "Leave Room",
+      "statement": "I leave room in the schedule for my own projects.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Tomas asked for help moving, but I kept Saturday morning for my pottery class. I joined him after lunch instead.",
+          "sessionId": "p07-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I blocked an afternoon to glaze bowls and declined a committee call. The studio was quiet and warm.",
+          "sessionId": "p07-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p07-p1",
+      "label": "How I mean things",
+      "statement": "I choose precise words when the stakes feel high."
+    },
+    {
+      "id": "p07-p2",
+      "label": "What feels like care",
+      "statement": "Remembering the context of a hard day matters to me."
+    },
+    {
+      "id": "p07-p3",
+      "label": "How to bring something up with me",
+      "statement": "Start with the event and ask what I meant before assuming."
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+ "version": 1,
+ "note": "Fictional told episodes (persona evidence lines); staging only; scored by eval_talk_gold.py",
+ "cases": [
+  {
+   "id": "leila-guarded-family",
+   "turns": [
+    "I try not to take up any room. It can wait; they have enough going on. I write it, delete it, then usually do not send it.",
+    "A small calm place is plenty. I make it a joke and move on. If someone pays, they expect a vote.",
+    "A little money means I do not have to explain. I know where every ten dollars went. Love should not feel like a lock.",
+    "When it gets loud, I disappear. You notice before someone has to say it. There is usually a catch after the compliment."
+   ],
+   "fictional": true
+  },
+  {
+   "id": "talia-contradictory-love",
+   "turns": [
+    "If I am boring, why would they stay? Need is a risky word. I always know the exit route.",
+    "A room crying happily is my favorite. The more I care, the later I answer. I want them to remember they were radiant.",
+    "I save for choices, not logos. I book another weekend just in case. A messy truth beats a pretty lie.",
+    "Say something sweet and I ask about dinner. I want both, which is annoying. Guessing games are cruel."
+   ],
+   "fictional": true
+  },
+  {
+   "id": "marin-verbose-work-family",
+   "turns": [
+    "When nobody needs me, I feel like I have not earned my place. I would rather stay late than make someone scramble. I see the gap and put my name down before it becomes a problem.",
+    "A title is nice, but I want to know I can be there for dinner. When my partner goes quiet, sorry comes out of my mouth immediately. My parents helped with rent, so I cannot act like their opinion is optional.",
+    "The restaurant had a bad winter once and I remember the panic. If I write every task down, the day stops feeling like it is happening to me. Love is bringing soup before someone has to ask.",
+    "When they compliment me, I change the subject to the team. The best part of the week is cooking with everyone at the table. I wait for someone to offer because I do not want to put them on the spot."
+   ],
+   "fictional": true
+  },
+  {
+   "id": "dev-terse-money-society",
+   "turns": [
+    "People listen when you can fix the thing in front of them. If it is not in writing, it is not a deal. Before and after photos save arguments.",
+    "Most things have another few years in them. I stop talking and start watching what they do. The office called it procedure while I was out the money.",
+    "I can live with a rule if the manager has to follow it too. I will do one room before I buy enough material for a house. I would rather learn the tool than wait around for a favor.",
+    "If it gets heavy, I make some stupid comment. Savings mean I do not have to take the next bad job. Show someone once and they can handle it next time."
+   ],
+   "fictional": true
+  }
+ ]
+}

@@ -1,0 +1,54 @@
+{
+  "_about": "Bridge cards contract examples for the app (v1.41). A person's page: the latest card plus kept ones shown, closed ones apart. Fictional people.",
+  "get_cards": {
+    "person_id": "00000000-0000-4000-8000-000000000062",
+    "check_in_id": "00000000-0000-4000-8000-0000000000c1",
+    "cards": [
+      {
+        "bridge_id": "00000000-0000-4000-8000-0000000000b3",
+        "direction": "sent",
+        "text": "I felt hurt when plans changed without a word. Can we talk Thursday?",
+        "delivered": true,
+        "opened_at": null,
+        "deliver_at": "2026-11-08T15:30:00.000Z",
+        "created_at": "2026-11-08T09:10:00.000Z",
+        "state": "open",
+        "state_by": null,
+        "state_at": null,
+        "check_in_id": "00000000-0000-4000-8000-0000000000c1",
+        "shown": true
+      },
+      {
+        "bridge_id": "00000000-0000-4000-8000-0000000000b2",
+        "direction": "received",
+        "text": "Thank you for telling me early this time.",
+        "delivered": true,
+        "opened_at": "2026-11-04T18:00:00.000Z",
+        "deliver_at": "2026-11-04T17:00:00.000Z",
+        "created_at": "2026-11-03T20:00:00.000Z",
+        "state": "kept",
+        "state_by": "them",
+        "state_at": "2026-11-04T18:05:00.000Z",
+        "check_in_id": "00000000-0000-4000-8000-0000000000c1",
+        "shown": true
+      }
+    ],
+    "closed": [
+      {
+        "bridge_id": "00000000-0000-4000-8000-0000000000b1",
+        "direction": "sent",
+        "text": "Could we pick a regular time for dinner?",
+        "delivered": true,
+        "opened_at": "2026-10-28T19:00:00.000Z",
+        "deliver_at": "2026-10-28T18:00:00.000Z",
+        "created_at": "2026-10-28T08:00:00.000Z",
+        "state": "talked",
+        "state_by": "me",
+        "state_at": "2026-10-30T21:00:00.000Z",
+        "check_in_id": "00000000-0000-4000-8000-0000000000c1",
+        "shown": false
+      }
+    ]
+  },
+  "patch_request": { "state": "talked" }
+}

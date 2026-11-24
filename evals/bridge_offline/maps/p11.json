@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p11",
+  "first_name": "p11",
+  "beliefs": [
+    {
+      "id": "p11-b1",
+      "label": "Belong Show",
+      "statement": "I belong when I show up, even if I do not have much to say.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I got to the court before Rowan and put the pinnies on the bench. When the others arrived, there was a place for everyone.",
+          "sessionId": "p11-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I stood with the shop crew during the holiday photo even though I wanted to skip it. I was glad later that I was in the back row.",
+          "sessionId": "p11-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p11-b2",
+      "label": "Let Friend",
+      "statement": "I can let a friend help without turning it into a debt.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "My bike chain snapped in sleet, and Rowan drove across town with his hatchback. I let him load the bike without arguing about gas money.",
+          "sessionId": "p11-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I told my sister the rent was tight this month, and she sent groceries. I said thank you instead of promising three favors back.",
+          "sessionId": "p11-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p11-b3",
+      "label": "Own Pace",
+      "statement": "My own pace is still a real pace.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A fast mechanic finished six tune-ups before lunch while I worked through two bent wheels. I kept measuring the spokes until each rim ran true.",
+          "sessionId": "p11-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Rowan learned the new play before I did. I practiced the footwork slowly in the empty gym and got it by Thursday.",
+          "sessionId": "p11-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p11-b4",
+      "label": "Need Question",
+      "statement": "I need the question to be simple before I answer it.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Rowan asked whether I wanted company at the hospital visit, and I could answer yes. When he asked three things at once, I just stared at the vending machine.",
+          "sessionId": "p11-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "My manager asked if I could take Saturday, call a supplier, and train a new hire. I asked her to pick the first thing.",
+          "sessionId": "p11-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p11-b5",
+      "label": "Trust People",
+      "statement": "I trust people who do what they said they would do.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Rowan said he would meet me at 7 for a pickup game, and he was already unlocking the gym then. I stopped checking my phone after that.",
+          "sessionId": "p11-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "A supplier promised new brake pads on Tuesday and brought them Tuesday morning. I moved their invoice to the top of the stack.",
+          "sessionId": "p11-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p11-b6",
+      "label": "Room Gets",
+      "statement": "When a room gets intense, I go quiet before I leave.",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "At dinner my brother pushed about my move, and everyone watched me. I stopped talking and folded my napkin until Rowan asked to get air.",
+          "sessionId": "p11-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "The shop owner raised his voice about a missing receipt. I put my tools down and walked to the back sink before I said anything.",
+          "sessionId": "p11-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p11-b7",
+      "label": "Sharing Ordinary",
+      "statement": "Sharing ordinary time feels more honest than making a big plan.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Rowan came over with dumplings and we watched a bad action movie without picking one in advance. That was enough for me.",
+          "sessionId": "p11-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I sat with my sister on her porch while her kid drew chalk roads. We did not need an occasion.",
+          "sessionId": "p11-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p11-b8",
+      "label": "Keep One",
+      "statement": "I keep one evening each week with no plans so I can reset.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "On Wednesday I turned down an extra shift and stayed in my apartment with soup. By morning I could hear myself think again.",
+          "sessionId": "p11-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Rowan invited me out Thursday, but I said I was keeping the night empty. I washed my jerseys and went to bed early.",
+          "sessionId": "p11-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p11-p1",
+      "label": "How I mean things",
+      "statement": "I use few words; a short answer is still a real answer."
+    },
+    {
+      "id": "p11-p2",
+      "label": "What feels like care",
+      "statement": "Showing up without making a fuss means a lot to me."
+    },
+    {
+      "id": "p11-p3",
+      "label": "How to bring something up with me",
+      "statement": "Ask one clear question and leave room for a pause."
+    }
+  ]
+}

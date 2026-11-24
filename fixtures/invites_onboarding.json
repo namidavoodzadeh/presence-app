@@ -1,0 +1,8 @@
+{
+  "_note": "Contract v1.54/v1.55. Fictional people. GET /invites/:code is read-only; invite_code on GET /people is for the inviter only.",
+  "peek": { "request": "GET /invites/K7PM3Q", "reply": { "inviter": { "name": "Lea", "initial": "L" }, "expires_at": "2026-12-10T10:00:00Z" } },
+  "peek_expired": { "request": "GET /invites/OLD111", "reply": { "error": "not_found", "ref": "7F3K" } },
+  "peek_own": { "request": "GET /invites/K7PM3Q (as Lea)", "reply": { "error": "invalid", "ref": "7F3K" } },
+  "people_inviter": { "request": "GET /people (as Lea)", "reply_row": { "person": { "name": "Jo" }, "status": "active", "invite_code": "K7PM3Q" } },
+  "people_joiner": { "request": "GET /people (as Jo)", "reply_row": { "person": { "name": "Lea" }, "status": "active", "invite_code": null } }
+}

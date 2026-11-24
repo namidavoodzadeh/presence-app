@@ -1,0 +1,143 @@
+{
+  "_about": "Live Bridge insight while typing (contract v1.43, DV-16). The app sends POST /bridge/insight about 1.5 s after typing stops, with an increasing seq; it cancels the request in flight when the text changes and drops any reply whose seq is not the latest. Fictional text.",
+  "request": {
+    "person_id": "00000000-0000-4000-8000-0000000000b1",
+    "text": "You always change plans last minute, so thanks for that.",
+    "seq": 7
+  },
+  "reply_insight": {
+    "seq": 7,
+    "state": "insight",
+    "tone": "angry",
+    "spans": [
+      {
+        "kind": "friction",
+        "start": 4,
+        "end": 10,
+        "friction_kind": "absolute",
+        "note": "Absolutes tend to land as a verdict on the person, not the moment.",
+        "belief_id": null,
+        "label": null
+      }
+    ],
+    "points": [],
+    "touches": [],
+    "line": null,
+    "resources": null,
+    "ref": null
+  },
+  "reply_stale": {
+    "_app_does": "a reply with seq 6 arriving after seq 7 was sent is dropped, never drawn",
+    "seq": 6,
+    "state": "insight"
+  },
+  "reply_risk": {
+    "seq": 8,
+    "state": "risk",
+    "tone": "neutral",
+    "spans": [],
+    "points": [],
+    "line": "You matter. If you might hurt yourself or someone else, help is available now.",
+    "resources": {
+      "_shape": "as on every risk reply"
+    },
+    "ref": null,
+    "_app_does": "stop live insight for this draft, show the safety sheet; the floor runs before any model call"
+  },
+  "reply_too_short": {
+    "seq": 1,
+    "state": "insight",
+    "tone": "neutral",
+    "spans": [],
+    "points": [],
+    "line": null,
+    "resources": null,
+    "ref": null,
+    "_app_does": "under 12 characters: no call, no cost, so no need to debounce these"
+  },
+  "reply_unavailable": {
+    "seq": 9,
+    "state": "unavailable",
+    "error_code": "insight_unavailable",
+    "ref": "Q8XM",
+    "_app_does": "quiet Retry; no loop"
+  },
+  "bad_seq": {
+    "status": 400,
+    "request_seq": -1,
+    "body": {
+      "error": "invalid",
+      "field": "seq"
+    }
+  },
+  "stored": "nothing: the draft is not saved server-side; the call's trace keeps tokens, cents and latency, and the words become length + sha256 prefix",
+  "request_with_wording": {
+    "person_id": "00000000-0000-4000-8000-0000000000b1",
+    "text": "You always change plans last minute, so thanks for that.",
+    "seq": 8,
+    "with_wording": true
+  },
+  "reply_with_wording": {
+    "_app_does": "draw the window 'How Bridge would say it' from bridged and highlights; offsets are UTF-16 into the sent text; drop the reply if seq is not the latest",
+    "seq": 8,
+    "state": "insight",
+    "tone": "angry",
+    "spans": [
+      {
+        "kind": "friction",
+        "start": 4,
+        "end": 10,
+        "friction_kind": "absolute",
+        "note": "Absolutes tend to land as a verdict on the person, not the moment.",
+        "belief_id": null,
+        "label": null
+      }
+    ],
+    "points": [],
+    "touches": [],
+    "line": null,
+    "resources": null,
+    "ref": null,
+    "bridged": "The last few plans changed late, and it's been hard for me.",
+    "words_changed": true,
+    "outcome": "ok",
+    "highlights": [
+      {
+        "start": 0,
+        "end": 38,
+        "original": "You always change plans last minute, so thanks for that.",
+        "suggested": "The last few plans changed late, and it's been hard for me.",
+        "why_line": "Absolutes tend to land as a verdict on the person, not the moment.",
+        "friction_kind": "absolute",
+        "about": "wording",
+        "from_you": [],
+        "from_them": []
+      }
+    ],
+    "summary": "Words like “You always” may sound like every time."
+  },
+  "reply_with_wording_words_stand": {
+    "seq": 9,
+    "state": "insight",
+    "bridged": null,
+    "words_changed": false,
+    "highlights": [],
+    "summary": "This already reads clearly, and nothing in it looks likely to get in the way."
+  },
+  "reply_with_wording_risk": {
+    "seq": 10,
+    "state": "risk",
+    "bridged": null,
+    "highlights": [],
+    "summary": null,
+    "words_changed": false,
+    "_app_does": "safety sheet, no wording"
+  },
+  "bad_with_wording": {
+    "status": 400,
+    "body": {
+      "error": "invalid",
+      "field": "with_wording"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+name: Defect
+description: Something in a build does not match its package
+labels: [defect]
+body:
+  - type: input
+    id: build
+    attributes: { label: Build number }
+  - type: input
+    id: screen
+    attributes: { label: Screen and control id }
+  - type: textarea
+    id: seen
+    attributes: { label: What happened and what the package says should happen }
+    validations: { required: true }
+  - type: dropdown
+    id: kind
+    attributes: { label: Kind, options: [could not run, test is wrong, product defect, decision missing] }

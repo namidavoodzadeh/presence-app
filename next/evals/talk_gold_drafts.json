@@ -1,0 +1,215 @@
+{
+ "version": 1,
+ "status": "draft: PSY to review",
+ "note": "16 hand-written fictional Talk cases (fixtures only, no AI). Not scored by the deploy gate until PSY signs off; then merge into talk_gold.json. Told episodes are original text, not persona evidence lines.",
+ "cases": [
+  {
+   "id": "sana-tangential-politics-meaning-draft",
+   "persona": "sana-tangential-politics-meaning",
+   "style": "tangential",
+   "turns": [
+    "Last week at the museum a school group asked who built the old mill, and I ended up telling them about the strike of 1912 instead. I always find the door the textbook left shut.",
+    "The council voted on the bus route without asking the people who ride it. I wrote three pages and then took the notes to the library, not the meeting. I do not like being the loud one, but I do not like silence either.",
+    "My sister says I turn dinner into a seminar. Maybe. But I would rather be a little too much than leave a thing unsaid that someone needed to hear.",
+    "When someone asks me straight what I think, I give them a book title. It feels safer than a verdict."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "omar-emotional-work-draft",
+   "persona": "omar-emotional-work",
+   "style": "emotional",
+   "turns": [
+    "Tuesday was a bad one. We got there late, and I sat in the truck afterward for twenty minutes with the engine off. Nobody saw. I made coffee and acted like it was fine.",
+    "I took the double shift that nobody wanted, again. If I am moving I do not have to think about the quiet. Then I get home and the quiet is waiting anyway.",
+    "My daughter drew me a card with a blanket on it. I keep it in the glovebox. I did not tell her why it got to me.",
+    "I told my supervisor I was fine. I am not sure what I wanted him to say. I think I wanted him to ask twice."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "nora-oneword-care-draft",
+   "persona": "nora-oneword-care",
+   "style": "guarded",
+   "turns": [
+    "Fine. Work was fine. The night shift is quiet.",
+    "My brother has an exam Friday. I made his lunches for the week on Sunday. He does not know I check his schedule.",
+    "I keep the receipts for his school stuff in a folder. If anyone asks, I can show them. Nobody asks.",
+    "When he says thanks I say it is nothing. It is not nothing, but I do not say that."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "mika-questionback-draft",
+   "persona": "mika-questionback",
+   "style": "asks-questions-back",
+   "turns": [
+    "Before I answer, why do you ask? I will tell you, I just like to know what a question is for. Okay, so: my week was mostly editing someone else's piece down to half its size.",
+    "I turned down a story last month because the source wanted to read my draft first. I would rather lose the story than hand over the pen.",
+    "My friend asked what I wanted for my birthday and I asked what she wanted to give. She laughed. I think I do this to stay level with people.",
+    "I like when a conversation goes both ways. If it is only me talking I start to feel like an exhibit."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "gabriel-political-draft",
+   "persona": "gabriel-political",
+   "style": "political",
+   "turns": [
+    "The new housing rule came up at lunch and I went quiet. I have opinions, but I have watched friendships end over this exact thing, so I count the room first.",
+    "I volunteer at the food bank on Saturdays. Nobody there asks how I vote. That is part of why I keep going.",
+    "My uncle sends me articles every morning. I read them all and answer none. Replying feels like signing something.",
+    "I think people can disagree and still carry each other's groceries. I would like to live in that kind of town."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "ruth-widow-meaning-draft",
+   "persona": "ruth-widow-meaning",
+   "style": "reflective",
+   "turns": [
+    "I still set the table for two on Sundays and then put one plate back. Forty years of habit. I have decided to let it be habit rather than sorrow.",
+    "I joined the garden club mostly for something to do on Thursdays. Now I know which neighbor's tomatoes come in first, and that feels like something.",
+    "My grandson asked what I did all day. I said I watered things and waited for the post. He found that very funny. I did too.",
+    "What matters to me now is being a person someone could knock on the door of without calling first."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "ben-tangential-startup-draft",
+   "persona": "ben-tangential-startup",
+   "style": "tangential",
+   "turns": [
+    "So we pivoted again, which reminds me of when I tried to learn the cello. I quit after three weeks because I could not stand being bad at it in front of people.",
+    "I told the team the launch was on track. It was on track the way a train is on track when the bridge is out. I did not want to be the one to say it.",
+    "My cofounder is great at the deck and the pitch. I am great at the spreadsheet nobody opens. I keep the numbers to myself until they are good.",
+    "I would rather be the person who fixed it quietly than the one who raised the flag early. I know that is probably backwards."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "ines-family-duty-draft",
+   "persona": "ines-family-duty",
+   "style": "dutiful",
+   "turns": [
+    "My mother calls every evening at seven. I pick up even when I am in the middle of cooking. If I miss it I call back within the hour, always.",
+    "I moved back to be near my parents. My partner said it was my choice, and it was, but it did not feel like one when I made it.",
+    "At the family dinner my aunt asked when I would settle down. I smiled and passed the rice. I rehearsed an answer in the car on the way home.",
+    "I send money home on the first of the month. I have never told anyone how much. It is not a secret, it is just mine."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "harper-humorous-queer-draft",
+   "persona": "harper-humorous-queer",
+   "style": "humorous",
+   "turns": [
+    "I came out to my dentist before my parents, which tells you everything about my priorities. It felt easy to say to someone who could not answer back.",
+    "At work I am the funny one. If a meeting gets tense I do a bit. Last Monday I did a bit and then realized nobody had finished their point.",
+    "My partner says I joke when I am scared. I said that is ridiculous, and then made a joke about it.",
+    "I want one room where I do not have to be entertaining. I think that might be the kitchen at two in the morning."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "samir-refugee-money-draft",
+   "persona": "samir-refugee-money",
+   "style": "private",
+   "turns": [
+    "When we left we had two bags. I still keep a small bag packed in the hall closet. My wife knows. We do not talk about it.",
+    "I count what is in the account every Friday. It is not about being rich. It is about knowing that if we had to go again, we could go.",
+    "My boss offered me a promotion and I asked about the contract first. He laughed. I did not explain.",
+    "I tell my kids to learn things that fit in your head, because those travel. A degree is paper; what you can do with your hands stays."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "yuki-student-body-boundary-draft",
+   "persona": "yuki-student-body-boundary",
+   "style": "guarded",
+   "turns": [
+    "Midterms are this week. I have a plan on a sticky note and a second plan on the back of it in case the first one falls apart.",
+    "My roommate asked me to go out and I said I had a paper. I did not have a paper. I just needed the evening to be mine.",
+    "I do not like when people comment on how I look, even when it is kind. I change the subject to the weather.",
+    "I do my best thinking walking, so I walk the long way to campus. Nobody has to know why it takes me forty minutes."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "darnell-contradictory-draft",
+   "persona": "darnell-contradictory",
+   "style": "contradictory",
+   "turns": [
+    "I want to be left alone and I want someone to notice I am gone. Both. Every weekend.",
+    "I say I hate surprises, and then I get annoyed when nobody plans anything for my birthday. I know how that sounds.",
+    "I told my brother I did not care about the promotion. I cared a lot. I stayed late three nights to make sure it looked like I did not.",
+    "People call me easygoing. I am only easygoing about things I have already decided not to want."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "elena-nonnative-tradition-draft",
+   "persona": "elena-nonnative-tradition",
+   "style": "hesitant",
+   "turns": [
+    "Sorry, my English is, how to say, slower in the feelings. In my country we cook together on Sunday. Here I cook for one and it is too much food.",
+    "I teach my daughter the old songs even if she answers in English. I think if she forgets the song, a small door closes.",
+    "At the school meeting I did not speak. I had the words ready, but by the time I was sure of the grammar the topic had moved.",
+    "My neighbor brought bread when we moved in. It was the first time I understood this place could be home. I want to be someone who also brings bread."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "ada-community-draft",
+   "persona": "ada-community",
+   "style": "warm",
+   "turns": [
+    "I run the Thursday supper at the church hall. Twenty people last week, four of them new. I counted the chairs twice because I do not want anyone standing.",
+    "When the oven broke I did not ask for help, I just made sandwiches. Someone said I should have called. I said the sandwiches were fine.",
+    "I do not like being thanked in front of everyone. I would rather someone quietly bring a pie next week.",
+    "I think a place is only a community if someone notices when you stop coming."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "lucas-teen-parent-draft",
+   "persona": "lucas-teen-parent",
+   "style": "tired",
+   "turns": [
+    "I get up at five to do his bottles and then I go to school. The teacher thinks I am zoning out. I am actually doing math in my head about the week.",
+    "My mom helps, but I do not like asking. I put a list on the fridge instead, so she can see what is needed without me saying it.",
+    "I do not tell people at school I have a kid. Not because I am ashamed. I just do not want to be the story.",
+    "When he laughs at the dumbest thing, nothing else matters. I try to remember that on the bad days."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  },
+  {
+   "id": "farah-morality-draft",
+   "persona": "farah-morality",
+   "style": "principled",
+   "turns": [
+    "A colleague padded his expense report and everyone knows. I keep my receipts to the cent, and I am angry that it feels foolish to.",
+    "I returned a wallet last month with the cash in it. My friend said I should have kept a twenty for the trouble. I did not argue, I just felt tired.",
+    "I would rather lose an argument honestly than win it with a trick. I have lost a few.",
+    "When I see someone cutting a corner I feel it in my chest before I decide what to do. Most of the time I decide to say nothing, and I carry it home."
+   ],
+   "fictional": true,
+   "draft": "PSY to review"
+  }
+ ]
+}

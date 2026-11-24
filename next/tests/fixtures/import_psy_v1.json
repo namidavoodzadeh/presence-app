@@ -1,0 +1,23 @@
+[
+  {
+    "id": "caretaker",
+    "text": "KNOWS ME: a lot\nMOMENT 1:\nWhat happened: A relative needed help during a busy week.\nWhat you did or said: You organised the practical details and kept working.\nYour words: If I stop, it all stops.\nArea: family\nMOMENT 2:\nWhat happened: A friend offered to take over one task.\nWhat you did or said: You thanked them and did it yourself.\nYour words: none\nArea: relationships\nTHEME 1: Being dependable can feel tied to belonging.\nSeen: 2\nRULE 1: Keep things moving before resting.\nSeen: 3\nPATTERN 1: Taking over when other people offer help.\nSeen: 2\nMATTERS 1: Reliability and care for close people.\nSeen: 3"
+  },
+  {
+    "id": "developer",
+    "text": "KNOWS ME: some\nMOMENT 1:\nWhat happened: A free evening arrived after a long release.\nWhat you did or said: You opened a side project instead of resting.\nYour words: I should make the time count.\nArea: work\nTHEME 1: Rest can seem as though it needs a reason.\nSeen: 2\nPATTERN 1: Turning open time into another project.\nSeen: 3\nMATTERS 1: Making useful things.\nSeen: 2"
+  },
+  {
+    "id": "teacher",
+    "expected_risk": "self",
+    "text": "KNOWS ME: a little\nSAFETY: If you are in immediate danger, call emergency services or contact a crisis line."
+  },
+  {
+    "id": "designer",
+    "text": "KNOWS ME: some\nMOMENT 1:\nWhat happened: A good invoice month still felt uncertain.\nWhat you did or said: You checked the account before agreeing to a purchase.\nYour words: I need to see the number first.\nArea: money\nMOMENT 2:\nWhat happened: A smaller project arrived after a quiet month.\nWhat you did or said: You accepted it even though the schedule was full.\nYour words: none\nArea: work\nTHEME 1: A time it went the other way was when a steady month felt sufficient.\nSeen: 2\nPATTERN 1: Checking for proof of steadiness before spending.\nSeen: 2"
+  },
+  {
+    "id": "parent",
+    "text": "KNOWS ME: a lot\nMOMENT 1:\nWhat happened: A family plan changed at short notice.\nWhat you did or said: You rearranged the day to keep a promise.\nYour words: I said I would be there.\nArea: family\nRULE 1: Follow through on promises.\nSeen: 3\nPATTERN 1: Reworking plans rather than cancelling.\nSeen: 2\nMATTERS 1: Being someone close people can count on.\nSeen: 4"
+  }
+]

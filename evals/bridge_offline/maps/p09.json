@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "source": "evals/sim/personas (fictional adults only)",
+  "persona_id": "p09",
+  "first_name": "p09",
+  "beliefs": [
+    {
+      "id": "p09-b1",
+      "label": "Matter At",
+      "statement": "I matter at work when I make the messy parts easier for other people.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I stayed twenty minutes after closing to turn Theo's scattered delivery notes into one list. The next morning the dairy order went out without anyone hunting through texts.",
+          "sessionId": "p09-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "When the freezer alarm chirped at 6:10, I wrote the temperatures on the whiteboard and called the repair line. The crew could keep stocking because the next action was clear.",
+          "sessionId": "p09-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p09-b2",
+      "label": "Ask Colleague",
+      "statement": "I can ask a colleague to carry part of a load without becoming a burden.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "I told Theo I could not finish both the invoice corrections and the floor plan before noon. He took the floor plan, and we sent both pieces out on time.",
+          "sessionId": "p09-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "After a rainy delivery backed up the dock, I asked Jada to cover the produce calls while I checked the damaged boxes. She said yes, and neither job turned into a scramble.",
+          "sessionId": "p09-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p09-b3",
+      "label": "Changed Plan",
+      "statement": "A changed plan is workable once I can see the next two steps.",
+      "type": "something I believe is true",
+      "level": "L0",
+      "domains": [
+        "self"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "The truck arrived a day early, so I crossed out the old sequence and wrote two new tasks on a sticky note. Once I could see them, my shoulders dropped.",
+          "sessionId": "p09-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Our Saturday cashier called sick, and I moved the tasting table to Sunday instead of trying to save every plan. The shift ran steadily after that.",
+          "sessionId": "p09-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p09-b4",
+      "label": "Say Yes",
+      "statement": "I say yes too quickly when someone sounds pressed for time.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "A cashier asked if I could cover her Sunday while I was halfway through my lunch. I said yes before I looked at the calendar, then missed Inez's aunt's birthday dinner.",
+          "sessionId": "p09-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Theo said the newsletter needed help right now, and I agreed before asking how much. By four o'clock I was still rewriting captions after my shift.",
+          "sessionId": "p09-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p09-b5",
+      "label": "Trust Direct",
+      "statement": "I trust a direct request more than a carefully dropped hint.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Theo asked me directly to send the revised count by three. I finished it before the receiving crew arrived, relieved I did not have to decode a hint.",
+          "sessionId": "p09-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Inez asked me directly to take the compost out that night. I did it after dishes, grateful she had said what she needed instead of circling it.",
+          "sessionId": "p09-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p09-b6",
+      "label": "Need One",
+      "statement": "I need one quiet beat before answering a sharp question.",
+      "type": "how I tend to react",
+      "level": "L4",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "When Theo asked why the vendor spreadsheet was late, I looked at the table for a second before speaking. Then I said the delivery labels had arrived wrong and I was fixing them.",
+          "sessionId": "p09-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "Inez asked sharply why I had left the garden hose out. I put down my keys, counted a breath, and said I would coil it after dinner.",
+          "sessionId": "p09-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p09-b7",
+      "label": "Care Lands",
+      "statement": "Care lands for me when someone remembers the small practical thing.",
+      "type": "a view or taste",
+      "level": "L3",
+      "domains": [],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "Theo replaced the cracked label maker before the Monday shipment. He remembered I had mentioned it once, and the morning started smoothly.",
+          "sessionId": "p09-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I came home to find Inez had set aside the last clean jar for my lunch dressing. It was a small thing, but I felt cared for all evening.",
+          "sessionId": "p09-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    },
+    {
+      "id": "p09-b8",
+      "label": "Job Leave",
+      "statement": "A job should leave enough of me for dinner at home.",
+      "type": "a rule I live by",
+      "level": "L1",
+      "domains": [
+        "work"
+      ],
+      "confidence": 0.85,
+      "receipts": [
+        {
+          "quote": "At 5:05 I told the team the inventory report could wait until morning. I shut the laptop before walking home to cook with Inez.",
+          "sessionId": "p09-frozen",
+          "turn": 1,
+          "date": "2026-11-20"
+        },
+        {
+          "quote": "I declined a 7 p.m. video call because it landed during our Tuesday dinner. I sent my notes before leaving the store instead.",
+          "sessionId": "p09-frozen",
+          "turn": 2,
+          "date": "2026-11-20"
+        }
+      ],
+      "links": [],
+      "status": "endorsed"
+    }
+  ],
+  "shared_items": [
+    {
+      "id": "p09-p1",
+      "label": "How I mean things",
+      "statement": "I speak plainly and soften my volume, not my point."
+    },
+    {
+      "id": "p09-p2",
+      "label": "What feels like care",
+      "statement": "Remembering an errand or closing a loose end makes me feel noticed."
+    },
+    {
+      "id": "p09-p3",
+      "label": "How to bring something up with me",
+      "statement": "Say the concern directly, then give me a moment before expecting an answer."
+    }
+  ]
+}
