@@ -25,5 +25,10 @@
   },
   "fmt": {
     "lineWidth": 110
+  },
+  "test": {
+    "exclude": [
+      "tests/pending/"
+    ]
   }
 }
