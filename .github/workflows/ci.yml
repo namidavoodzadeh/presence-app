@@ -46,7 +46,7 @@ jobs:
       - name: Contract validation
         run: app/Packages/Contract/generate.sh --check
   simulator:
-    needs: fast
+    # verify B3 only: runs without waiting for fast, so the snapshot result shows even though the grid test fails
     runs-on: [self-hosted, mac-mini]
     timeout-minutes: 45
     steps:
