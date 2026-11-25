@@ -1,6 +1,6 @@
 # Package 01: the thinnest version of the whole chain
 
-Confirmed by the owner on 24 Nov 2026. Status: scope set, contents not yet written, not frozen.
+Confirmed by the owner on 24 Nov 2026. Status: scope set; contents written 24 Nov 2026 and revised 25 Nov to the greenhouse design and the owner's answers (`screens.md`, `flows/`, `states.md`, `behaviour.md`, `copy.md`, `routes.md`, `tokens.md`, `QUESTIONS.md`); frozen 24 Nov 2026 (`FROZEN.md`).
 
 The app is useless without knowledge about the person, so the first package covers the full chain once, as thin as it can be while working end to end:
 
