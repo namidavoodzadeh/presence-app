@@ -1,128 +1,110 @@
 # Package 01: behaviour
 
-What each control does in each state, per screen. "—" means the control is not on screen in that state. "Disabled" means shown, dimmed, and not tappable, with VoiceOver reading it as dimmed. The flows in `flows/` give the calls and the next states.
+What each control does in each state. "—" means not on screen. "Dimmed" means shown at the faint ink, not tappable, and read by VoiceOver as dimmed. The flows in `flows/` give the calls and next states.
 
-Applies everywhere:
-- One primary action per screen, in the bottom third, with its exit the same size to its left (V3 rule 13). Apricot only on an action that reaches another person, at most once per screen (rule 10): `write.send`, `invitePreview.send`, `card.reply`.
-- Pressed state: the system highlight only; no scale, bounce or ripple. Nothing moves while someone types or speaks.
-- Places (`home`, `you`, `kenning`, `person`) slide sideways and follow the finger; edge swipe goes back. Acts (`talk`, `suggestions`, `addPerson`, `invitePreview`, `write`, `card`) rise and close downward; drag down closes them, with the same result as their ✕.
-- Haptics: firm on send; light on confirming a kenning. Insight never buzzes. Sounds: one paper sound on send and on confirming a kenning.
-- Reduce Motion: places and acts cross-fade in 200 ms; the fold cross-fades; the envelope fades between 100% and 55% instead of folding.
+Applies everywhere (greenhouse package):
+- **One thing in front.** One card or one list at a time. Choices are short words of equal size; the only filled button is the apricot send in the bar.
+- **Swipe to decide.** Yes-or-no is a swipe card: right accepts, left keeps or skips; its two answers sit at the edges and are also tappable.
+- **Pulls.** A drag starts after 10 pt sideways and more sideways than up or down; release past 90 pt commits, less springs back. Each pull is also a VoiceOver action ("Show your kennings", "Show people", "Back to talk").
+- **Cards** rise 16 pt above the bar in 0.5 s and close on a tap outside (sink 16 pt and fade).
+- **Haptics,** and only these: a soft tick when a kenning card opens; a double soft pulse when a note opens; a light tap when listening starts; one firm haptic and the paper sound on send.
+- **Reduce Motion:** no sway, drift, breathing or lamp sweep; views cross-fade in 0.2 s; the camera jumps.
+- **Nothing moves while someone types, speaks or reads** a card's words.
+
+## The talk bar (every view)
+| Control | empty | has words | listening | sending (Talk) |
+| --- | --- | --- | --- | --- |
+| `bar.field` | Placeholder of the view; tap to type | Edits; grows to 4 lines, then scrolls | Text hidden | Read-only |
+| `bar.mic` | Starts listening (light tap) | — | Stops; the words land in the bar; nothing sends | — |
+| `bar.send` | — | Sends (in Talk), sends or opens the pause (in a thread), shares (Someone new), Done (`scope`), Fold and send (`pause.final`) | — | Dimmed |
+
+## `edge.left`, `edge.right`
+Shown on Talk; tapping runs the pull to You or People. On first launch both breathe three times. VoiceOver labels: "Your kennings", "Your people".
 
 ## `signIn`
-| Control | signedOut | appleSheet / exchanging | signInFailed |
+| Control | signedOut | sheet open / exchanging | signInFailed |
 | --- | --- | --- | --- |
-| `signIn.apple` | Opens Apple's sheet | Disabled | Opens Apple's sheet |
-| `signIn.privacy` | Opens kenember.com/privacy in Safari | Disabled | Opens kenember.com/privacy |
-| `signIn.retry` | — | — | Opens Apple's sheet again |
+| `signIn.apple` | Opens Apple's sheet | Dimmed | Opens Apple's sheet |
+| `signIn.google` | Opens Google's sign-in | Dimmed | Opens Google's sign-in |
+| `signIn.privacy` | Opens kenember.com/privacy in Safari | Dimmed | Same as signedOut |
+| `signIn.retry` | — | — | Back to signedOut |
 
 ## `talk`
-| Control | loading | ready | listening | typing | sending | cardUp | consent | turnFailed / limited |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `talk.close` | Closes (finish if a conversation exists) | Same | Stops listening, then closes | Same | Closes; a reply that lands later is found by the next Talk | Closes; unanswered cards stay suggestions | Closes | Closes |
-| `talk.mic` | Hidden | Starts listening | Stops and sends | — | Disabled | — | Starts listening (the chips go) | Hidden on limited; on turnFailed starts listening for new words |
-| `talk.type` | Hidden | Opens typing | — | — | Disabled | — | Opens typing (the chips go) | Same as mic |
-| `talk.field` | — | — | — | Edits the words | Read-only | — | — | — |
-| `talk.sendTyped` | — | — | — | Sends when not empty | — | — | — | — |
-| `talk.consentSure` / `NotNow` / `Never` | — | — | — | — | — | — | Sends the answer | — |
-| `talk.card` | — | — | — | — | — | Swipe right: That's me; left: Not now; past 50% of the width or a flick over 300 pt/s, else it settles back | — | — |
-| `talk.cardNotNow` / `talk.cardThatsMe` | — | — | — | — | — | Same as the swipe | — | — |
-| `talk.retry` | — | — | — | — | — | — | — | turnFailed: sends the same words again. limited: hidden |
+| Control | ready | sending | suggesting | turnFailed / limited / notOpen |
+| --- | --- | --- | --- | --- |
+| `talk.message.N`, `talk.reply.N` | Text | Text | Text, still | Text |
+| `talk.suggestion` | — | — | Swipe right: That's me; left: Not now | — |
+| `talk.thatsMe`, `talk.partly`, `talk.notNow` | — | — | Same size; That's me and Partly open `scope`; Not now sinks the card | — |
+| `talk.retry` | — | — | — | turnFailed: sends the same words; hidden otherwise |
 
-While a rating is saving, the card stays in place and its buttons are disabled.
+## `scope`
+| Control | choosing | keeping |
+| --- | --- | --- |
+| Scope words | One at a time, underlined when chosen; "Only with [Name]" limits Who sees this to that person | Dimmed |
+| `scope.person.N` | Toggles; nothing pre-ticked | Dimmed |
+| `scope.onlyMe` | Clears the people | Dimmed |
+| `scope.done` (bar send) | Keeps the item | Dimmed |
 
 ## `you`
 | Control | loading | empty | failed | loaded |
 | --- | --- | --- | --- | --- |
-| `you.back` | Home | Home | Home | Home |
-| `you.suggestionsRow` | — | — | — | Opens Suggestions (shown only when at least one suggestion waits) |
-| `you.kenning.N` | — | — | — | Opens kenning detail |
-| `you.talk` | Opens Talk | Opens Talk | Opens Talk | Opens Talk |
+| `you.item.N` | — | — | — | Opens its card |
+| `you.talk` | — | Back to Talk | — | — |
 | `you.retry` | — | — | Loads again | — |
 
-## `suggestions`
-| Control | loading | failed | loaded (cardUp) | rating |
-| --- | --- | --- | --- | --- |
-| `suggestions.close` | Closes | Closes | Closes; the rest stay suggestions | Closes after the save answers |
-| `suggestions.card` | — | — | Swipe right: That's me; left: Not now | Disabled |
-| `suggestions.notNow` / `thatsMe` | — | — | Same as the swipe | Disabled |
-| `suggestions.retry` | — | Loads again | — | — |
-
 ## `kenning`
-| Control | loading | failed | loaded |
-| --- | --- | --- | --- |
-| `kenning.back` / `kenning.done` | Back to You | Back to You | Back to You |
-| `kenning.retry` | — | Loads again | — |
+| Control | loading / loaded / failed |
+| --- | --- |
+| `kenning.card` | Text only in package 01 (Edit, Change kind and Set aside are deferred, so they are not drawn); a tap outside closes |
+| `kenning.retry` | Failed only: loads the receipt again |
 
-## `home`
+## `people`
 | Control | loading | empty | failed | loaded |
 | --- | --- | --- | --- | --- |
-| `home.person.N` | — | — | — | Unread: opens the oldest ready card. "Not sent": opens Write with the kept words. Otherwise: opens the person page |
-| `home.addAboutYou` | — | — | — | Opens Talk |
-| `home.you` | Opens You | Opens You | Opens You | Opens You |
-| `home.write` | Disabled | Opens Add a person | Disabled | Opens Write to the person on the lowest card |
-| `home.add` | Opens Add a person | Same | Same | Same |
-| `home.retry` | — | — | Loads again | — |
+| `people.row.N` | — | — | — | Opens the thread |
+| `people.new` | Opens Someone new | Same | Same | Same |
+| `people.retry` | — | — | Loads again | — |
 
-VoiceOver reads each card as one element: "[Name], [line]". The send envelope is decorative inside that label.
+VoiceOver reads a row as one element: "[Name], [line], [time]", plus "new" when the dot shows.
 
-## `addPerson`
-| Control | name empty | name has a letter |
-| --- | --- | --- |
-| `addPerson.close` / `addPerson.cancel` | Closes, nothing kept | Same |
-| WHO chips | Select one; tapping the selected chip clears it | Same |
-| `addPerson.name` | Edits (40 characters at most) | Same |
-| `addPerson.next` | Disabled | Opens the invite preview |
-
-## `invitePreview`
-| Control | loading | empty (F4b) | failed | loaded (picked) | sending |
+## `someoneNew`
+| Control | loading | ready | writingOne | failed | creating / sharing |
 | --- | --- | --- | --- | --- | --- |
-| `invitePreview.back` / `backButton` | Back to Add a person | Same | Same | Same | Disabled |
-| `invitePreview.other.N` | — | — | — | Makes it the picked kenning | Disabled |
-| `invitePreview.ownLine` | — | Edits (400 characters at most) | — | — | Read-only |
-| `invitePreview.send` | Disabled | Disabled until there is a letter, then saves the line and creates the invite | Disabled | Creates the invite, then the share sheet | Disabled |
-| `invitePreview.retry` | — | — | Loads again | — | — |
+| WHO words | Choose one; tap again to clear | Same | Same | Same | Dimmed |
+| `someoneNew.name` | Edits (40 characters) | Same | Same | Same | Read-only |
+| `someoneNew.gift` | — | Text, exactly as they will see it | — | — | Text |
+| `someoneNew.change` | — | Next eligible item (only when there is more than one) | — | — | Dimmed |
+| `someoneNew.share` (bar send) | Dimmed | Enabled once there is a name | Enabled once there is a name and words | Dimmed | Dimmed |
+| `someoneNew.retry` | — | — | — | Loads again | — |
 
-## `gift`
-| Control | loading | failed | loaded | dead or own link |
-| --- | --- | --- | --- | --- |
-| `gift.continue` | — | — | Accepts, then Home | Home |
-| `gift.retry` | — | Loads again | — | — |
-
-## `person`
+## `thread`
 | Control | loading | empty | failed | loaded |
 | --- | --- | --- | --- | --- |
-| `person.back` / `backButton` | Home | Home | Home | Home |
-| `person.item.N` | — | — | — | A card to you: opens it. A card you sent: not tappable (VoiceOver reads it as text) |
-| `person.write` | Opens Write | Opens Write | Opens Write | Opens Write |
-| `person.retry` | — | — | Loads again | — |
+| `thread.card.N` | — | — | — | A folded card to you: opens it. Any other card: text |
+| `thread.keep` | — | — | — | Under a card you have read: keeps it |
+| `thread.reply` | — | — | — | Under a card you have read: focuses the bar as a reply |
+| `thread.retry` | — | — | Loads again | Under your unsent card: sends it again |
+| `thread.edit` | — | — | — | Under a card refused as written: returns its words to the bar |
 
-## `write`
-| Control | editing | reading | ownUp | notesReady | noteUp | ready | refused | not connected |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `write.close` / `closeButton` | Saves the draft and closes | Same | Same | Same | Same | Same | Same | Same |
-| `write.field` | Edits | Edits (cancels the read) | Edits (the card goes) | Edits (notes go) | Read-only while a card is up; a tap on the words lowers the keyboard and scrolls the card into view | Edits | Edits | Read-only |
-| `write.own`, `ownNotNow`, `ownAdd` | — | — | Swipe or tap: add it or not now | — | — | — | — | — |
-| `write.notesLine` | — | — | — | Opens the first note | — | — | — | — |
-| `write.note`, `noteKeep`, `noteChange` | — | — | — | — | Swipe or tap: keep yours or change it | — | — | — |
-| `write.skipNotes` | — | — | — | — | Closes the notes | — | — | — |
-| `write.send` | Sends (disabled when empty) | Sends (the read is cancelled) | Sends | Sends | Sends | Sends | Disabled | Disabled |
-| `write.edit` | — | — | — | — | — | — | Back to editing | — |
+## `reading`
+| Control | shown |
+| --- | --- |
+| `reading.card` | Their words and name only; a touch anywhere ends the first reading |
 
-Send never waits for a note. With headphones nothing is read aloud in package 01.
-
-## `card`
-| Control | loading | failed | loaded |
+## `pause`
+| Control | a note card | the fromMe card | final |
 | --- | --- | --- | --- |
-| `card.close` | Closes to the person page | Same | Same |
-| `card.keep` | — | — | Closes to the person page; the card stays there (Q5) |
-| `card.reply` | — | — | Opens Write to the sender, as a reply to this card |
-| `card.retry` | — | Opens again | — |
+| `pause.note` | Swipe right: Use it; left: Keep mine | Swipe right: add it; left: Keep mine | — |
+| `pause.keepMine`, `pause.useIt` | Same as the swipe | Same as the swipe | — |
+| `pause.final` | — | — | Text, exactly as [Name] will read it |
+| `pause.send` (bar send) | — | — | Folds and sends |
+
+Pulling down from any pause state goes back to writing.
 
 ## `safety`
 | Control | shown |
 | --- | --- |
-| `safety.resource.N` | Opens the resource's `url` in Safari |
-| `safety.close` | Closes the sheet; the screen below goes on as its flow says |
+| `safety.resource.N` | Opens the resource in Safari |
+| `safety.close` | Closes; the view below goes on as its flow says |
 
-The sheet appears at once, with no transition, and nothing else on screen moves. No hand-drawn mark, no apricot.
+The card appears at once with no transition and nothing else moves. No hand-drawn touch and no apricot on it.

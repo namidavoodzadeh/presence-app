@@ -1,180 +1,160 @@
 # Package 01: screens
 
-Status: written by the explore chat on 24 Nov 2026. Not frozen.
+Status: written by the explore chat on 24 Nov 2026, revised 25 Nov to the owner's answers and the greenhouse design. Not frozen.
 
-The five steps in `SCOPE.md`, as screens. Every screen is drawn in the frozen V3 design except where marked **not drawn**; those are in `QUESTIONS.md`. Light and dark follow the iPhone setting on every screen.
+## Design source
 
-Design sources (owner's account): V3 package `QXJajT62N6rbVaUvmobHsE`, its screens page "Kenember next design" `65EPGuB7nAn8pPmky69nZY`, V3 flows `KX1q5g2B7yQQvS2pR2H4bz` (wins where it differs), remaining screens `66qiLKhtG3eDm36VGcSaqx`, communication spec `RKgowhverRSDWoYeRUFH2n`, insight engine review `F2Sfu7SWYaiQgSADPfyAmJ`.
+The greenhouse replaces the V3 look and navigation (owner, 24 Nov):
+- **Package:** "Kenember design package: the greenhouse" `J6koT1C7knci3rdy1RAP3y` (wins over everything else).
+- **Pages:** "Kenember, every page" `JRP65nx8pUoZMKFqbAm7Nd`.
+- **Prototype:** "Kenember, the greenhouse" `TagZ4UKT9dZB6hCM53BcbS`. Every build value comes from it; where the package and the prototype disagree, the package wins.
+- **System rules:** communication spec (CPO) `RKgowhverRSDWoYeRUFH2n` and insight engine review (PSY) `F2Sfu7SWYaiQgSADPfyAmJ`.
+
+Where this package names a page id (Y4, Y5, P3 …) it is the id on "every page".
+
+## One surface, not pages
+
+There are no pages and no tab bar. Four views share one frosted pane over the greenhouse, and the talk bar sits at the bottom of all of them:
+- **Talk** is home; the app opens here.
+- **You** is pulled in from the left.
+- **People** is pulled in from the right.
+- **Thread** rises over People when a person is opened.
+
+Cards (a suggestion, a kenning, a note, a received card) rise above the talk bar. Pulls follow the finger (package, "Views and gestures"). Every pull also exists as a VoiceOver action.
 
 ## The chain
 
 1. **Sign-in.** `signIn`.
-2. **First Talk.** `talk`, led by the engine's opening question.
-3. **What I learned about you.** `you`, `suggestions`, `kenning`.
-4. **Write with insight.** `write`. To have someone to write to: `home`, `addPerson`, `invitePreview`, and on the other phone `gift`.
-5. **Send, and the other person reads it.** `write` sends; the other person sees it on `home` and `person`, and reads it on `card`.
+2. **First Talk.** `talk`, led by the engine's first question (communication engine, owner answer 2b).
+3. **What I learned about you.** In Talk, the suggestion card and `scope`; after, `you` and `kenning`.
+4. **Write with insight.** `people`, `someoneNew` (to have someone to write to), `thread`, then `pause` ("Before it goes").
+5. **Send, and the other person reads it.** The card folds and sends; the other person gets a push, opens `thread`, and reads it on `reading`.
 
-`safety` is shared by Talk and Write (law 8).
+`safety` is shared by Talk, the pause and Someone new (law 8).
 
-New account, own download: `signIn` → `talk` → (✕) `you` → (‹) `home`.
-New account, from an invite link: `signIn` → `gift` → `home`.
-Returning account: `home`.
+New account, own download: `signIn` → `talk`.
+New account, from an invite link: `signIn` → `thread` with the inviter, the gift first (Q4).
+Returning account: `talk`.
 
-## Screens
+## Screens and controls
 
-Control ids are `screen.control`. They are the `accessibilityIdentifier` values (AGENTS.md).
+Control ids are `screen.control`; they are the `accessibilityIdentifier` values. A row list appends an index: `people.row.0`, `people.row.1`, …
+
+### Everywhere
+| Id | Control |
+| --- | --- |
+| `bar.field` | The talk bar's text (grows to 4 lines, then scrolls) |
+| `bar.mic` | The engraved mic, shown while the bar is empty |
+| `bar.send` | The apricot send, shown once the bar has words |
+| `edge.left` | The left edge light: shows You |
+| `edge.right` | The right edge light: shows People |
+
+The pull mark and Settings are deferred, so the pull mark is not drawn in package 01 (no dead controls).
 
 ### `signIn` — Sign in (not drawn: Q1)
 | Id | Control |
 | --- | --- |
-| `signIn.apple` | Apple's Sign in with Apple button (system control) |
-| `signIn.privacy` | "Privacy" link |
-| `signIn.retry` | Try again (failed state only) |
+| `signIn.apple` | Sign in with Apple (Apple's control) |
+| `signIn.google` | Sign in with Google (Google's control) |
+| `signIn.privacy` | "Privacy" |
+| `signIn.retry` | "Try again" (failed state only) |
 
-### `talk` — Talk (V3 "Talking" and "After you stop")
-Opens as an act: rises from the bottom.
+### `talk` — Talk (Y4 first open, conversation, Y5 a suggestion)
 | Id | Control |
 | --- | --- |
-| `talk.close` | ✕, top left |
-| `talk.question` | The app's line at the top: reflection, then question (text, not a button) |
-| `talk.mic` | The big mic: tap to talk, tap to stop |
-| `talk.type` | "or type": opens the keyboard and a text field |
-| `talk.field` | The text field (typing mode) |
-| `talk.sendTyped` | Return key / send for typed words |
-| `talk.words` | The person's words on paper (text) |
-| `talk.consentSure`, `talk.consentNotNow`, `talk.consentNever` | Consent chips (not drawn: Q3) |
-| `talk.card` | Suggestion swipe card (swipe right = That's me, left = Not now) |
-| `talk.cardNotNow` | "not now" under the card |
-| `talk.cardThatsMe` | "that's me" under the card |
-| `talk.cardDots` | Dots for the queued cards (no count) |
-| `talk.retry` | Try again (failed turn only) |
+| `talk.greeting` | Greeting and the one or two lines about what is real now (text) |
+| `talk.message` | One of your messages (text; `talk.message.N`) |
+| `talk.reply` | One reply (text; `talk.reply.N`) |
+| `talk.suggestion` | The suggestion card (swipe right = That's me, left = Not now) |
+| `talk.thatsMe` | That's me |
+| `talk.partly` | Partly |
+| `talk.notNow` | Not now |
+| `talk.retry` | "Try again" under a turn that didn't go through |
 
-### `you` — You (Y1 as in V3 flows Q19; empty state F5 · You)
-A place: slides in from the left.
+### `scope` — Who sees this? (Y5, right after That's me or Partly)
 | Id | Control |
 | --- | --- |
-| `you.back` | ‹ to Home |
-| `you.suggestionsRow` | "Suggestions waiting" dashed-glass row, shown only when at least one waits |
-| `you.kenning` | One row per kenning (one id per row, index appended by the list: `you.kenning.0`, `you.kenning.1`, …) |
-| `you.talk` | Talk, the one primary |
-| `you.retry` | Try again (failed state only) |
+| `scope.everyone`, `scope.partner`, `scope.family`, `scope.friends`, `scope.coworkers` | Scope words |
+| `scope.only` | "Only with [Name]" (`scope.only.N`, one per linked person) |
+| `scope.person` | A person under "Who sees this?" (`scope.person.N`) |
+| `scope.onlyMe` | "Only me" |
+| `scope.done` | Done (the bar's send) |
 
-### `suggestions` — Suggestions (Y5)
-An act.
+### `you` — You, as the list by kind (Y1 list)
 | Id | Control |
 | --- | --- |
-| `suggestions.close` | ✕ |
-| `suggestions.card` | The swipe card |
-| `suggestions.notNow` | Not now |
-| `suggestions.thatsMe` | That's me |
-| `suggestions.dots` | Dots (no count) |
-| `suggestions.retry` | Try again (failed state only) |
+| `you.item` | One kenning (`you.item.N`) |
+| `you.talk` | "Talk" on the empty state |
+| `you.retry` | "Try again" (failed state only) |
 
-### `kenning` — Kenning detail (Y2, thin)
-A place.
+### `kenning` — A kenning (Y2), a card over You
 | Id | Control |
 | --- | --- |
-| `kenning.back` | ‹ |
-| `kenning.words` | The kenning in the person's words (text) |
-| `kenning.receipt` | "You said: …" with where and when (text) |
-| `kenning.done` | Done |
-| `kenning.retry` | Try again (failed state only) |
+| `kenning.card` | The card (tap outside closes) |
+| `kenning.retry` | "Try again" (failed state only) |
 
-### `home` — Home (card stack, at rest; F5 · Home line)
+### `people` — Your people (H1)
 | Id | Control |
 | --- | --- |
-| `home.person` | One card per person (`home.person.0` …, lowest = most urgent, as the server orders them) |
-| `home.addAboutYou` | "Add something about you" line (only while You has no kenning and someone is on Home) |
-| `home.you` | Your initial in the bar: opens You |
-| `home.write` | Write, the wide button |
-| `home.add` | + : opens Add a person |
-| `home.retry` | Try again (failed state only) |
+| `people.row` | One person (`people.row.N`) |
+| `people.new` | "Someone new" |
+| `people.retry` | "Try again" (failed state only) |
 
-### `addPerson` — Add a person (F4, without the HOW step)
-An act.
+### `someoneNew` — Someone new (H2)
 | Id | Control |
 | --- | --- |
-| `addPerson.close` | ✕ |
-| `addPerson.partner`, `addPerson.friend`, `addPerson.family` | WHO chips |
-| `addPerson.name` | NAME field |
-| `addPerson.cancel` | Cancel |
-| `addPerson.next` | Next |
+| `someoneNew.partner`, `someoneNew.friend`, `someoneNew.family` | Who are they to you? |
+| `someoneNew.name` | Their first name |
+| `someoneNew.gift` | The one thing they will see (Q3) |
+| `someoneNew.change` | "Change" (Q3) |
+| `someoneNew.share` | "Share the link" (the bar's send) |
+| `someoneNew.retry` | "Try again" (failed state only) |
 
-### `invitePreview` — Invite preview (F4 · preview; F4b when there is no kenning)
+Pulling right or down closes Someone new.
+
+### `thread` — A person (P1 without This week and check-in, P3 arrives, P4 writing)
 | Id | Control |
 | --- | --- |
-| `invitePreview.back` | ‹, top left |
-| `invitePreview.backButton` | Back, bottom left (same action as ‹) |
-| `invitePreview.picked` | The picked kenning, shown as the other person will see it |
-| `invitePreview.other` | "Or give this one" rows (`invitePreview.other.0`, `.1`) |
-| `invitePreview.ownLine` | F4b: "Write one thing about you for [Name]" field |
-| `invitePreview.send` | Send invite (apricot); opens the iOS share sheet |
-| `invitePreview.retry` | Try again (failed state only) |
+| `thread.card` | One card (`thread.card.N`); a folded card to you opens on touch |
+| `thread.keep` | Keep, under a card you have read |
+| `thread.reply` | Reply, under a card you have read |
+| `thread.retry` | "Try again" (failed state, or under a card that wasn't sent) |
+| `thread.edit` | "Edit", under a card that couldn't be sent as written |
 
-### `gift` — Invited person's first open (F3b)
+The bar reads "Write to [Name]" here.
+
+### `reading` — First reading (P3)
 | Id | Control |
 | --- | --- |
-| `gift.words` | The kenning given (text) |
-| `gift.continue` | Continue |
-| `gift.retry` | Try again (failed state only) |
+| `reading.card` | Their words, alone; a touch anywhere ends the first reading |
 
-### `person` — Person page (P1, thin: the OPEN block only)
-A place.
+### `pause` — Before it goes (P4 the pause, P4 [Name] shared nothing)
 | Id | Control |
 | --- | --- |
-| `person.back` | ‹, top left |
-| `person.backButton` | Back, bottom left (same action as ‹) |
-| `person.item` | One row per card (`person.item.0` …) |
-| `person.write` | Write to [Name] |
-| `person.retry` | Try again (failed state only) |
+| `pause.note` | One note card (swipe right = Use it, left = Keep mine) |
+| `pause.keepMine` | "‹ Keep mine" |
+| `pause.useIt` | "Use it ›" |
+| `pause.final` | The final card with the words [Name] will read (only when a note changed them) |
+| `pause.send` | "Fold and send" (the bar's send), on the final card |
 
-### `write` — Write (P4, with F1's single Send and the first-message card)
-An act.
+Pulling down goes back to writing, with the words as they are now.
+
+### `safety` — Safety stop (not drawn: Q2)
 | Id | Control |
 | --- | --- |
-| `write.close` | ✕ |
-| `write.field` | The words, on paper |
-| `write.notesLine` | "Notes on how [Name] may hear this · See ›" |
-| `write.note` | Note swipe card (right = change it, left = keep yours) |
-| `write.noteKeep` | keep yours |
-| `write.noteChange` | change it |
-| `write.noteDots` | Dots (no count) |
-| `write.skipNotes` | Skip the notes |
-| `write.own` | "From what you said" card (right = add it, left = not now) |
-| `write.ownNotNow` | not now |
-| `write.ownAdd` | add it |
-| `write.closeButton` | Close (bottom left) |
-| `write.send` | Send (apricot) |
-| `write.edit` | Edit (refusal state only) |
-
-### `card` — Card opened (P3, first reading)
-An act. The first reading has no app commentary (V3 rule 6).
-| Id | Control |
-| --- | --- |
-| `card.close` | ✕ |
-| `card.text` | The words (text) |
-| `card.keep` | Keep |
-| `card.reply` | Reply (apricot) |
-| `card.retry` | Try again (failed state only) |
-
-### `safety` — Safety stop (not drawn: Q3)
-| Id | Control |
-| --- | --- |
-| `safety.resource` | One link per resource (`safety.resource.0` …) |
-| `safety.close` | Close |
+| `safety.resource` | One resource (`safety.resource.N`) |
+| `safety.close` | "Close" |
 
 ## Deferred
 
-Drawn in V3 but outside the five steps. Not built in package 01.
+Drawn in the greenhouse or on "every page", but outside the five steps:
 
-- **Home:** finger-on-card lift and its preview; check-in lines; sent-card envelope beyond the send itself; H3 first run "Who's on your mind?" (it opens a first message before anyone is linked, which needs a pending-recipient design).
-- **Person page:** "What you both share" and Share something with [Name]; Talked about; All [Name] shared; This week; the check-in line.
-- **Write:** "To [Name] ▾" switching; the time chip ("Now ▾", "At the check-in ▾") and Send at a later time; Hold for check-in; notes read aloud with headphones and voice "keep"/"change"; notes grounded in what the receiver shared (Tier 3); the sender research question; Talk it through after a refusal.
-- **Card:** "What may [Name] mean?" (receiving-side insight, package 03); Remind me later; Let's talk; the receiver research question.
-- **Talk:** "· another" question; tap to edit a suggestion; Partly; read-aloud; the scope step after That's me; streaming voice; kind labels on cards.
-- **You:** Ask (Mirror); Everyone / [Name] seen-by chips and What [Name] sees; the gear and Settings (including Log out, Download your data and Delete my account); + Add with the kind picker; carry-over cards.
-- **Kenning detail:** Who can see it; Edit the words; Set it down; Still true?; kind, scope, when.
-- **Invite preview:** "Edit the words picked for [Name]".
-- **Everything in package 02 to 04:** import from your AI, scheduled sends, check-ins, receiving-side insight, the map, cards (story and share), Mirror.
-- **Outside the app:** the invite web page already exists in `site/_worker.js`; the friend's answer page and story cards are later.
-- **Launch requirements (CONTRACT §11):** the AI-provider consent screen (L6), Report and Block (L3). Needed before App Store review, not for this chain.
+- **Talk:** the starters on first open, Import from your AI, the When field for a kenning, "Ask about your kennings".
+- **You:** the subway map (the CPO holds map work; package 01 shows the List by kind, which the greenhouse names as the same content), This week, + Add something, Y2 Edit · Change kind · Set aside, Y3 share What lands hard, kennings from feedback.
+- **People and thread:** This week at the top, the check-in line, "What Jan shared", P10 Only you, "What may [Name] mean?" (P5, receiving-side insight, package 03), the R3 and R4 research questions, the When step (Now · Tomorrow morning · At the check-in: scheduled sends are package 02).
+- **Mirror:** the link, the Mirror card, their page, feedback arriving and its notification (package 04).
+- **Check-in:** P6 to P9 (package 02).
+- **Settings and research:** the pull mark, Y9 Settings (Appearance, Notifications, Privacy, You), R1 research.
+- **Outside the app:** the X1 invite web page and X3 story cards. The page at `kenember.com/i/<code>` lives in `site/`, not in an app package.
+- **Platform:** the Action button, Live Activities, notification replies, widgets, Android (greenhouse package, "Not in this package").
+- **Launch requirements (CONTRACT §11):** AI-provider consent, Report and Block.

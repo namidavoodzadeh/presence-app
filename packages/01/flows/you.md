@@ -1,46 +1,33 @@
-# Flow: You, Suggestions, kenning detail
+# Flow: You and a kenning
 
-Screens: `you`, `suggestions`, `kenning`. Routes: `GET /kennings`, `PATCH /beliefs/:id`, `GET /beliefs/:id`.
+Views: `you` (pulled in from the left), `kenning` (a card above the talk bar). Routes: `GET /comm/items`, `GET /beliefs/:id`, `GET /comm/items/:id/visibility`.
 
-"What I learned about you, shown simply": confirmed kennings in the person's own words, newest first, each opening to the words it came from (law 2). Suggestions stay apart, dashed, until the person says That's me (law 3, V3 rule 9).
+"What I learned about you, shown simply": everything the person kept, in their own words, one group per kind in the spec's order, newest first inside a kind. Only kinds that hold something are drawn, so nothing reads as a gap in the person (CPO ruling 1). The subway map is deferred; package 01 shows the List.
 
 ## You
 
 | State | Event | Next state | On the way |
 | --- | --- | --- | --- |
-| loading | 200, no kennings and no suggestions | empty | F5: the one line and Talk |
-| loading | 200, suggestions only | loaded | the Suggestions row; no kenning rows; the F5 line stays above Talk |
-| loading | 200, kennings | loaded | `groups[].items` flattened, newest `dated_at` first; the Suggestions row when `suggested` is not empty |
+| (any view) | pull from the left, or tap `edge.left` | loading | You slides in from −120 pt; the camera moves to +60 pt; `GET /comm/items` |
+| loading | 200 with items | loaded | `groups` in the order given (the server already uses the You order); empty kinds absent; `this_week` is not shown in package 01 |
+| loading | 200, no items | empty | the one line and "Talk" |
+| loading | 403 `feature_off` or `owner_only` | failed (not open) | the not-open line |
 | loading | fails | failed | the unavailable line and Try again |
-| failed | tap `you.retry` | loading | `GET /kennings` |
-| loaded | tap `you.suggestionsRow` | (act) `suggestions` | |
-| loaded | tap `you.kenning.N` | (place) `kenning` | pass `belief_id` |
-| empty or loaded | tap `you.talk` | (act) `talk` | see `first-talk.md` |
-| any | tap `you.back` | `home` | |
-| any | `suggestions` or `talk` closes | loading | `GET /kennings` again, so new kennings show |
+| failed | tap `you.retry` | loading | |
+| loaded | tap `you.item.N` | kenning `loading` | the card rises above the bar |
+| empty | tap `you.talk` | `talk` | the same move as a pull |
+| any | pull left | `talk` | the reverse move |
+| any | send words from the bar | `talk` | the move to Talk, then the send as in `talk.md` |
+| any | You appears again | loading | so a kenning kept in Talk shows |
 
-## Suggestions
+## A kenning
 
 | State | Event | Next state | On the way |
 | --- | --- | --- | --- |
-| loading | 200 with `suggested` | cardUp | the newest three by `dated_at`; dots for the rest of the three |
-| loading | 200, `suggested` empty | empty | close the sheet; You no longer shows the row |
-| loading | fails | failed | the unavailable line and Try again |
-| failed | tap `suggestions.retry` | loading | |
-| cardUp | swipe right or tap `suggestions.thatsMe` | rating | `PATCH /beliefs/:id {rating: "very", own_wording: offered_wording}`; `{rating: "very"}` when `offered_wording` is null |
-| rating | 200 | cardUp or done | light haptic and the paper sound; next card |
-| rating | 404 | cardUp or done | the card leaves quietly |
-| rating | fails | cardUp | the card stays; the not-saved line under it |
-| cardUp | swipe left or tap `suggestions.notNow` | cardUp or done | no call; it stays a suggestion, without a mark (V3 flows Y5) |
-| done | | closed | the sheet closes; You reloads |
-| any | tap `suggestions.close` | closed | You reloads |
-
-## Kenning detail
-
-| State | Event | Next state | On the way |
-| --- | --- | --- | --- |
-| loading | 200 | loaded | words = `own_wording` else `statement`; the newest receipt |
-| loading | 404 | gone | back to You, which reloads |
-| loading | fails | failed | the unavailable line and Try again |
-| failed | tap `kenning.retry` | loading | `GET /beliefs/:id` |
-| loaded or failed | tap `kenning.back` or `kenning.done` | `you` | |
+| loading | | loading | the item's kind and words show at once from the list; `GET /beliefs/:id` and `GET /comm/items/:id/visibility` together; a soft tick |
+| loading | both 200 | loaded | the receipt (`receipts[0]`: its quote and date) and Seen by (people with `sees: true`) |
+| loading | the visibility call fails | loaded | Seen by is left out; the rest shows |
+| loading | the receipt call fails | failed | the card keeps kind and words; the unavailable line and Try again where the receipt goes |
+| loading | 404 | closed | the card sinks; You reloads |
+| failed | tap `kenning.retry` | loading | |
+| loaded, failed | tap outside the card | closed | the card sinks 16 pt and fades |

@@ -1,206 +1,186 @@
 # Package 01: copy
 
-Every string the package shows. Byte for byte. Ids match `screens.md`; an id that is not a control there is a string key only. `.a11y` is a VoiceOver label for a control with no visible text.
+Every string the package shows. Byte for byte. Ids match `screens.md`; an id that is not a control there is a string key only. `.a11y` is a VoiceOver label.
 
-**Source column:** *V3* = drawn in the frozen design; *CPO* = the communication spec's words; *server* = text the server sends and the app shows as sent; *new* = written here because the design does not have it (the owner freezes it with the package). Small-caps headings in the design (for example "IS THIS YOU?") are typography; the string is in sentence case.
+**Source:** *G* = the greenhouse package or "every page"; *CPO* = the communication spec; *V3* = carried from the V3 design where the greenhouse has no string; *server* = text the server sends; *system* = Apple's or Google's own; *new* = written here (frozen with the package). Labels the design sets in caps ("WHO SEES THIS?") are spelled in caps; everything else is sentence case.
 
-**Rules every string here obeys** (laws 4, 5, 7 and V3 rules 1, 5, 11):
+**Rules every string obeys** (laws 4, 5, 7 as amended; CPO "Words"):
 - The app never says "I" and has no name or face of its own.
 - `[Name]` is the other person's first name, never a pronoun. `[Me]` is the signed-in person's first name.
-- No counts, scores, percentages or levels: dots instead of "1 of 2", and no "2 notes".
-- Nothing clinical or evaluative. None of these words appear on screen: flooding, pursuer, withdrawer, avoidant, anxious, attachment, rejection sensitivity, love language, Four Horsemen, contempt, toxic, red flag, trigger, style, pattern, diagnosis, healthy, unhealthy.
-- Describe, never prescribe a belief; a note is about wording only.
-- Dates: "Monday" for the last seven days, else "12 November"; times in the reader's own zone, iPhone 12/24-hour setting.
+- No counts, scores or percentages: dots instead of "1 of 2".
+- None of these on screen: flooding, pursuer, withdrawer, avoidant, anxious, attachment, rejection sensitivity, love language, Four Horsemen, contempt, toxic, red flag, trigger, style, pattern, diagnosis, healthy, unhealthy.
+- Claims rule (Nami, 15 Nov): nothing says the app improves a relationship or reduces conflict.
+- When words: "now", "this morning", "this afternoon", "this evening", "yesterday", a weekday within the week, else "12 Nov"; in labels they are caps ("THIS MORNING").
 
 ## `signIn`
 | Id | String | Source |
 | --- | --- | --- |
 | `signIn.line` | Say hard things the way you mean them. | new |
 | `signIn.adult` | Kenember is for adults. By continuing, you confirm you're 18 or over. | new |
-| `signIn.apple` | (Apple's own button text, "Sign in with Apple") | system |
-| `signIn.ai` | Kenember is an AI, not a person. | V3 (Settings) |
+| `signIn.apple`, `signIn.google` | the providers' own button text | system |
+| `signIn.ai` | Kenember is an AI, not a person. | V3 |
 | `signIn.privacy` | Privacy | new |
-| `signIn.appleFailed` | Apple couldn't confirm this sign-in. | new |
+| `signIn.providerFailed` | That sign-in didn't go through. | new |
 | `signIn.serverFailed` | Signing in didn't finish. | new |
 | `signIn.offline` | You're offline. | new |
 | `signIn.retry` | Try again | new |
 
+## The talk bar
+| Id | String | Source |
+| --- | --- | --- |
+| `bar.placeholderTalk` | Say what's on your mind | G |
+| `bar.placeholderThread` | Write to [Name] | G |
+| `bar.placeholderOne` | One thing about you for [Name] | new (Q3) |
+| `bar.done` | Done | G (Y5 who sees this) |
+| `bar.share` | Share the link | G (H2) |
+| `bar.foldAndSend` | Fold and send | G (P4 When) |
+| `bar.mic.a11y` | Talk / Stop | new |
+| `bar.send.a11y` | Send | new |
+| `edge.left.a11y` | Your kennings | new |
+| `edge.right.a11y` | Your people | new |
+| `pull.toYou.a11y` | Show your kennings | G (VoiceOver action) |
+| `pull.toPeople.a11y` | Show people | G |
+| `pull.toTalk.a11y` | Back to talk | G |
+
 ## `talk`
 | Id | String | Source |
 | --- | --- | --- |
-| `talk.question` | `reply.reflection`, then `reply.question` (or the opener's `question`) | server |
-| `talk.fallbackOpener` | What's one moment from this week that's still with you? | server's fixed opener wording, kept on the phone |
-| `talk.idleHint` | Tap to talk · or type | new (from the drawn "Tap to stop · or type") |
-| `talk.listeningHint` | Tap to stop · or type | V3 |
-| `talk.fieldPlaceholder` | Type what happened | new |
-| `talk.mic.a11y` | Talk / Stop | new |
-| `talk.close.a11y` | Close | new |
-| `talk.cardHeader` | Is this true about you? | V3 |
-| `talk.card` | `offered_wording`, else `statement` | server |
-| `talk.cardNotNow` | ← not now | V3 |
-| `talk.cardThatsMe` | that's me → | V3 |
-| `talk.cardFooter` | Only you see these. | V3 (first half dropped: it named Write before the person has seen it) |
-| `talk.cardDots.a11y` | More to look at after this one | new |
+| `talk.greeting` | Morning, [Me]. / Afternoon, [Me]. / Evening, [Me]. | G ("Evening, Nami.") |
+| `talk.realOne` | [Name] left you a card. Nothing else needs you. | G; [Name] carries the apricot underline |
+| `talk.realMany` | [Name] and [Name] left you cards. Nothing else needs you. | new (the two most recent names) |
+| `talk.realNone` | Say whatever's on your mind. | G (Y4, without the starters) |
+| `talk.fallbackQuestion` | What's one moment from this week that's still with you? | new (only when the first question can't load) |
+| `talk.reply` | `reflection`, then `question` | server |
+| `talk.suggestionKind` | the kind's heading, in caps | server (`item.kind` → heading) |
+| `talk.suggestionWords` | `item.wording` | server |
+| `talk.suggestionFrom` | From what you just said. | G |
+| `talk.thatsMe` | That's me | G |
+| `talk.partly` | Partly | G |
+| `talk.notNow` | Not now | G |
+| `talk.kept` | Kept for you | G |
+| `talk.notKept` | This one can't be kept. | CPO |
+| `talk.partlyFailed` | Kept as That's me. Partly didn't save. | new |
+| `talk.grantFailed` | Not shared with [Name]. Try again from You. | new |
 | `talk.notSaved` | Not saved. Try again. | new |
-| `talk.consentSure` | Sure | server contract (T08) |
-| `talk.consentNotNow` | Not now | server contract (T08) |
-| `talk.consentNever` | Never | server contract (T08) |
 | `talk.turnFailed` | That didn't go through. Your words are still here. | new |
-| `talk.limited` | Talk opens again at [time]. / Talk opens again on [day]. | server wording, formatted on the phone from `opens_at` |
+| `talk.limited` | Talk opens again at [time]. / Talk opens again on [day]. | server wording, formatted on the phone |
 | `talk.retry` | Try again | new |
+| `notOpen` | Talk isn't open on this account yet. | new |
+
+## `scope`
+| Id | String | Source |
+| --- | --- | --- |
+| `scope.question` | Is this with everyone, or with someone? | CPO and G |
+| `scope.everyone` | With everyone | CPO |
+| `scope.partner` | With my partner | CPO |
+| `scope.family` | With family | CPO |
+| `scope.friends` | With friends | CPO |
+| `scope.coworkers` | With coworkers | CPO |
+| `scope.only` | Only with [Name] | CPO |
+| `scope.whoSees` | WHO SEES THIS? | G |
+| `scope.onlyMe` | Only me | CPO and G |
 
 ## `you`
 | Id | String | Source |
 | --- | --- | --- |
-| `you.title` | You | V3 |
-| `you.back.a11y` | Home | new |
-| `you.emptyLine` | Say one thing that's true for you. It stays here until you share it. | V3 (F5) |
-| `you.suggestionsRow` | Suggestions waiting | V3 (Q19) |
-| `you.suggestionsSub` | From what you said in Talk. Only you see these. | V3 (Q19) |
-| `you.heading` | Your kennings | V3 (Q19) |
-| `you.kenningLine` | Something true about you, in your words. You choose who sees it. | CPO |
-| `you.kenning` | `own_wording`, else `wording` | server |
+| `you.title` | You | G |
+| `you.line` | Something true about you, in your words. You choose who sees it. | CPO (the kenning's plain description) |
+| `you.kindHeading` | `heading` for each group | server |
+| `you.item` | the item's `wording` | server |
+| `you.empty` | Say one thing that's true for you. It stays here until you share it. | V3 (F5) |
 | `you.talk` | Talk | V3 |
 | `you.unavailable` | Your kennings can't be shown right now. | new |
 | `you.retry` | Try again | new |
 
-## `suggestions`
-| Id | String | Source |
-| --- | --- | --- |
-| `suggestions.title` | Suggestions | V3 (Y5) |
-| `suggestions.close.a11y` | Close | new |
-| `suggestions.header` | Is this you? | V3 (Y5) |
-| `suggestions.card` | “`offered_wording`, else `wording`” | server |
-| `suggestions.source` | From Talk, [date] | V3 (Y5) |
-| `suggestions.notNow` | Not now | V3 (Y5) |
-| `suggestions.thatsMe` | That's me | V3 (Y5) |
-| `suggestions.notSaved` | Not saved. Try again. | new |
-| `suggestions.unavailable` | Suggestions can't be shown right now. | new |
-| `suggestions.retry` | Try again | new |
-
 ## `kenning`
 | Id | String | Source |
 | --- | --- | --- |
-| `kenning.back.a11y` | You | new |
-| `kenning.words` | `own_wording`, else `statement` | server |
-| `kenning.receipt` | You said: “[quote]” | V3 (Y2) |
-| `kenning.whereTalk` | Said in Talk, [date] · confirmed That's me | V3 (Y2) |
-| `kenning.whereOwn` | Written by you, [date] | new (a kenning typed on the invite preview) |
-| `kenning.done` | Done | V3 (Y2) |
-| `kenning.unavailable` | This kenning can't be shown right now. | new |
+| `kenning.kind` | the kind's heading, in caps | server |
+| `kenning.words` | the item's `wording` | server |
+| `kenning.receiptTalk` | From Talk, [date]: “[quote]” | G (Y2) |
+| `kenning.receiptTyped` | Written by you, [date] | new |
+| `kenning.with` | WITH | G |
+| `kenning.withValue` | Everyone / My partner / Family / Friends / Coworkers / Only [Name] | G ("My partner"); the rest new in the same form |
+| `kenning.seenBy` | SEEN BY | G |
+| `kenning.seenNobody` | Only you | new |
+| `kenning.when` | WHEN | G (the row is left out when the item has no "when") |
+| `kenning.unavailable` | Where this came from can't be shown right now. | new |
 | `kenning.retry` | Try again | new |
 
-## `home`
+## `people`
 | Id | String | Source |
 | --- | --- | --- |
-| `home.wordmark` | (the Kenember wordmark image) | V3 |
-| `home.lineUnread` | New card from [Name] | V3 |
-| `home.lineDraft` | Draft | V3 |
-| `home.lineNothing` | Nothing open | V3 |
-| `home.lineNotSent` | Not sent | new |
-| `home.person.a11y` | [Name], [line] | V3 flows (QA-B271 ruling) |
-| `home.addAboutYou` | Add something about you | V3 (F5) |
-| `home.you.a11y` | You | new |
-| `home.write` | Write | V3 |
-| `home.add.a11y` | Add a person | new |
-| `home.unavailable` | Your people can't be shown right now. | new |
-| `home.retry` | Try again | new |
+| `people.title` | Your people | G |
+| `people.lineUnread` | A card, folded, from [when] | G |
+| `people.lineDraft` | You started writing | new (same voice as the drawn "You wrote on Friday") |
+| `people.lineNothing` | Nothing open | V3 |
+| `people.new` | Someone new | G |
+| `people.row.a11y` | [Name], [line], [time]; plus "new" when the dot shows | new |
+| `people.unavailable` | Your people can't be shown right now. | new |
+| `people.retry` | Try again | new |
 
-A person's line is chosen from the top `reason` in `GET /home`: `unread` → `home.lineUnread`; `draft` → `home.lineDraft`; anything else or none → `home.lineNothing`. A send that has not been confirmed shows the breathing envelope instead of changing the line; a failed send shows `home.lineNotSent`.
-
-## `addPerson`
+## `someoneNew`
 | Id | String | Source |
 | --- | --- | --- |
-| `addPerson.title` | Add a person | V3 |
-| `addPerson.close.a11y` | Close | new |
-| `addPerson.who` | Who | V3 |
-| `addPerson.partner` | Partner | V3 |
-| `addPerson.friend` | Friend | V3 |
-| `addPerson.family` | Family | V3 |
-| `addPerson.nameLabel` | Name | V3 |
-| `addPerson.namePlaceholder` | First name | new |
-| `addPerson.note` | Next shows exactly what [Name] will see. The link works for [Name] only and expires in 7 days. | V3 (F4); shown once the name has a letter |
-| `addPerson.cancel` | Cancel | V3 |
-| `addPerson.next` | Next | V3 |
+| `someoneNew.title` | Someone new | G |
+| `someoneNew.who` | WHO ARE THEY TO YOU? | G |
+| `someoneNew.partner` / `.friend` / `.family` | Partner / Friend / Family | G |
+| `someoneNew.nameLabel` | THEIR FIRST NAME | G |
+| `someoneNew.line` | The link works once and ends in 7 days. [Name] sees one thing you choose to share, then decides. | G (shown once a name is typed) |
+| `someoneNew.giftLabel` | WHAT [NAME] WILL SEE | new (Q3) |
+| `someoneNew.gift` | the kind label, then the item's `wording` | server |
+| `someoneNew.change` | Change | new (Q3) |
+| `someoneNew.shareText` | [Me] wants you to know one thing. This link is for you only: [link] | G (X1 "Nami wants you to know one thing."); the rest new |
+| `someoneNew.notKept` | This one can't be kept. | CPO |
+| `someoneNew.notSent` | The link wasn't made. Try again. | new |
+| `someoneNew.unavailable` | What you could share can't be shown right now. | new |
+| `someoneNew.retry` | Try again | new |
 
-## `invitePreview`
+## `thread` and `reading`
 | Id | String | Source |
 | --- | --- | --- |
-| `invitePreview.title` | Invite [Name] | V3 |
-| `invitePreview.back.a11y` | Back | new |
-| `invitePreview.allTheySee` | This is all [Name] will see. | V3 |
-| `invitePreview.exactWords` | [Name] will read exactly these words. | V3 |
-| `invitePreview.cardHeader` | [Me] shared something with you | V3, changed: the drawn "…about herself…" needs a pronoun the app does not know |
-| `invitePreview.picked` | the kenning's `own_wording` | server |
-| `invitePreview.orGive` | Or give this one | V3 |
-| `invitePreview.ownPlaceholder` | Write one thing about you for [Name] | V3 (F4b) |
-| `invitePreview.ownHelper` | In your words. It becomes a kenning shared with [Name] only. | V3 (F4b) |
-| `invitePreview.tooLong` | Keep it under 400 characters. | new |
-| `invitePreview.notSent` | The invite wasn't made. Try again. | new |
-| `invitePreview.backButton` | Back | V3 |
-| `invitePreview.send` | Send invite | V3 |
-| `invitePreview.shareText` | [Me] shared something with you on Kenember. This link is for you only: [link] | new |
-| `invitePreview.unavailable` | Your kennings can't be shown right now. | new |
-| `invitePreview.retry` | Try again | new |
+| `thread.name` | [Name] | G |
+| `thread.empty` | Nothing here yet. | new |
+| `thread.fromLabel` | FROM [NAME] · [WHEN] | G |
+| `thread.youLabel` | YOU · [WHEN] | G |
+| `thread.keptLabel` | FROM [NAME] · KEPT | G (R4 frame) |
+| `thread.giftLabel` | FROM [NAME] · SHARED WITH YOU | new (Q4) |
+| `thread.folded` | A card, folded | G |
+| `thread.touch` | Touch to open | G |
+| `thread.keep` | Keep | G |
+| `thread.reply` | Reply | G |
+| `thread.helped` | Helped by Kenember | G |
+| `thread.notSent` | Not sent. | new |
+| `thread.retry` | Try again | new |
+| `thread.refused` | This can't be sent as written. | new |
+| `thread.refusedWhy` | `headline` | server |
+| `thread.edit` | Edit | new |
+| `thread.notConnected` | You and [Name] aren't connected on Kenember now. | server contract (v1.93) |
+| `thread.didntOpen` | Didn't open. Touch to try again. | new |
+| `thread.notSaved` | Not saved. Try again. | new |
+| `thread.unavailable` | [Name]'s cards can't be shown right now. | new |
+| `reading.words` | `final` | server |
+| `reading.name` | [Name] | G |
+| `invite.deadLink` | This invite link doesn't work any more. Ask for a new one. | new (shown in Talk) |
+| `invite.ownLink` | This is your own invite link. Send it to the person it's for. | new (shown in Talk) |
 
-## `gift`
+## `pause`
 | Id | String | Source |
 | --- | --- | --- |
-| `gift.header` | [Name] shared something with you | V3 (F3b), changed as above |
-| `gift.words` | the words given | server |
-| `gift.sub` | In [Name]'s words. [Name] chose to give you this first. | V3 (F3b) |
-| `gift.continue` | Continue | V3 (F3b) |
-| `gift.dead` | This invite link doesn't work any more. Ask for a new one. | new |
-| `gift.own` | This is your own invite link. Send it to the person it's for. | new |
-| `gift.notSent` | That didn't go through. Try again. | new |
-| `gift.unavailable` | This invite can't be opened right now. | new |
-| `gift.retry` | Try again | new |
+| `pause.title` | Before it goes | G |
+| `pause.noteLabel` | HOW IT MAY LAND | new (the general basis label; "JAN SHARED" waits for receiver-grounded notes) |
+| `pause.noteWhy` | `why_line` | server (`next/engine/bridge/insight_copy.json`, below) |
+| `pause.tryLabel` | TRY | G |
+| `pause.trySuggested` | “[suggested]” | server |
+| `pause.basisNothing` | [Name] hasn't shared anything yet, so this is based only on you. | G and CPO |
+| `pause.basisGeneral` | This is general, not about [Name]. | new (PSY "labelled general") |
+| `pause.fromMe` | You shared: “[wording]” Want to say that here? | G and CPO, changed: "You shared that …" would need the person's own words turned into the second person |
+| `pause.askLine` | You could ask [Name] how they like hard things raised. | G and CPO |
+| `pause.keepMine` | ‹ Keep mine | G |
+| `pause.useIt` | Use it › | G |
+| `pause.dots.a11y` | More after this one | new |
 
-## `person`
-| Id | String | Source |
-| --- | --- | --- |
-| `person.back.a11y` | Home | new |
-| `person.open` | Open | V3 |
-| `person.itemFromThem` | A card from [Name] · [date] | V3 |
-| `person.itemNew` | new | V3 |
-| `person.itemMine` | Your card · [date] | V3 (F6, without the check-in part) |
-| `person.empty` | Nothing open | V3 |
-| `person.backButton` | Back | V3 |
-| `person.write` | Write to [Name] | V3 |
-| `person.unavailable` | [Name]'s cards can't be shown right now. | new |
-| `person.retry` | Try again | new |
-
-## `write`
-| Id | String | Source |
-| --- | --- | --- |
-| `write.title` | To [Name] | V3 |
-| `write.close.a11y` | Close | new |
-| `write.placeholder` | Write to [Name] | new |
-| `write.notesLine` | Notes on how [Name] may hear this | V3, changed: "2 notes" removed (V3 rule 5, no count of problems) |
-| `write.notesSee` | See › | V3 |
-| `write.noteHeader` | May land hard | V3 |
-| `write.noteBody` | [why_line] Try “[suggested]”. | why_line: server; frame: V3 |
-| `write.noteKeep` | ← keep yours | V3 |
-| `write.noteChange` | change it → | V3 |
-| `write.noteDots.a11y` | More notes after this one | new |
-| `write.skipNotes` | Skip the notes | V3 |
-| `write.ownHeader` | From what you said | V3 (first message) |
-| `write.ownLine` | “[line]” | server (`/bridge/why-it-matters`) |
-| `write.ownAsk` | Add it to your message? | V3 (first message) |
-| `write.ownNotNow` | ← not now | V3 (first message) |
-| `write.ownAdd` | add it → | V3 (first message) |
-| `write.basisNothing` | [Name] hasn't shared anything yet, so this is based only on you. | V3 and CPO |
-| `write.basisWordsOnly` | These notes come from your words, not from what [Name] shared. | new (when [Name] has shared something, package 01 still makes notes from words only) |
-| `write.ready` | Ready to fold | V3 (F1) |
-| `write.closeButton` | Close | V3 |
-| `write.send` | Send | V3 (F1) |
-| `write.refused` | This can't be sent as written. | new |
-| `write.refusedWhy` | `headline` | server |
-| `write.edit` | Edit | new |
-| `write.notConnected` | You and [Name] aren't connected on Kenember now. | server contract (v1.93) |
-| `write.notSent` | This wasn't sent. Your words are here. | new |
-
-**The why lines** (server, `next/engine/bridge/insight_copy.json`, reviewed and linted by the engine; shown only for highlights with a `friction_kind`; a highlight about the receiver is not shown in package 01):
+**The why lines** (server, reviewed and linted by the engine; shown only for highlights with a `friction_kind`; a line about the receiver is not shown in package 01):
 
 | `friction_kind` | Line |
 | --- | --- |
@@ -215,33 +195,28 @@ A person's line is chosen from the top `reason` in `GET /home`: `unread` → `ho
 | heat | A word like hate tends to be heard as the size of the message, so the point underneath can get lost behind it. |
 | you_blame | A line about what they do tends to be heard as blame, and invites a defence instead of an answer. |
 
-When `suggested` equals `original` (a vague_ask note), `write.noteBody` is the why line alone, and the card has "keep yours" only.
-
-## `card`
-| Id | String | Source |
-| --- | --- | --- |
-| `card.title` | From [Name] | V3 |
-| `card.close.a11y` | Close | new |
-| `card.meta` | [Name] · [date] [time] | V3 |
-| `card.text` | `final` | server |
-| `card.keep` | Keep | V3 |
-| `card.reply` | Reply | V3 |
-| `card.unavailable` | This card can't be opened right now. | new |
-| `card.retry` | Try again | new |
+A vague_ask note has no TRY (its `suggested` equals `original`), so its card offers "‹ Keep mine" only.
 
 ## `safety`
 | Id | String | Source |
 | --- | --- | --- |
-| `safety.message` | `safety.message` (Talk) or `line` (Write, invite) | server |
+| `safety.message` | `safety.message`, `line` or `resources.message` from the triggering reply | server |
 | `safety.resource.N` | the resource's `label` | server |
 | `safety.close` | Close | new |
+
+## Notifications and permissions
+| Id | String | Source |
+| --- | --- | --- |
+| `PRESENCE_TITLE` | Kenember | new |
+| `PUSH_BRIDGE_READY` | A new card is ready. | new (no name, no words: CONTRACT §12.4) |
+| `NSMicrophoneUsageDescription` | Kenember listens only while the mic is on, to put your words in the bar. | new |
+| `NSSpeechRecognitionUsageDescription` | Your words are turned into text on this iPhone, so you can check them before anything is sent. | new |
 
 ## Shared
 | Id | String | Source |
 | --- | --- | --- |
 | `wait.a11y` | Loading | V3 flows |
-| `wait.slow` | the screen's `*.unavailable` line, after 10 s | V3 flows |
 
 ## Server text the app does not show as sent
-- `POST /bridges` 403 `message` "I won't carry this one." and `/bridge/insight` declined `line` "I won't rewrite this one." say "I" (V3 rule 1). The app shows `write.refused` and the server's `headline` instead.
-- Any error `message` from the server. The app shows its own line for the screen; the Ref is logged, never shown.
+- `POST /bridges` 403 `message` "I won't carry this one." and the insight `declined` `line` "I won't rewrite this one." say "I". The app shows `thread.refused` and the server's `headline` instead.
+- Any error `message`. The app shows its own line; the Ref is logged, never shown.

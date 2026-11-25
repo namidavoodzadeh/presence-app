@@ -1,56 +1,66 @@
-# Flow: invite someone, and their first open
+# Flow: Someone new, and the invited person's first open
 
-Screens: `addPerson`, `invitePreview`, the iOS share sheet, `safety`; on the invited person's phone `signIn` then `gift`. Routes: `GET /kennings`, `POST /beliefs`, `POST /invites` (needs the gift fields, see `routes.md`), `GET /invites/:code` (needs the gift in its reply), `POST /invites/:code/accept`.
+Views: `people`, `someoneNew`, the iOS share sheet, `safety`; on the invited person's phone `signIn`, then `thread` with the inviter. Routes: `GET /home`, `GET /comm/items`, `POST /comm/items` (typed line), `POST /invites` and `GET /invites/:code` (both need new fields, see `routes.md`), `POST /invites/:code/accept`.
 
-Adding a person gives before it asks: the invite carries one kenning, in the inviter's own words, picked for that person (V3 package, "Invite links"; F4, F4b). The link works for one person and expires in 7 days.
+The invite gives before it asks: the other person sees one thing the inviter chose, then decides (H2, X1). The link works once and ends in 7 days.
 
-## Inviter
-
-| State | Event | Next state | On the way |
-| --- | --- | --- | --- |
-| home | tap `home.add`, or `home.write` with nobody on Home | naming | `addPerson` rises |
-| naming | type a name, pick a WHO chip (optional) | naming | Next is enabled once the name has a letter |
-| naming | tap `addPerson.next` | previewLoading | `invitePreview` slides in; `GET /kennings` |
-| naming | tap `addPerson.cancel` or `addPerson.close` | home | nothing kept |
-| previewLoading | 200 with at least one kenning that has `own_wording` | picked | the newest such kenning is picked; up to two others under "Or give this one" |
-| previewLoading | 200, none with `own_wording` | writingOwn | F4b: the one empty line; Send invite dimmed |
-| previewLoading | fails | previewFailed | the unavailable line and Try again |
-| previewFailed | tap `invitePreview.retry` | previewLoading | |
-| picked | tap `invitePreview.other.N` | picked | that one becomes the picked kenning; the one shown before moves into the list |
-| writingOwn | type words | writingOwn | Send invite enabled once there is a letter |
-| picked | tap `invitePreview.send` | creatingInvite | `POST /invites {relationship, gift: {belief_id}}` |
-| writingOwn | tap `invitePreview.send` | savingOwn | `POST /beliefs {statement, relationship}` |
-| savingOwn | 201 `created` | creatingInvite | `POST /invites {relationship, gift: {belief_id}}` with the new belief |
-| savingOwn | 200 `state: "safety"` | safetyStop | `safety` with the resources; nothing was stored |
-| savingOwn | 400 `invalid` (over 400 characters) | writingOwn | the too-long line under the field |
-| savingOwn | fails | writingOwn | the not-sent line; the words stay |
-| safetyStop | tap `safety.close` | writingOwn | the words stay in the field |
-| creatingInvite | 200 | sharing | iOS share sheet with the share text and `link` |
-| creatingInvite | fails | picked or writingOwn | the not-sent line |
-| sharing | shared (any activity completes) | home | sheet and act close; Home shows the person once they accept |
-| sharing | share sheet cancelled | picked | the same invite is reused if Send invite is tapped again (no second code) |
-| picked or writingOwn | tap `invitePreview.back` or `invitePreview.backButton` | naming | the name and chip are kept |
-
-## Invited person
+## People
 
 | State | Event | Next state | On the way |
 | --- | --- | --- | --- |
-| (app opened by the link, signed out) | | sign-in flow | `pendingInvite` kept; see `sign-in.md` |
-| (app opened by the link, signed in) | | peeking | |
-| peeking | | peeking | `GET /invites/:code` |
-| peeking | 200 | giftShown | `gift`: the inviter's name and the words given |
-| peeking | 404 `not_found` (expired, used, revoked, unknown) | linkDead | the dead-link line; `gift.continue` goes on |
-| peeking | 400 `invalid` (own code) | linkOwn | the own-link line; `gift.continue` goes on |
-| peeking | fails | giftFailed | the unavailable line and Try again |
-| giftFailed | tap `gift.retry` | peeking | |
-| giftShown | tap `gift.continue` | accepting | `POST /invites/:code/accept` |
-| accepting | 200 | home | clear `pendingInvite`; Home shows the inviter |
-| accepting | 409 `conflict` (already linked) | home | clear `pendingInvite` |
-| accepting | 404 | linkDead | the link was used or expired meanwhile |
-| accepting | fails | giftShown | the not-sent line; Continue stays |
-| linkDead or linkOwn | tap `gift.continue` | home | clear `pendingInvite` |
+| (any view) | pull from the right, or tap `edge.right` | loading | People slides in from +120 pt; camera to −60 pt; `GET /home` |
+| loading | 200 with people | loaded | one row per person, most urgent at the top (the reverse of `GET /home`'s array, which ends with the most urgent), then "Someone new" |
+| loading | 200, nobody | empty | only "Someone new" |
+| loading | fails | failed | the unavailable line, Try again, and "Someone new" |
+| failed | tap `people.retry` | loading | |
+| loaded | tap `people.row.N` | `thread` | rows slide 30 pt left and fade; see `read.md` |
+| any | tap `people.new` | `someoneNew` | rises from the bottom |
+| any | pull right | `talk` | |
+
+## Someone new (inviter)
+
+| State | Event | Next state | On the way |
+| --- | --- | --- | --- |
+| opening | | picking | `GET /comm/items` |
+| picking | 200 with an eligible item | ready | the newest eligible item is the gift (Q3); "Change" shows when there is more than one |
+| picking | 200, none eligible | writingOne | the bar's placeholder reads "One thing about you for [Name]" (Q3) |
+| picking | fails | failed | the unavailable line and Try again; Share the link stays dimmed |
+| failed | tap `someoneNew.retry` | picking | |
+| ready | tap `someoneNew.change` | ready | the next eligible item, newest first, round to the first |
+| any | tap a WHO word | same | that word is underlined; tapping it again clears it |
+| any | type a first name | same | 40 characters at most; the line under it names them |
+| ready | tap `someoneNew.share`, a name typed | creating | `POST /invites {relationship, gift: {item_id}}` |
+| writingOne | tap `bar.send`, a name typed, words in the bar | savingOne | `POST /comm/items {kind: "how_i_mean", wording, source: "typed", scope: {type: "everyone"}}` |
+| savingOne | 201 | creating | `POST /invites` with the new item |
+| savingOne | 200 `state: "safety"` | safetyStop | nothing stored; the words stay in the bar |
+| savingOne | 200 another refusal | writingOne | the not-kept line; the words stay |
+| savingOne | fails | writingOne | the not-sent line; the words stay |
+| safetyStop | tap `safety.close` | writingOne | |
+| creating | 200 | sharing | the share sheet with the share text and `link` |
+| creating | fails | ready or writingOne | the not-sent line |
+| sharing | shared | closed | Someone new sinks; People shows the person once they accept |
+| sharing | cancelled | ready | the same invite is reused on the next tap (no second code) |
+| any | pull down or right | closed | nothing kept |
+
+Eligible for the gift: the person's own active items of the kinds the invite may carry (How I mean things, What feels like care, How to bring something up with me; CPO X1 row), not scoped to one named person. "How to bring something up with me" comes first when there is one (PSY review, section 5).
+
+## The invited person
+
+| State | Event | Next state | On the way |
+| --- | --- | --- | --- |
+| opened by the link, signed out | | sign-in flow | `pendingInvite` kept |
+| opened by the link, signed in | | peeking | `GET /invites/:code` |
+| peeking | 200 | accepting | `POST /invites/:code/accept` (the person tapped a link meant for them; the gift is the first thing they see, Q4) |
+| peeking | 404 | deadLink | `talk`, with the dead-link line as the first reply |
+| peeking | 400 (own code) | ownLink | `talk`, with the own-link line as the first reply |
+| peeking | fails | peekFailed | `talk`, with the unavailable line and Try again as the first reply |
+| peekFailed | tap Try again | peeking | |
+| accepting | 200 | arrived | clear `pendingInvite`; ask for notification permission (`read.md`); the inviter's `thread`, the gift as the first card (Q4) |
+| accepting | 409 (already linked) | arrived | as above |
+| accepting | 404 | deadLink | |
+| accepting | fails | peekFailed | |
+| arrived | pull right or down | `people` | Talk then opens with `wayIn` from the invite and `aboutName` = the inviter |
 
 Notes:
-- Only kennings with `own_wording` (the person's own first-person words) are offered, so the other person never reads a second-person line such as "Part of you feels…" as if the inviter wrote it.
-- The invited person is never asked for anything before receiving (F3b). Their own first Talk is reached from Home's line "Add something about you".
-- The web page at `kenember.com/i/<code>` already exists in `site/` and is not part of this package.
+- The inviter is asked for notification permission when the first person they invited joins (`read.md`).
+- An invited person's first Talk uses `way_in` `invited_by_partner` or `invited_by_friend` from the invite, and the inviter's name in the question (communication spec, H3).

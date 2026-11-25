@@ -1,27 +1,35 @@
 # Package 01: questions for the owner
 
-Where the frozen V3 design does not cover something the five steps need. Simplest option first; the package is written as if you pick it.
+Revised 25 Nov after the owner's answers. The package is written as if the first option is picked.
 
-**Q1. Sign-in is not drawn.**
-- **(a) Simplest:** one screen on the ground colour with the light behind: the wordmark, "Say hard things the way you mean them.", Apple's own Sign in with Apple button, the line "Kenember is for adults. By continuing, you confirm you're 18 or over.", "Kenember is an AI, not a person." and a Privacy link. Apple only.
-- (b) The same with Google added (the route is staging-only today).
+## Decided (24 Nov)
+- Sign in with Apple and Google.
+- The communication engine runs Talk (`POST /comm/talk/turn`).
+- The greenhouse is the design; Talk is home, so there is no empty Home.
+- Keep on a received card keeps it in the thread (`FROM [NAME] · KEPT`); on a Mirror feedback card (package 04) Keep adds it to You.
+- A push when a card arrives ("A new card is ready.", no name, no words). The Mirror push comes with Mirror in package 04.
 
-**Q2. Which engine runs the first Talk.** The repo's laws (`docs/THESIS-LAWS.md`, twelve laws) and the 15 Nov communication spec (amended laws, items collected by asking) disagree, and Talk has an engine for each.
-- **(a) Simplest:** the live `POST /talk/turn`: belief suggestions, confirmed with That's me; the person ends Talk with ✕. Matches the repo's laws as they stand.
-- (b) `POST /comm/talk/turn`: communication items, ends itself after a few turns "on care". Its migration is not applied, it is owner-only, and the repo's laws would need the 15 Nov amendments first.
+## One owner action before building
+**The laws file.** `docs/THESIS-LAWS.md` still holds the twelve laws before the 15 Nov amendments, and AGENTS.md tells every builder those twelve override everything. The communication engine follows the amended laws 1, 3, 7, 8, 9, 10, 12 and new 13–15. Until the file carries them, a builder must stop at the first Talk item. This is outside `packages/01/`.
 
-**Q3. Three states the five steps reach are not drawn:** consent chips in Talk (Sure, Not now, Never), the safety stop (law 8), and Write refusing a threat.
-- **(a) Simplest:** consent as three plain glass chips under the question; the safety stop as one glass sheet with the server's message, resource links and Close, appearing at once; the refusal as one line under the words ("This can't be sent as written.", plus the server's headline) with Edit, Send disabled.
-- (b) Wait for CDO frames before these three are built.
+## Still open
 
-**Q4. Home with nobody on it.** H3 "Who's on your mind?" opens a first message before anyone is linked, which needs a pending-recipient design.
-- **(a) Simplest:** Home shows only the bar; Write and + both open Add a person. H3 waits for a later package.
-- (b) Draw a one-line empty Home ("Add someone you want to understand, or be understood by.") above the bar.
+**Q1. Sign-in isn't drawn in the greenhouse.**
+- **(a) Simplest:** the greenhouse behind the curtain; "Say hard things the way you mean them." in the greeting type; Apple's and Google's own buttons, the same size; the 18+ line, "Kenember is an AI, not a person." and "Privacy" as quiet words.
+- (b) Wait for a CDO frame.
 
-**Q5. What "Keep" does on a received card.**
-- **(a) Simplest:** Keep closes the card; it stays on the person page. No server call.
-- (b) Keep marks the card kept for both people (`PATCH /cards/:bridge_id`; not deployed).
+**Q2. The safety stop and a refused message aren't drawn.**
+- **(a) Simplest:** the safety stop is one glass card above the bar with the server's message, its resources as quiet words, and "Close", appearing at once. A refused message shows "This can't be sent as written." and the server's line under your card, with "Edit".
+- (b) Wait for CDO frames.
 
-**Q6. How the receiver finds out a card arrived.** Nothing reaches a closed app today without push.
-- **(a) Simplest:** no notification in package 01; the receiver sees "New card from [Name]" on Home the next time they open the app.
-- (b) A push with no content and no name, "A new card is ready.", through the APNs sender already built (CONTRACT §12). Adds the notification-permission ask and device registration to the package.
+**Q3. How the one thing for an invite is chosen isn't drawn.** H2 says "[Name] sees one thing you choose to share", but has no picker.
+- **(a) Simplest:** H2 shows the newest eligible kenning under "WHAT [NAME] WILL SEE", How to bring something up with me first, with "Change" to step through the others. With none, the bar asks "One thing about you for [Name]" and keeps the typed line as a How I mean things kenning.
+- (b) A picker frame from the CDO.
+
+**Q4. The invited person's first open in the app isn't drawn.**
+- **(a) Simplest:** after sign-in the invite is accepted and the inviter's thread opens, with the gift as the first card ("FROM [NAME] · SHARED WITH YOU"). Their first Talk follows from Talk, with the inviter's name in the first question.
+- (b) A first-open frame from the CDO.
+
+**Q5. "Every page" is marked "awaiting Nami's confirmation".** The package uses it for H1, H2, P1, P3, P4 and Y2 values.
+- **(a)** Yes, it is frozen with the greenhouse.
+- (b) Only the greenhouse package is frozen.
