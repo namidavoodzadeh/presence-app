@@ -32,9 +32,11 @@ Cards (a suggestion, a kenning, a note, a received card) rise above the talk bar
 
 `safety` is shared by Talk, the pause and Someone new (law 8).
 
-New account, own download: `signIn` → `talk`.
-New account, from an invite link: `signIn` → `thread` with the inviter, the gift first (Q4).
-Returning account: `talk`.
+New account, own download: `signIn` → `aiConsent` → `talk`.
+New account, from an invite link: `signIn` → `aiConsent` → `thread` with the inviter, the gift first (Q4).
+Returning account: `talk` (or `aiConsent` first when the consent version has moved on).
+
+`aiConsent` and `settings` are not in the five steps; they are what the five steps need to stay inside the App Store and privacy rules (`compliance.md`).
 
 ## Screens and controls
 
@@ -49,7 +51,7 @@ Control ids are `screen.control`; they are the `accessibilityIdentifier` values.
 | `edge.left` | The left edge light: shows You |
 | `edge.right` | The right edge light: shows People |
 
-The pull mark and Settings are deferred, so the pull mark is not drawn in package 01 (no dead controls).
+| `pull.mark` | The hand-drawn pull mark at the top: opens Settings (also a drag down from the top 140 pt) |
 
 ### `signIn` — Sign in (not drawn: Q1)
 | Id | Control |
@@ -58,6 +60,26 @@ The pull mark and Settings are deferred, so the pull mark is not drawn in packag
 | `signIn.google` | Sign in with Google (Google's control) |
 | `signIn.privacy` | "Privacy" |
 | `signIn.retry` | "Try again" (failed state only) |
+
+### `aiConsent` — Before Kenember's AI reads your words (not drawn: Q6)
+| Id | Control |
+| --- | --- |
+| `aiConsent.agree` | "Agree and continue" (the bar's send) |
+| `aiConsent.notNow` | "Not now" |
+| `aiConsent.privacy` | "Privacy" |
+
+### `settings` — Settings (Y9, only the rows package 01 needs)
+| Id | Control |
+| --- | --- |
+| `settings.ai` | "Kenember's AI" with On or Off: withdraw or give the AI consent |
+| `settings.privacy` | "Privacy policy" |
+| `settings.download` | "Download your data" |
+| `settings.logOut` | "Log out" |
+| `settings.delete` | "Delete my account" |
+| `settings.confirmDelete` | "Delete" in the confirming card |
+| `settings.cancelDelete` | "Keep my account" in the confirming card |
+
+A touch anywhere outside the rows closes Settings.
 
 ### `talk` — Talk (Y4 first open, conversation, Y5 a suggestion)
 | Id | Control |
@@ -154,7 +176,7 @@ Drawn in the greenhouse or on "every page", but outside the five steps:
 - **People and thread:** This week at the top, the check-in line, "What Jan shared", P10 Only you, "What may [Name] mean?" (P5, receiving-side insight, package 03), the R3 and R4 research questions, the When step (Now · Tomorrow morning · At the check-in: scheduled sends are package 02).
 - **Mirror:** the link, the Mirror card, their page, feedback arriving and its notification (package 04).
 - **Check-in:** P6 to P9 (package 02).
-- **Settings and research:** the pull mark, Y9 Settings (Appearance, Notifications, Privacy, You), R1 research.
+- **Settings and research:** the Y9 rows Appearance, Notifications, Mirror, Research and Learn from what I write; R1 research.
 - **Outside the app:** the X1 invite web page and X3 story cards. The page at `kenember.com/i/<code>` lives in `site/`, not in an app package.
 - **Platform:** the Action button, Live Activities, notification replies, widgets, Android (greenhouse package, "Not in this package").
 - **Launch requirements (CONTRACT §11):** AI-provider consent, Report and Block.

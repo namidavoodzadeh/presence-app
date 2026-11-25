@@ -10,6 +10,7 @@ One state table per flow. Each row is: state, event, next state, and what happen
 | `invite.md` | Someone new, and the invited person's first open | 4 (someone to write to) |
 | `write-send.md` | Writing in a thread, Before it goes, and sending | 4, 5 |
 | `read.md` | The push, the folded card, the first reading, Keep and Reply | 5 |
+| `privacy.md` | AI consent, and Settings: download, log out, delete account | what the chain needs to stay inside the rules |
 
 Shared rules:
 - **Views.** Talk, You, People and Thread are views on one surface. Moving between them is a pull, never a pushed page. A flow that "goes to People" runs the same move as a pull, animated without a finger.

@@ -18,7 +18,7 @@ Context: `person`, `replyTo` (a bridge id after Reply, else null), `original` (t
 | reading | 200 with an old `seq` | reading | dropped |
 | reading | 200 `state: "risk"` | safetyStop | `safety` at once; no more insight for this draft |
 | reading | 200 `state: "declined"` | refused | underline `spans`; the refusal line and `headline` above the bar; Send disabled |
-| reading | `unavailable`, 429, 5xx, offline, timeout | editing | nothing shown |
+| reading | `unavailable`, 403 `ai_consent_required`, 429, 5xx, offline, timeout | editing | nothing shown; with AI consent off no insight call is made at all |
 | editing | tap an underlined phrase | noteUp | that note's card rises above the bar; a double soft pulse |
 | noteUp | swipe right or tap `pause.useIt` | editing | replace the phrase with `suggested` when the words there still match; `changed = true`; the note is answered |
 | noteUp | swipe left or tap `pause.keepMine` | editing | the note is answered |

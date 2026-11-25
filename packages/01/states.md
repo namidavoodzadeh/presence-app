@@ -20,4 +20,6 @@ Shared look, on the greenhouse glass:
 | `reading` | `POST /bridges/:id/open` | the folded card stays in place with the knot beside "Touch to open" | not used | the line under the folded card: "Didn't open. Touch to try again." | their words and their name, nothing else |
 | writing (insight) | `POST /bridge/insight` | nothing shown (nothing appears while typing; no knot for insight) | silence: no underlines | silence: no underlines | underlines; the note card on a tap; the pause on Send |
 
-Views with no server data of their own: `signIn` (its failure lines are flow states), `scope` (names come from `GET /people`; when that fails, only "Only me" shows), `pause` (it shows what the last insight returned), `safety` (it shows what the triggering reply carried).
+| `settings` | `GET /me` (the AI row) | rows shown at once; the AI row reads its last known value | — | the AI row is left out when `GET /me` fails; the other rows work | all rows |
+
+Views with no server data of their own: `aiConsent` (its version comes from routing),  `signIn` (its failure lines are flow states), `scope` (names come from `GET /people`; when that fails, only "Only me" shows), `pause` (it shows what the last insight returned), `safety` (it shows what the triggering reply carried).

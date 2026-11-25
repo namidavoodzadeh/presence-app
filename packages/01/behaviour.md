@@ -101,6 +101,28 @@ VoiceOver reads a row as one element: "[Name], [line], [time]", plus "new" when 
 
 Pulling down from any pause state goes back to writing.
 
+## `aiConsent`
+| Control | showing | saving |
+| --- | --- | --- |
+| `aiConsent.agree` (bar send) | Gives consent | Dimmed |
+| `aiConsent.notNow` | Goes on without the AI | Dimmed |
+| `aiConsent.privacy` | Opens kenember.com/privacy | Same |
+
+Agree and Not now are the same size; nothing is pre-chosen.
+
+## `settings`
+| Control | open | confirming | busy (withdrawing, exporting, deleting, logging out) |
+| --- | --- | --- | --- |
+| `pull.mark` | — | — | — |
+| `settings.ai` | On: withdraws. Off: opens `aiConsent` | Dimmed | Dimmed |
+| `settings.privacy` | Opens kenember.com/privacy | Dimmed | Dimmed |
+| `settings.download` | Exports, then the share sheet | Dimmed | Dimmed |
+| `settings.logOut` | Logs out | Dimmed | Dimmed |
+| `settings.delete` | Opens the confirming card | — | Dimmed |
+| `settings.confirmDelete`, `settings.cancelDelete` | — | Delete, or back to the rows; the same size | Dimmed |
+
+`pull.mark` opens Settings from any view.
+
 ## `safety`
 | Control | shown |
 | --- | --- |

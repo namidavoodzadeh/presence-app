@@ -7,10 +7,12 @@ Revised 25 Nov after the owner's answers. The package is written as if the first
 - The communication engine runs Talk (`POST /comm/talk/turn`).
 - The greenhouse is the design; Talk is home, so there is no empty Home.
 - Keep on a received card keeps it in the thread (`FROM [NAME] · KEPT`); on a Mirror feedback card (package 04) Keep adds it to You.
+- Privacy, safety, security and the law are fixed lines; the product laws can change around them (24 Nov). `compliance.md` checks the package against those lines.
 - A push when a card arrives ("A new card is ready.", no name, no words). The Mirror push comes with Mirror in package 04.
 
-## One owner action before building
-**The laws file.** `docs/THESIS-LAWS.md` still holds the twelve laws before the 15 Nov amendments, and AGENTS.md tells every builder those twelve override everything. The communication engine follows the amended laws 1, 3, 7, 8, 9, 10, 12 and new 13–15. Until the file carries them, a builder must stop at the first Talk item. This is outside `packages/01/`.
+## Done
+**The laws file.** Pull request #2 copies the fifteen live laws, safety and scope into `docs/THESIS-LAWS.md`; it merges on your yes.
+
 
 ## Still open
 
@@ -33,3 +35,7 @@ Revised 25 Nov after the owner's answers. The package is written as if the first
 **Q5. "Every page" is marked "awaiting Nami's confirmation".** The package uses it for H1, H2, P1, P3, P4 and Y2 values.
 - **(a)** Yes, it is frozen with the greenhouse.
 - (b) Only the greenhouse package is frozen.
+
+**Q6. The AI consent screen isn't drawn.** It is required before the first word goes to the AI (`compliance.md`).
+- **(a) Simplest:** one glass card over the greenhouse, after sign-in: the title, three short lines (what is sent and to whom, what is never done with it, how to turn it off), "Kenember is an AI, not a person.", then "Not now" and "Agree and continue" the same size.
+- (b) Wait for a CDO frame.

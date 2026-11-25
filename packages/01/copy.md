@@ -25,6 +25,46 @@ Every string the package shows. Byte for byte. Ids match `screens.md`; an id tha
 | `signIn.offline` | You're offline. | new |
 | `signIn.retry` | Try again | new |
 
+## `signIn`, age
+| Id | String | Source |
+| --- | --- | --- |
+| `signIn.underAge` | Kenember is for adults, so it can't be used on this account. | new |
+| `signIn.deleted` | Your account and everything in it are deleted. | new (shown once after deleting) |
+
+## `aiConsent`
+| Id | String | Source |
+| --- | --- | --- |
+| `aiConsent.title` | Before Kenember's AI reads your words | new |
+| `aiConsent.what` | When you talk or write here, your words go to Anthropic's Claude so Kenember can reply and offer notes. | new |
+| `aiConsent.not` | Kenember never uses your words to train AI, never sells them and never uses them for ads. Speech is turned into text on this iPhone; no audio is sent. | new |
+| `aiConsent.off` | You can turn this off in Settings at any time. What you kept stays until you delete it. | new |
+| `aiConsent.ai` | Kenember is an AI, not a person. | V3 |
+| `aiConsent.agree` | Agree and continue | new |
+| `aiConsent.notNow` | Not now | new |
+| `aiConsent.privacy` | Privacy | new |
+| `aiConsent.notSaved` | Not saved. Try again. | new |
+| `aiConsent.declinedLine` | Talk and notes need Kenember's AI. Your people and their cards work without it. | new |
+| `aiConsent.turnOn` | Turn on Kenember's AI | new |
+
+## `settings`
+| Id | String | Source |
+| --- | --- | --- |
+| `settings.ai` | Kenember's AI | new |
+| `settings.aiOn` / `settings.aiOff` | On / Off | new |
+| `settings.privacy` | Privacy policy | new |
+| `settings.download` | Download your data | V3 (Settings) |
+| `settings.logOut` | Log out | V3 (Settings) |
+| `settings.delete` | Delete my account | V3 (Settings) |
+| `settings.close` | Touch anywhere to close | G (Y9) |
+| `settings.ai.line` | Kenember is an AI, not a person. | V3 |
+| `settings.confirmTitle` | Delete your account? | new |
+| `settings.confirmBody` | Your kennings, your talks and your Mirror link go now. Cards you sent that were already opened stay with the people who read them, under "Deleted account". This can't be undone. | new (from CONTRACT §7 `DELETE /account`) |
+| `settings.confirmDelete` | Delete | new |
+| `settings.cancelDelete` | Keep my account | new |
+| `settings.notDeleted` | Nothing was deleted. Try again. | new |
+| `settings.testAccount` | This is a test account, so it can't be deleted here. | new |
+| `settings.exportFailed` | Your data isn't ready to download. Try again. | new |
+
 ## The talk bar
 | Id | String | Source |
 | --- | --- | --- |

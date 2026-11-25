@@ -33,6 +33,12 @@ Every call sends `Authorization`, `apikey`, `Content-Type`, `X-Presence-Client` 
 | `reading` | `POST /bridges/:id/open` | Open a folded card | Returns `final` |
 | `thread` | `PATCH /cards/:bridge_id` | Keep: `{state: "kept"}` | **Not ready:** migration 0038 not deployed |
 | (notifications) | `PUT /devices/apns` | Register for the `bridge_ready` push | Built (CONTRACT §12) |
+| (routing), `aiConsent` | `GET /me` | `ai_consent.required_version` and `given` | **Not ready:** the `ai_consent` field is a proposal (§11.4) |
+| `aiConsent` | `POST /consent/ai` | Give consent `{version, providers: ["anthropic"]}` | **Not ready** (§11.4) |
+| `settings` | `DELETE /consent/ai` | Withdraw it | **Not ready** (§11.4) |
+| `settings` | `GET /export` | Download your data | Built |
+| `settings` | `DELETE /account` | Delete my account (revokes the Apple token first) | Built; refused on preview and example accounts |
+| `settings` | `DELETE /devices/apns/:installation_id` | Log out | Built |
 
 ## Not ready
 
@@ -53,6 +59,10 @@ Every call sends `Authorization`, `apikey`, `Content-Type`, `X-Presence-Client` 
 
 **5. Sign in with Google.** `POST /auth/google` on hosted.
 
+**6. AI consent and its gate (App Store 5.1.2(i)).** CONTRACT §11.4 as written: `GET /me` `ai_consent`, `POST /consent/ai`, `DELETE /consent/ai`, and the gate on every route that sends words to a model. The gate must also cover `POST /comm/talk/turn` and `POST /comm/items` when they make a model call; §11.4 lists only the older routes.
+
+**7. Kinds not offered yet.** Until field-level encryption exists for What lands hard and This week, the engine should not offer them in Talk (the app also drops such a card, `flows/talk.md`).
+
 ## Not used in package 01
 
-Everything else in CONTRACT.md, including `POST /talk/turn` and the belief-card Talk, `/talk/finish`, `/kennings`, `GET /map`, `/kennings/map`, `/comm/map`, `/bridge/run`, `/bridge/reword-part`, `/bridge/why-it-matters`, scheduled `deliver_at`, `PATCH /bridges/:id`, withdraw, `/letstalk`, `/remind`, `/reading`, `/checkin/*`, `/mirror*`, `/imports/ai`, `/links/*` other than the share-item route, `/export`, `DELETE /account` and `/preview/*`.
+Everything else in CONTRACT.md, including `POST /talk/turn` and the belief-card Talk, `/talk/finish`, `/kennings`, `GET /map`, `/kennings/map`, `/comm/map`, `/bridge/run`, `/bridge/reword-part`, `/bridge/why-it-matters`, scheduled `deliver_at`, `PATCH /bridges/:id`, withdraw, `/letstalk`, `/remind`, `/reading`, `/checkin/*`, `/mirror*`, `/imports/ai`, `/links/*` other than the share-item route, and `/preview/*`.

@@ -10,12 +10,14 @@ Context the flow keeps: `conversationId` (null when none is open), `wayIn` (`own
 
 | State | Event | Next state | On the way |
 | --- | --- | --- | --- |
+| entering, AI consent declined or withdrawn | | declined | the greeting and the not-agreed line (`privacy.md`); nothing is sent |
 | entering, no `conversationId` | | opening | greeting from the time of day and `GET /home` (who left a card); `POST /comm/talk/turn {way_in, name}` with no `text` (no model call) |
 | entering, `conversationId` set | | ready | the session's turns as they were |
 | opening | 200 `state: "ask"` | ready | `reply.question` as the first reply, under the greeting; keep `conversation.id` |
 | opening | 403 `feature_off` or `owner_only` | closedForAccount | the not-open line; the bar stays usable for People |
 | opening | 5xx, offline, timeout | ready | the fixed first question (copy `talk.fallbackQuestion`); the first words start the conversation |
-| ready | tap `bar.mic` (permission granted) | listening | on-device speech recognition; the amber lamp sweeps; the voice line moves |
+| ready | tap `bar.mic` (permission granted) | listening | speech recognition with `requiresOnDeviceRecognition = true`, so no audio leaves the phone; the amber lamp sweeps; the voice line moves |
+| ready | on-device recognition is not supported for the person's language | ready | the mic is not shown; typing works |
 | ready | tap `bar.mic`, permission not yet asked | askingPermission | iOS microphone and speech prompts |
 | askingPermission | granted | listening | |
 | askingPermission | denied | ready | the mic is hidden for this session; typing still works |
@@ -23,10 +25,12 @@ Context the flow keeps: `conversationId` (null when none is open), `wayIn` (`own
 | listening | recognizer fails | ready | words heard so far stay in the bar |
 | ready | type | ready | the bar grows to 4 lines, then scrolls; the mic becomes the send |
 | ready | tap `bar.send`, words not empty | sending | the message rises into the conversation; `POST /comm/talk/turn {text, conversation_id, way_in, name}` |
+| sending | 200 `state: "ask"`, `item_state: "offered"`, `item.kind` is `lands_hard` or `this_week` | ready | the reply only; no card (law 10: their protection is not built yet, see `compliance.md`) |
 | sending | 200 `state: "ask"`, `item_state: "offered"` | suggesting | the reply (`reflection`, then `question`); then the suggestion card rises with `item.kind` and `item.wording` |
 | sending | 200 `state: "ask"`, any other `item_state` | ready | the reply; no card |
 | sending | 200 `state: "done"` | ready | the reply (`reflection`) with no question; `conversationId = null`; the next words start a new conversation |
 | sending | 200 `state: "safety"` | safetyStop | `safety` at once, no transition; nothing was stored |
+| sending | 403 `ai_consent_required` | `aiConsent` | the words were kept (`saved: true`); after consent the same words are sent once (`privacy.md`) |
 | sending | 429 `daily_limit` | limited | the words were kept (`saved: true`); the limit line under them |
 | sending | 403 `feature_off` or `owner_only` | closedForAccount | the not-open line |
 | sending | 5xx, offline, 30 s timeout | turnFailed | the message stays; the failed line and Try again under it |
