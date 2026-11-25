@@ -7,7 +7,7 @@ on:
     branches: [main]
   workflow_dispatch:
 concurrency:
-  group: mac-mini          # one shared group across every workflow: one job at a time on the Mac
+  group: ci-${{ github.ref }}          # per workflow and branch; the one self-hosted runner already runs one job at a time
   cancel-in-progress: false
 permissions:
   contents: read

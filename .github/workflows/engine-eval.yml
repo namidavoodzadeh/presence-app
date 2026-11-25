@@ -10,7 +10,7 @@ on:
         description: Variant to run on this branch (main always runs baseline)
         default: baseline
 concurrency:
-  group: mac-mini
+  group: engine-eval-${{ github.ref }}
   cancel-in-progress: false
 permissions:
   contents: read
