@@ -16,8 +16,8 @@ env:
   XCODE_VERSION: "27.2"
   SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
   DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-  CI_BUILD_ROOT: /Volumes/PresenceSSD/build/ci
-  CONTRACT_GEN_BUILD: /Volumes/PresenceSSD/build/ci/contract-gen
+  CI_BUILD_ROOT: /Users/nami/ci-build/ci
+  CONTRACT_GEN_BUILD: /Users/nami/ci-build/ci/contract-gen
 jobs:
   fast:
     # Never run code from a fork on the Mac.
@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: xcresult
-          path: /Volumes/PresenceSSD/build/ci/test.xcresult
+          path: /Users/nami/ci-build/ci/test.xcresult
           retention-days: 7
       - name: Delete simulator
         if: always() && steps.sim.outputs.udid != ''

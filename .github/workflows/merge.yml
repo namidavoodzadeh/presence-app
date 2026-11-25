@@ -35,10 +35,7 @@ jobs:
           { echo "files<<EOF"; echo "$files"; echo "EOF"; } >> "$GITHUB_OUTPUT"
       - name: Review by a different model family
         if: steps.risk.outputs.files != ''
-        env:
-          REVIEW_API_KEY: ${{ secrets.REVIEW_API_KEY }}
-          REVIEW_MODEL: ${{ vars.REVIEW_MODEL }}
-          REVIEW_API_URL: ${{ vars.REVIEW_API_URL }}
+        # Codex CLI, signed in on the Mac mini with the owner's existing plan: no API key, no new spending.
         run: git diff "origin/${{ github.base_ref }}...HEAD" | tools/review-other-family.py
   auto-merge:
     if: github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft
