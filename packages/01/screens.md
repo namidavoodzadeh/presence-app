@@ -53,7 +53,7 @@ Control ids are `screen.control`; they are the `accessibilityIdentifier` values.
 
 | `pull.mark` | The hand-drawn pull mark at the top: opens Settings (also a drag down from the top 140 pt) |
 
-### `signIn` — Sign in (not drawn: Q1)
+### `signIn` — Sign in (not drawn; built simply, Q1 decided)
 | Id | Control |
 | --- | --- |
 | `signIn.apple` | Sign in with Apple (Apple's control) |
@@ -61,7 +61,7 @@ Control ids are `screen.control`; they are the `accessibilityIdentifier` values.
 | `signIn.privacy` | "Privacy" |
 | `signIn.retry` | "Try again" (failed state only) |
 
-### `aiConsent` — Before Kenember's AI reads your words (not drawn: Q6)
+### `aiConsent` — Before Kenember's AI reads your words (not drawn; built simply, Q6 decided)
 | Id | Control |
 | --- | --- |
 | `aiConsent.agree` | "Agree and continue" (the bar's send) |
@@ -161,7 +161,7 @@ The bar reads "Write to [Name]" here.
 
 Pulling down goes back to writing, with the words as they are now.
 
-### `safety` — Safety stop (not drawn: Q2)
+### `safety` — Safety stop (not drawn; built simply, Q2 decided)
 | Id | Control |
 | --- | --- |
 | `safety.resource` | One resource (`safety.resource.N`) |
