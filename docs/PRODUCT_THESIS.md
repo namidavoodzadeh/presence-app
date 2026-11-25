@@ -2,6 +2,8 @@
 
 # Presence — Product Thesis v3
 
+> **24 Nov 2026:** this copy predates the 15 Nov law changes. The laws, safety and scope that every task obeys are in `docs/THESIS-LAWS.md`, copied from the live thesis (https://claude.ai/artifact/4wMPx7VWs3ZBMrptensS1W). Where this file and that one differ, `docs/THESIS-LAWS.md` wins.
+
 Oct 25, 2026 · @Nami Davoodzadeh
 
 ## What Presence is

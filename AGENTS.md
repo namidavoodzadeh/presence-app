@@ -6,7 +6,7 @@ The server and engine already exist; the iPhone app is being rebuilt screen by s
 
 ## Rules that always hold
 - Work starts only from a tracker issue. No issue, no change.
-- The twelve product laws in docs/THESIS-LAWS.md override everything. If a task would break one, stop and say so on the issue.
+- The fifteen product laws in docs/THESIS-LAWS.md override everything. If a task would break one, stop and say so on the issue.
 - Done means: a commit, and every check in `tools/` and CI green. A statement that work is done counts for nothing.
 - Never edit an existing test, `policy/`, `.github/` or `contract/` unless the issue is labelled for that path. A hook enforces this.
 - Fix the code, never the number: no padding, delay or allow-list entry to make a check pass.
