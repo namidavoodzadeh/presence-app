@@ -69,6 +69,7 @@ jobs:
       app: ${{ steps.files.outputs.app }}
     steps:
       - uses: actions/checkout@v4
+        continue-on-error: true          # no rule to read means the simulator stage runs
         with:
           ref: main
           persist-credentials: false
@@ -82,11 +83,12 @@ jobs:
           if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
             if files="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/files" --paginate --jq '.[].filename')" &&
                [ "$(printf '%s\n' "$files" | wc -l)" -lt 3000 ]; then
-              app="$(printf '%s\n' "$files" | tools/needs-simulator.sh)"
+              if rule="$(printf '%s\n' "$files" | tools/needs-simulator.sh)" && [ "$rule" = false ]; then app=false; fi
             else
               echo "could not read the whole change list; the simulator stage runs"
             fi
           fi
+          # This job never fails: a failure would turn the CI run red and cost an item one of its two rounds.
           echo "app=$app" >> "$GITHUB_OUTPUT"; echo "simulator stage needed: $app"
   simulator:
     needs: [fast, changes]
