@@ -4,8 +4,19 @@
 # The job fails here, with a plain message, when the internal disk has under 25 GB free.
 set -eu
 OUT="${CI_BUILD_ROOT:-$HOME/ci-build/ci}"
-case "$OUT" in "$HOME"/ci-build/*) ;; *) echo "ci-clean: refusing to clean $OUT (build output must be under $HOME/ci-build)"; exit 1;; esac
-rm -rf "$OUT"; mkdir -p "$OUT"
+refuse() { echo "ci-clean: refusing to clean $OUT ($1)"; exit 1; }
+# The path is resolved before anything is deleted: no "..", no symlink anywhere on the way, and the resolved path
+# must be a folder strictly inside the real ~/ci-build.
+case "/$OUT/" in */../*|*/./*) refuse "it contains . or .. components";; esac
+case "$OUT" in "$HOME"/ci-build/?*) ;; *) refuse "build output must be under $HOME/ci-build";; esac
+mkdir -p "$HOME/ci-build"
+[ -L "$HOME/ci-build" ] && refuse "$HOME/ci-build is a symlink"
+ROOT_REAL="$(cd "$HOME/ci-build" && pwd -P)"
+mkdir -p "$OUT"
+p="$OUT"; while [ "$p" != "/" ] && [ "$p" != "$HOME" ]; do [ -L "$p" ] && refuse "$p is a symlink"; p="$(dirname "$p")"; done
+OUT_REAL="$(cd "$OUT" && pwd -P)"
+case "$OUT_REAL" in "$ROOT_REAL"/?*) ;; *) refuse "it resolves to $OUT_REAL, which is not inside $ROOT_REAL";; esac
+rm -rf "$OUT_REAL"; mkdir -p "$OUT_REAL"
 DEVELOPER_DIR="${XCODE_PATH:-/Applications/Xcode.app}/Contents/Developer" xcrun simctl list devices -j 2>/dev/null \
   | grep -oE '"name" : "presence-ci-[^"]*"' | cut -d'"' -f4 | while read -r d; do xcrun simctl delete "$d" || true; done
 MIN_FREE_GB=25

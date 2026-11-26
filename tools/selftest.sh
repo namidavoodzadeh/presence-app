@@ -29,4 +29,9 @@ clean(){ mkdir -p "$T/home"; HOME="$T/home" CI_BUILD_ROOT="${2:-$T/home/ci-build
 clean 30000000; [ $? -eq 0 ] && ok "ci-clean: 30 GB free passes" || no "ci-clean: 30 GB free passes"
 clean 20000000; [ $? -eq 4 ] && grep -q "JOB COULD NOT RUN" "$T/clean.out" && ok "ci-clean: 20 GB free fails with a plain message" || no "ci-clean: 20 GB free fails with a plain message"
 clean 30000000 "/tmp/elsewhere"; [ $? -eq 1 ] && ok "ci-clean: refuses to clean outside ~/ci-build" || no "ci-clean: refuses to clean outside ~/ci-build"
+mkdir -p "$T/keep"; touch "$T/keep/precious"
+clean 30000000 "$T/home/ci-build/../../keep"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && ok "ci-clean: refuses a path with .." || no "ci-clean: refuses a path with .."
+ln -s "$T/keep" "$T/home/ci-build/link"
+clean 30000000 "$T/home/ci-build/link"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && ok "ci-clean: refuses a symlink out of ~/ci-build" || no "ci-clean: refuses a symlink out of ~/ci-build"
+clean 30000000 "$T/home/ci-build/link/sub"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && ok "ci-clean: refuses a symlinked ancestor" || no "ci-clean: refuses a symlinked ancestor"
 rm -rf "$T"; echo "$pass passed, $failn failed"; [ "$failn" -eq 0 ]
