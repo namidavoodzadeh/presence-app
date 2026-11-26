@@ -17,8 +17,8 @@
 //   Tokens.Motion.pullProgress(distance:) -> Double: p = min(distance / 260, 1), eased 1 − (1 − p)²
 //   Tokens.Motion.pullArriving(_ p:) = p^1.4, pullLeaving(_ p:) = (1 − p)^2.2
 //
-// Not asserted, pending the owner's answer on #20: the weight of `rowLine` (tokens.md gives 300 at 14.5 pt, and also says
-// nothing under 16 pt uses weight 200 or 300).
+// Owner's answer on #20 (25 Nov, option a): the rule holds, so `rowLine` is weight 400 at 14.5 pt (tokens.md's 300 is
+// superseded). Nothing under 16 pt uses weight 200 or 300.
 import XCTest
 @testable import DesignKit
 
@@ -173,18 +173,17 @@ final class GreenhouseTokensTests: XCTestCase {
         XCTAssertEqual(T.TypeScale.kenningCardWords, T.TypeStyle(weight: 300...300, size: 20...20, tracking: nil))
         XCTAssertEqual(T.TypeScale.message, T.TypeStyle(weight: 400...400, size: 16.5...16.5, tracking: nil))
         XCTAssertEqual(T.TypeScale.rowName, T.TypeStyle(weight: 700...700, size: 17...17, tracking: nil))
-        XCTAssertEqual(T.TypeScale.rowLine.size, 14.5...14.5)
-        XCTAssertNil(T.TypeScale.rowLine.tracking)
+        XCTAssertEqual(T.TypeScale.rowLine, T.TypeStyle(weight: 400...400, size: 14.5...14.5, tracking: nil))
         XCTAssertEqual(T.TypeScale.label, T.TypeStyle(weight: 500...600, size: 11...14.5, tracking: nil))
         XCTAssertEqual(T.TypeScale.caps, T.TypeStyle(weight: 700...800, size: 10...11, tracking: 0.08...0.14))
     }
 
     func testNothingUnderSixteenPointsIsLight() {
-        // tokens.md: "Nothing under 16 pt uses weight 200 or 300." rowLine is left out until #20's question is answered.
+        // tokens.md: "Nothing under 16 pt uses weight 200 or 300." The owner confirmed on #20 that this includes rowLine.
         let styles: [(String, T.TypeStyle)] = [
             ("greeting", T.TypeScale.greeting), ("heading", T.TypeScale.heading), ("threadName", T.TypeScale.threadName),
             ("reply", T.TypeScale.reply), ("cardWords", T.TypeScale.cardWords), ("kenningCardWords", T.TypeScale.kenningCardWords),
-            ("message", T.TypeScale.message), ("rowName", T.TypeScale.rowName), ("label", T.TypeScale.label), ("caps", T.TypeScale.caps),
+            ("message", T.TypeScale.message), ("rowName", T.TypeScale.rowName), ("rowLine", T.TypeScale.rowLine), ("label", T.TypeScale.label), ("caps", T.TypeScale.caps),
         ]
         for (name, style) in styles where style.size.lowerBound < 16 {
             XCTAssertGreaterThanOrEqual(style.weight.lowerBound, 400, name)
