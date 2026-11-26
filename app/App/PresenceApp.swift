@@ -9,6 +9,7 @@ struct PresenceApp: App {
     var body: some Scene {
         WindowGroup {
             TemplateScreen(state: .loading, retry: {})
+                .testerReportButton()
         }
     }
 }

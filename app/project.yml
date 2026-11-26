@@ -5,6 +5,11 @@ options:
   deploymentTarget:
     iOS: "17.0"
   createIntermediateGroups: true
+# TestFlight is a Release build with the tester Report button (#61). App Store builds use Release, which never has it.
+configs:
+  Debug: debug
+  TestFlight: release
+  Release: release
 packages:
   Flows:
     path: Packages/Flows
@@ -43,6 +48,12 @@ targets:
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1"
+      configs:
+        Debug: &testerReport
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) TESTER_REPORT"
+          INFOPLIST_KEY_NSMicrophoneUsageDescription: "Tester reports: hold the red button and say what you saw. Your voice stays on this iPhone."
+          INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "Tester reports: what you say is turned into text on this iPhone."
+        TestFlight: *testerReport
   PresenceTests:
     type: bundle.unit-test
     platform: iOS
@@ -81,3 +92,5 @@ schemes:
         - PresenceTests
         - PresenceUITests
       gatherCoverageData: false
+    archive:
+      config: TestFlight
