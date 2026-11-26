@@ -51,8 +51,8 @@
 //                            headsUp: Bool; deliverAt: String; tz: String; replyTo: String? }
 //     enum Used: String { mine, edited }
 //
-// Not asserted, pending the owner's answer on #18: whether a highlight whose `suggested` equals its `original` (a vague_ask
-// note) is a note. flows/write-send.md leaves it out; copy.md says its card offers "Keep mine" only.
+// Owner's answer on #18 (25 Nov, option a): a vague_ask highlight (`suggested` equal to `original`) IS a note: underlined,
+// with its why line, no TRY, and "‹ Keep mine" only (copy.md holds; the write-send.md filter left it out by mistake).
 import XCTest
 @testable import Flows
 
@@ -63,6 +63,8 @@ final class WriteSendFlowTests: XCTestCase {
     let absolute = F.Highlight(original: "never", suggested: "didn't", frictionKind: "absolute")
     let mind = F.Highlight(original: "when I talk about work", suggested: "when I talk about work tonight", frictionKind: "mind_reading")
     let fromMe = F.FromMe(id: "item-1", wording: "When I go quiet I'm thinking, not upset.")
+    let vague = F.Highlight(original: "something has to change", suggested: "something has to change", frictionKind: "vague_ask")
+    let vagueWords = "You never listen, something has to change."
 
     // MARK: Helpers: reach each state through events, as the app would.
     func entered(_ replyTo: String? = nil, consent: Bool = true, askLineShown: Bool = false) -> F {
@@ -85,8 +87,9 @@ final class WriteSendFlowTests: XCTestCase {
         _ = f.handle(.typingPaused)
         return f
     }
-    func withNotes(_ highlights: [F.Highlight]? = nil, fromMe: F.FromMe? = nil, theyShared: Bool = true, askLineShown: Bool = false) -> F {
-        var f = editing(nil, theyShared: theyShared, askLineShown: askLineShown)
+    func withNotes(_ highlights: [F.Highlight]? = nil, fromMe: F.FromMe? = nil, theyShared: Bool = true, askLineShown: Bool = false,
+                   text: String? = nil) -> F {
+        var f = editing(text, theyShared: theyShared, askLineShown: askLineShown)
         _ = f.handle(.typingPaused)
         _ = f.handle(.insightReturned(seq: f.seq, .insight(highlights: highlights ?? [absolute], fromMe: fromMe)))
         return f
@@ -182,10 +185,44 @@ final class WriteSendFlowTests: XCTestCase {
         let plain = F.Highlight(original: "about work", suggested: "about the project", frictionKind: nil)
         _ = f.handle(.insightReturned(seq: f.seq, .insight(highlights: [absolute, plain, mind], fromMe: fromMe)))
         XCTAssertEqual(f.state, .editing)
-        // Only highlights with a friction_kind (and a suggestion different from the phrase) are notes.
+        // Only highlights with a friction_kind are notes (a vague_ask one is a note too: see the test below).
         XCTAssertEqual(f.notes.map(\.original), ["never", "when I talk about work"])
         XCTAssertEqual(f.notes.map(\.frictionKind), ["absolute", "mind_reading"])
         XCTAssertEqual(f.fromMe, fromMe)
+    }
+
+    func test_row05_aVagueAskHighlight_isANoteEvenThoughItsSuggestionEqualsThePhrase() {
+        // Owner's answer on #18 (a).
+        var f = withNotes([vague], text: vagueWords)
+        XCTAssertEqual(f.notes.map(\.original), ["something has to change"])
+        XCTAssertEqual(f.notes.map(\.frictionKind), ["vague_ask"])
+        XCTAssertEqual(f.notes.first?.suggested, f.notes.first?.original)
+        XCTAssertEqual(f.unansweredNotes.count, 1)
+        let fx = f.handle(.underlineTapped(noteId: f.notes[0].id))
+        XCTAssertEqual(f.state, .noteUp(f.notes[0].id))
+        XCTAssertTrue(fx.contains(.haptic(.doubleSoftPulse)))
+    }
+
+    func test_row12_aVagueAskNote_keepMine_answersItAndKeepsTheWords() {
+        var f = withNotes([vague], text: vagueWords)
+        _ = f.handle(.underlineTapped(noteId: f.notes[0].id))
+        _ = f.handle(.keepMine)
+        XCTAssertEqual(f.state, .editing)
+        XCTAssertEqual(f.text, vagueWords)
+        XCTAssertFalse(f.changed)
+        XCTAssertTrue(f.unansweredNotes.isEmpty)
+    }
+
+    func test_row20_anUnansweredVagueAskNote_holdsTheSendInThePause() {
+        var f = withNotes([vague], text: vagueWords)
+        let fx = f.handle(.sendTapped)
+        XCTAssertEqual(f.state, .pausing(0))
+        XCTAssertEqual(f.pauseCards.count, 1)
+        if case let .note(n)? = f.pauseCards.first { XCTAssertEqual(n.frictionKind, "vague_ask") } else { XCTFail("the vague_ask note is the card") }
+        XCTAssertNil(bridge(fx))
+        _ = f.handle(.keepMine)
+        XCTAssertEqual(f.text, vagueWords)
+        XCTAssertFalse(f.changed, "a card with no TRY cannot change the words")
     }
 
     func test_row06_reading_insightForAnOldSeq_isDropped() {
