@@ -51,9 +51,11 @@
 //     enum Call: Equatable { getThread(personId: String), openBridge(id: String), keepCard(bridgeId: String) }   // keepCard = PATCH /cards/:bridge_id {state: "kept"}
 //
 // Not asserted:
-//   - Pending the owner's answer on #19: what a push for this person does while its first reading (or Keep · Reply right
-//     after it) is on screen. read.md says "any | a push for this person arrives | loading"; behaviour.md says nothing moves
-//     while someone reads a card's words. Tested only from loaded, empty and failed.
+//   - What a push does while `opening` or `keeping` is under way (the owner's answer on #19 covers `reading` and
+//     `afterReading` only).
+// Owner's answer on #19 (25 Nov, option a): a push for this person while `reading` or `afterReading` is on screen does not
+// reload. The reload waits until the first reading and Keep · Reply are done (Keep, Reply or a pull), then the thread loads.
+// A touch during the reading only settles the card; Keep · Reply is still up, so the reload still waits.
 //   - "Keep and Reply wait under the card next time": a thread item carries no card state (gap recorded on #6), so where the
 //     next load learns that a card was read but not kept is open. Keep's 200 is modelled as an event only.
 // Package gap, simplest behaviour taken (recorded on #19): the token arrives after `registerForRemoteNotifications`, so
@@ -339,6 +341,64 @@ final class ThreadFlowTests: XCTestCase {
             XCTAssertEqual(f.state, .loading)
             XCTAssertEqual(calls(fx), [.getThread(personId: "p-jan")])
         }
+    }
+
+    func test_row18_aPushDuringTheFirstReading_doesNotReload() {
+        // Owner's answer on #19 (a): nothing moves while someone reads.
+        var f = reading()
+        let fx = f.handle(.pushArrived(personId: "p-jan"))
+        XCTAssertEqual(f.state, .reading("b-new"))
+        XCTAssertEqual(f.reading, F.Reading(words: theirWords, name: "Jan"))
+        XCTAssertTrue(calls(fx).isEmpty)
+    }
+
+    func test_row18_aPushDuringKeepReply_doesNotReload() {
+        var f = afterReading()
+        let fx = f.handle(.pushArrived(personId: "p-jan"))
+        XCTAssertEqual(f.state, .afterReading("b-new"))
+        XCTAssertTrue(calls(fx).isEmpty)
+    }
+
+    func test_row18_aPushDuringTheReading_stillWaitsAfterTheTouch() {
+        var f = reading()
+        _ = f.handle(.pushArrived(personId: "p-jan"))
+        let fx = f.handle(.touchedAnywhere)
+        XCTAssertEqual(f.state, .afterReading("b-new"), "Keep · Reply is up: the reload still waits")
+        XCTAssertTrue(calls(fx).isEmpty)
+    }
+
+    func test_row18_aPushThatWaited_reloadsOnceKeepIsDone() {
+        var f = reading()
+        _ = f.handle(.pushArrived(personId: "p-jan"))
+        _ = f.handle(.touchedAnywhere)
+        let kx = f.handle(.keepTapped)
+        XCTAssertEqual(calls(kx), [.keepCard(bridgeId: "b-new")], "Keep's own call goes first")
+        let fx = f.handle(.keepSucceeded)
+        XCTAssertEqual(f.state, .loading)
+        XCTAssertEqual(calls(fx), [.getThread(personId: "p-jan")])
+    }
+
+    func test_row18_aPushThatWaited_reloadsOnceReplyIsTapped() {
+        var f = afterReading()
+        _ = f.handle(.pushArrived(personId: "p-jan"))
+        let fx = f.handle(.replyTapped)
+        XCTAssertTrue(fx.contains(.startReply(replyTo: "b-new")))
+        XCTAssertEqual(calls(fx), [.getThread(personId: "p-jan")])
+    }
+
+    func test_row18_aPushThatWaited_aPullStillGoesToPeople() {
+        var f = afterReading()
+        _ = f.handle(.pushArrived(personId: "p-jan"))
+        let fx = f.handle(.pulledAway)
+        XCTAssertEqual(f.state, .closed)
+        XCTAssertTrue(fx.contains(.showPeople))
+    }
+
+    func test_row18_noPushWhileReading_keepDoesNotReload() {
+        var f = keeping()
+        let fx = f.handle(.keepSucceeded)
+        XCTAssertEqual(f.state, .loaded)
+        XCTAssertTrue(calls(fx).isEmpty)
     }
 
     func test_row18_aPushForSomeoneElse_changesNothing() {
