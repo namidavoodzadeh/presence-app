@@ -29,6 +29,12 @@ clean(){ mkdir -p "$T/home"; HOME="$T/home" CI_BUILD_ROOT="${2:-$T/home/ci-build
 clean 30000000; [ $? -eq 0 ] && ok "ci-clean: 30 GB free passes" || no "ci-clean: 30 GB free passes"
 clean 20000000; [ $? -eq 4 ] && grep -q "JOB COULD NOT RUN" "$T/clean.out" && ok "ci-clean: 20 GB free fails with a plain message" || no "ci-clean: 20 GB free fails with a plain message"
 clean 30000000 "/tmp/elsewhere"; [ $? -eq 1 ] && ok "ci-clean: refuses to clean outside ~/ci-build" || no "ci-clean: refuses to clean outside ~/ci-build"
+sim(){ printf "$1" | "$ROOT/tools/needs-simulator.sh"; }
+[ "$(sim 'next/api/a.ts\ndocs/x.md\n')" = false ] && ok "needs-simulator: engine and docs only skip it" || no "needs-simulator: engine and docs only skip it"
+[ "$(sim 'next/api/a.ts\napp/Presence/A.swift\n')" = true ] && ok "needs-simulator: app/ runs it" || no "needs-simulator: app/ runs it"
+[ "$(sim 'contract/routes.md\n')" = true ] && ok "needs-simulator: contract/ runs it" || no "needs-simulator: contract/ runs it"
+[ "$(sim '.github/workflows/ci.yml\n')" = true ] && ok "needs-simulator: ci.yml runs it" || no "needs-simulator: ci.yml runs it"
+[ "$(sim '')" = true ] && ok "needs-simulator: unknown change list runs it" || no "needs-simulator: unknown change list runs it"
 mkdir -p "$T/keep"; touch "$T/keep/precious"
 clean 30000000 "$T/home/ci-build/../../keep"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && ok "ci-clean: refuses a path with .." || no "ci-clean: refuses a path with .."
 ln -s "$T/keep" "$T/home/ci-build/link"

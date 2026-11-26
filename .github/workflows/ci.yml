@@ -1,5 +1,8 @@
 name: ci
 # Fast stage needs no simulator. Simulator stage: build, snapshots, accessibility audit, journeys.
+# server: the Deno tests, on GitHub-hosted Linux, in parallel with the Mac (#59).
+# The simulator stage is skipped on a pull request that changes nothing under app/ or contract/ (or the files that
+# run the stage itself); it always runs on main, and it runs whenever the change list cannot be read.
 on:
   push:
     branches: [main]
@@ -11,6 +14,7 @@ concurrency:
   cancel-in-progress: false
 permissions:
   contents: read
+  pull-requests: read
 env:
   XCODE_PATH: /Applications/Xcode.app
   XCODE_VERSION: "27.2"
@@ -40,13 +44,54 @@ jobs:
         run: swift test --package-path app/Packages/Flows --scratch-path "$CI_BUILD_ROOT/spm-flows"
       - name: DesignKit tests
         run: swift test --package-path app/Packages/DesignKit --scratch-path "$CI_BUILD_ROOT/spm-designkit"
+      - name: Contract validation
+        run: app/Packages/Contract/generate.sh --check
+  server:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: 2.9.8          # the version on the Mac mini
       - name: Server tests
         working-directory: next
         run: deno task test
-      - name: Contract validation
-        run: app/Packages/Contract/generate.sh --check
+  changes:
+    # Reads the pull request's file list through the API; the rule is tools/needs-simulator.sh as on main, so a
+    # pull request cannot change which rule judges it.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      app: ${{ steps.files.outputs.app }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          sparse-checkout: tools
+      - id: files
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          app=true
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            if files="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/files" --paginate --jq '.[].filename')" &&
+               [ "$(printf '%s\n' "$files" | wc -l)" -lt 3000 ]; then
+              app="$(printf '%s\n' "$files" | tools/needs-simulator.sh)"
+            else
+              echo "could not read the whole change list; the simulator stage runs"
+            fi
+          fi
+          echo "app=$app" >> "$GITHUB_OUTPUT"; echo "simulator stage needed: $app"
   simulator:
-    needs: fast
+    needs: [fast, changes]
+    # Skipped only on an explicit "no app change"; any failure of the changes job runs it.
+    if: ${{ !cancelled() && needs.fast.result == 'success' && needs.changes.outputs.app != 'false' }}
     runs-on: [self-hosted, mac-mini]
     timeout-minutes: 45
     steps:
