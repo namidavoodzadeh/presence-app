@@ -8,7 +8,7 @@ on:
     workflows: [ci]
     types: [completed]
 concurrency:
-  group: mac-mini          # shared with every workflow, so at most one session runs at a time (stricter than per track)
+  group: build-item-${{ github.event.issue.number || github.event.workflow_run.head_branch }}   # one session per item; the one runner runs one job at a time
   cancel-in-progress: false
 permissions:
   contents: read
@@ -17,7 +17,7 @@ env:
   XCODE_VERSION: "27.2"
   SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
   DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-  CI_BUILD_ROOT: /Volumes/PresenceSSD/build/ci
+  CI_BUILD_ROOT: /Users/nami/ci-build/ci
   GH_TOKEN: ${{ secrets.FACTORY_TOKEN }}          # pushes and PRs must trigger ci.yml, which GITHUB_TOKEN cannot
   CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 jobs:

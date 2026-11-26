@@ -10,7 +10,7 @@ on:
         description: Variant to run on this branch (main always runs baseline)
         default: baseline
 concurrency:
-  group: mac-mini
+  group: engine-eval-${{ github.ref }}
   cancel-in-progress: false
 permissions:
   contents: read
@@ -19,8 +19,8 @@ env:
   XCODE_PATH: /Applications/Xcode.app
   XCODE_VERSION: "27.2"
   SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
-  CI_BUILD_ROOT: /Volumes/PresenceSSD/build/ci
-  EVAL_CACHE: /Volumes/PresenceSSD/build/eval-cache   # model replies, content-addressed; kept between jobs
+  CI_BUILD_ROOT: /Users/nami/ci-build/ci
+  EVAL_CACHE: /Users/nami/ci-build/eval-cache   # model replies, content-addressed; kept between jobs (outside CI_BUILD_ROOT, so ci-clean keeps it)
 jobs:
   eval:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository

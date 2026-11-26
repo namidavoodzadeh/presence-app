@@ -2,50 +2,98 @@ name: merge
 # Enforces policy/merge-policy.yml. Branch protection on main requires: fast, simulator, risk-review.
 # Low-risk: risk-review passes at once and auto-merge lands the change when CI is green.
 # High-risk paths: risk-review passes only when a model from a different family approves.
+#
+# Trust: risk-review is a pull_request_target job, so GitHub runs this file as it is on main, and the job checks out
+# main to run the gate (tools/high-risk-changed.sh, tools/review-other-family.py) and to read policy/merge-policy.yml.
+# The pull request's commits are fetched as data only: diffed, never checked out, built or run. A pull request
+# therefore cannot change the gate that judges it; a change to the gate takes effect only after it has merged.
+# workflow_dispatch re-runs the gate for one pull request (for example after `codex login`). It runs only when started
+# from main, so a dispatch can never use a proposed gate.
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
     types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull request number to review
+        required: true
 concurrency:
-  group: mac-mini
+  group: merge-${{ github.event.pull_request.number || inputs.pr }}
   cancel-in-progress: false
 permissions:
   contents: read
   pull-requests: write
+  statuses: write
 env:
   XCODE_PATH: /Applications/Xcode.app
   XCODE_VERSION: "27.2"
   SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
 jobs:
   risk-review:
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: [self-hosted, mac-mini]
-    timeout-minutes: 15
+    timeout-minutes: 20
+    env:
+      PR: ${{ github.event.pull_request.number || inputs.pr }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the gate (the workflow's own commit, main for pull requests; never the pull request)
+        uses: actions/checkout@v4
         with:
+          ref: ${{ github.workflow_sha }}
           fetch-depth: 0
+          persist-credentials: false
+      - name: Clean build output and check free disk
+        run: tools/ci-clean.sh
       - name: Toolchain (pinned)
         run: tools/ci-preflight.sh
-      - name: High-risk paths touched
+      - name: Fetch the pull request as data
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          case "$PR" in ''|*[!0-9]*) echo "not a pull request number: $PR"; exit 1;; esac
+          base="$(gh pr view "$PR" -R "$GITHUB_REPOSITORY" --json baseRefName --jq .baseRefName)"
+          [ "$base" = main ] || { echo "pull request $PR targets $base, not main"; exit 1; }
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64)"
+          git -c http.extraheader="$auth" fetch --no-tags origin \
+            "+refs/heads/main:refs/gate/main" "+refs/pull/$PR/head:refs/gate/pr"
+          echo "head=$(git rev-parse refs/gate/pr)" >> "$GITHUB_OUTPUT"
+      - name: High-risk paths touched (policy from the gate checkout)
         id: risk
         run: |
-          files="$(tools/high-risk-changed.sh "origin/${{ github.base_ref }}" HEAD)"
+          files="$(tools/high-risk-changed.sh refs/gate/main refs/gate/pr)"
           echo "$files"
           { echo "files<<EOF"; echo "$files"; echo "EOF"; } >> "$GITHUB_OUTPUT"
       - name: Review by a different model family
+        id: review
         if: steps.risk.outputs.files != ''
+        # Codex CLI, signed in on the Mac mini with the owner's existing plan: no API key, no new spending.
+        shell: bash -euo pipefail {0}    # a failed diff fails the step; a partial diff is never reviewed
+        run: git diff refs/gate/main...refs/gate/pr | tools/review-other-family.py
+      - name: Report risk-review on the pull request's head commit
+        if: always() && steps.pr.outputs.head != ''
         env:
-          REVIEW_API_KEY: ${{ secrets.REVIEW_API_KEY }}
-          REVIEW_MODEL: ${{ vars.REVIEW_MODEL }}
-          REVIEW_API_URL: ${{ vars.REVIEW_API_URL }}
-        run: git diff "origin/${{ github.base_ref }}...HEAD" | tools/review-other-family.py
+          GH_TOKEN: ${{ github.token }}
+          OUTCOME: ${{ job.status }}
+          HEAD_SHA: ${{ steps.pr.outputs.head }}
+        run: |
+          state=failure; [ "$OUTCOME" = success ] && state=success
+          gh api "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA" -f state="$state" -f context=risk-review \
+            -f description="gate from ${GITHUB_WORKFLOW_SHA:0:7}: $state" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" --silent
   auto-merge:
-    if: github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft
+    if: >-
+      github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name == github.repository &&
+      !github.event.pull_request.draft
     runs-on: [self-hosted, mac-mini]
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4            # main (pull_request_target); the pull request's code is never checked out
+        with:
+          persist-credentials: false
       - name: Toolchain (pinned)
         run: tools/ci-preflight.sh
       - name: Merge automatically when required checks are green
