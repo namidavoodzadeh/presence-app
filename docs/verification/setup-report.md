@@ -2,7 +2,7 @@
 
 Executed from `docs/handover/test-author.md` by a Claude Code session on the Mac mini (macOS 27.2, Xcode 27.2, Swift 6.4.2, Deno 2.9.8, Codex CLI 0.167.0). The 24 Nov report is in this file's git history. Details: `part-B.md` (top section), the pull requests named below, and a comment on each issue.
 
-**Result: C4 done for all 18 issues in the list. 15 are ready for their builder; 3 wait on one owner question each (labelled `blocked`). Part B now runs on the runner: B1, B2 and B3 pass on real runs. Two factory changes are in PR #43, which is not merged yet.**
+**Result: C4 done for all 18 issues in the list, all 18 ready for their builder (the three owner questions on #18, #19 and #20 were answered with (a) and are now asserted). Part B now runs on the runner: B1, B2 and B3 pass on real runs. The factory changes are in PR #43, not merged: see "Needs Nami" 3.**
 
 ## Part 1: C4, acceptance tests per issue
 
@@ -16,14 +16,14 @@ Every test PR contains only tests. Tests that cannot pass before their code sit 
 | #6 Keep on hosted | PR #38 | written | hosted probe: send, open, keep; `GET /cards` shows kept for both. Gap: thread items carry no card state (also affects #31) |
 | #7 Google sign-in on hosted | PR #39 | written | hosted probe: no session without `adult_confirmed: true`, wrong nonce 401, unverified email 401, a session otherwise |
 | #12 privacy page | PR #40 | written | served page names Anthropic and Claude, what is sent and not, Settings; no contradicting sentence |
-| #20 DesignKit tokens | PR #41 | **blocked** | every token in `tokens.md` (18 tests). Question: `rowLine` is 300 at 14.5 pt, but the same file says nothing under 16 pt uses 200 or 300 |
-| #18 write and send | PR #42 | **blocked** | 55 tests, one per row of all three tables plus the shared rules; defines the shared Flows types. Question: is a vague_ask highlight a note (copy.md) or not (the flow table)? |
+| #20 DesignKit tokens | PR #41 | written | every token in `tokens.md` (18 tests). Owner's answer (a): `rowLine` is 400 at 14.5 pt, asserted with the under-16-pt rule |
+| #18 write and send | PR #42 | written | 58 tests, one per row of all three tables plus the shared rules; defines the shared Flows types. Owner's answer (a): a vague_ask highlight is a note (3 tests) |
 | #13 sign in | PR #45 | written | 33 tests, rows 01–26 and the shared rules |
 | #14 AI consent and Settings | PR #47 | written | 36 tests in two machines, one per table |
 | #15 Talk | PR #50 | written | 56 tests, all 48 rows and the shared rules |
 | #16 You and a kenning | PR #51 | written | 22 tests, all 18 rows |
 | #17 Someone new and the invited person | PR #46 | written | 56 tests over three machines (People, Someone new, Invited) |
-| #19 push, card, reading, Keep | PR #49 | **blocked** | 32 tests. Question: a push for this person reloads the thread "from any state", but nothing may move while someone reads; what happens during a reading? |
+| #19 push, card, reading, Keep | PR #49 | written | 39 tests. Owner's answer (a): a push during the first reading or Keep · Reply waits, then reloads after Keep or Reply (7 tests). Open: a push during `opening` or `keeping` |
 | #4 strength on a kept item | PR #44 | written | partly, very, none, bad value; 2 fail today for the missing field |
 | #5 invite gift | PR #48 | written | 9 tests; read and accept run the real database functions on PGlite with every migration |
 | #9 kinds without encryption | PR #52 | written | Talk never offers What lands hard or This week; fails today (This week is offered in a second session) |
@@ -36,7 +36,7 @@ Each issue's gaps (simplest behaviour taken) are in its comment. No tests were w
 | Change | Result | One line |
 | --- | --- | --- |
 | No Full Disk Access | done | Runner copied to `~/actions-runner` and its service reinstalled from there (online as `mac-mini`). Build output in `~/ci-build/ci`, eval cache in `~/ci-build/eval-cache`. `tools/ci-clean.sh` runs at the start of every job and fails it with a plain message under 25 GB free. The old copy on the drive is left in place, with no service |
-| Codex review | done | `tools/review-other-family.py` runs the signed-in Codex CLI. Same input and output; no `REVIEW_API_*`. Checked here: it rejects a diff that disables the protect hook and approves a comment-only diff |
+| Codex review | done | `tools/review-other-family.py` runs the Codex CLI. Same input and output; no `REVIEW_API_*`. After risk-review's REQUEST_CHANGES: the gate and policy run from main (`pull_request_target`; the pull request is fetched as data, never checked out); Codex has no tools, a minimal environment, a dedicated review sign-in (`~/.codex-review`), and runs in a macOS sandbox that denies the home folder (except that sign-in and its package) and `/Volumes`, with outbound HTTPS only; diffs over 180,000 characters or with binary files are rejected, not cut; the review step uses `pipefail`. `ci-clean.sh` refuses `..` and symlinks before creating or deleting anything (3 new self-tests). Checked here: approves a comment-only diff; rejects a protect-hook bypass, a diff telling the reviewer to copy `~/.config/gh/hosts.yml` (nothing disclosed), an oversized diff and a binary diff |
 | One concurrency group per workflow and branch | done | With the runner online, the shared `mac-mini` group cancelled every CI run: each issue label or comment queued a `build-item` run that took the group's only pending slot. This is the fallback `part-B.md` had already recorded |
 | App Store Connect variables | not done | Finding the key file on disk was refused by this session's safety check, as it was on 24 Nov. Steps in "Needs Nami" |
 
@@ -52,9 +52,13 @@ B4 to B7 were not part of this handover and are unchanged (they still need the s
 
 Only what this session could not do. Each item says what was checked on this Mac.
 
-1. **Give the terminal back its access to the external drive.** Partway through this session, macOS started refusing this session any access to `/Volumes/PresenceSSD`: `ls /Volumes/PresenceSSD` gives `Operation not permitted` (the drive is still mounted). It started after an old CI run from 24 Nov, still using the external path, hung in `mkdir /Volumes/PresenceSSD/build/ci`, most likely on a macOS permission prompt. That run was then cancelled at its timeout. The work went on from a clone on the internal disk (`~/presence-report`). Checked: the denial and the mount. Not checked: the fix, because only you can change it. System Settings → Privacy & Security → Files and Folders → the terminal app you run Claude Code in → turn **Removable Volumes** on. If a prompt about the runner asks for access to removable volumes, choose **Don't Allow**: the runner no longer needs it.
-2. **Answer three questions.** They are on #18, #19 and #20, each with lettered options. Reply on the issue; the next session adds the missing assertion and removes `blocked`.
-3. **Merge PR #43** once its checks are green. It changes `.github/` and `tools/`, so `risk-review` runs the new Codex review on it. Until it merges, `main`'s workflows still point at the external drive and every run on `main` fails at "Clean build output". After it merges, re-run the test PRs' CI from the Actions tab.
+1. **Drive.** Done by Nami (Removable Volumes was on). The working copy is now `~/presence-app` (the clone moved from `~/presence-report`); the external drive's copy is no longer used.
+2. **Three questions.** Answered (a) on #18, #19 and #20; asserted in #42, #49 and #41; `blocked` removed.
+3. **Decide how PR #43 gets past risk-review.** It cannot pass on its own, by design: the fixed gate runs only from main, and main's gate is still the old API review with no keys, so nothing on main can approve #43. (A one-off run of #43's own gate, started by hand before that was closed, asked for more changes.) A local run of #43's own reviewer on the whole diff still says REQUEST_CHANGES on points that need you:
+   - **Runner isolation.** The trusted gate and pull-request CI share one runner and one macOS account, so a PR job could tamper with the reviewer before the gate runs. The fix is a second runner under a separate macOS user, used only by `risk-review`.
+   - **Sandbox breadth.** Codex can still read outside the home folder (for example `/private/tmp`) and reach any host on port 443. Codex has no tools, so it cannot read files itself; this is defence in depth.
+   - **This report.** The reviewer flagged the earlier wording that #43 would be reviewed by the new gate; this item replaces it.
+   Choices: (a) read #43 and merge it by hand once, as the bootstrap, then set up the second runner as an issue labelled for `.github/` and `tools/`; (b) set up the second runner first, then decide. Before any review can run: `CODEX_HOME=~/.codex-review codex login` on the Mac mini (a sign-in kept for reviews only). Until #43 merges, `main`'s workflows still point at the external drive and every run on `main` fails at "Clean build output".
 4. **App Store Connect variables (B7).** The key file's name has the key ID: `AuthKey_<KEY_ID>.p8`. In Terminal:
    `gh variable set ASC_KEY_PATH -R namidavoodzadeh/presence-app --body "<full path of the .p8 file>"`, then the same for `ASC_KEY_ID` (from the file name) and `ASC_ISSUER_ID` (App Store Connect → Users and Access → Integrations). Checked: `gh` is signed in here with `repo` and `workflow` scope; the repository has no variables yet.
 5. **Secrets (B4 auto-merge, B5).** Checked: the repository has no secrets yet. `FACTORY_TOKEN`: github.com/settings/personal-access-tokens/new → fine-grained, only `presence-app`, Contents, Issues, Pull requests and Workflows read and write, then `gh secret set FACTORY_TOKEN -R namidavoodzadeh/presence-app`. `CLAUDE_CODE_OAUTH_TOKEN`: run `~/.npm-global/bin/claude setup-token`, then `gh secret set CLAUDE_CODE_OAUTH_TOKEN -R namidavoodzadeh/presence-app`.
@@ -63,6 +67,7 @@ Only what this session could not do. Each item says what was checked on this Mac
 8. **Disk headroom.** Checked: the internal disk has between 31 and 39 GB free during this session, against a 25 GB budget. Simulators alone use 17 GB (`~/Library/Developer/CoreSimulator`). If jobs start failing on the budget, run `xcrun simctl delete unavailable` and empty the Trash.
 
 ## Factory notes for the next session
+- The iPhone 13 on this Mac is for device runs once a build is ready. Checked: `xcrun devicectl list devices` shows it connected (iPhone14,5, iOS 27.2). No build was ready this session, so nothing was installed.
 - `tools/protect-tests.sh` refuses every file written by an agent in a git worktree under `.claude/worktrees/`: it matches the path as `.claude/*`. The agents wrote new test files through the scratchpad and `cp`. Fix it with an issue labelled for `tools/`.
 - Protect `main` (B4) once PR #43 is merged and CI has gone green on `main`: the command is in `part-B.md`.
 - GitHub's API failed often today (GraphQL errors, 500s and 502s on push, PR and label calls). Every PR, comment and label was checked afterwards. The `blocked` labels had silently not applied and were added again through REST.

@@ -33,5 +33,5 @@ mkdir -p "$T/keep"; touch "$T/keep/precious"
 clean 30000000 "$T/home/ci-build/../../keep"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && ok "ci-clean: refuses a path with .." || no "ci-clean: refuses a path with .."
 ln -s "$T/keep" "$T/home/ci-build/link"
 clean 30000000 "$T/home/ci-build/link"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && ok "ci-clean: refuses a symlink out of ~/ci-build" || no "ci-clean: refuses a symlink out of ~/ci-build"
-clean 30000000 "$T/home/ci-build/link/sub"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && ok "ci-clean: refuses a symlinked ancestor" || no "ci-clean: refuses a symlinked ancestor"
+clean 30000000 "$T/home/ci-build/link/sub"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && [ ! -e "$T/keep/sub" ] && ok "ci-clean: refuses a symlinked ancestor and creates nothing" || no "ci-clean: refuses a symlinked ancestor and creates nothing"
 rm -rf "$T"; echo "$pass passed, $failn failed"; [ "$failn" -eq 0 ]

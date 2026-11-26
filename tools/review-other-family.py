@@ -7,7 +7,8 @@ decision is APPROVE; anything else, including Codex missing or signed out, fails
 Trust: merge.yml runs this file and reads the policy from main (pull_request_target), never from the pull request.
 Isolation: Codex gets no tools (shell, code, agents, apps, browser, web search and the rest are switched off), a
 minimal environment (no GitHub or runner tokens), and runs inside a macOS sandbox that denies every read and write
-under the home folder except Codex's own folder and its installed package, and denies /Volumes. So even a diff that
+under the home folder except a Codex home kept for reviews and its installed package, denies /Volumes, and allows
+outbound HTTPS only. So even a diff that
 tries to steer it cannot make it read credentials on this Mac.
 Size: a diff over MAX_DIFF_CHARS is rejected, never cut short, so nothing is approved unseen."""
 import json, os, shutil, subprocess, sys, tempfile
@@ -21,7 +22,13 @@ if not os.path.isfile(codex):
     sys.exit(1)
 codex_js = os.path.realpath(codex)                       # .../node_modules/@openai/codex/bin/codex.js
 codex_pkg = os.path.dirname(os.path.dirname(codex_js))   # the installed package, native binary included
-codex_home = os.path.realpath(os.environ.get("CODEX_HOME") or os.path.join(HOME, ".codex"))
+# A Codex home used only for reviews, signed in once with `CODEX_HOME=~/.codex-review codex login`: the owner's own
+# ~/.codex (sessions, history, its sign-in) stays unreadable to the review.
+codex_home = os.path.realpath(os.environ.get("REVIEW_CODEX_HOME") or os.path.join(HOME, ".codex-review"))
+if not os.path.isfile(os.path.join(codex_home, "auth.json")):
+    print(f"review not available: Codex is not signed in for reviews ({codex_home}). On the Mac mini run "
+          "`CODEX_HOME=~/.codex-review codex login`, then re-run risk-review from main. The change waits.")
+    sys.exit(1)
 node = shutil.which("node", path="/opt/homebrew/bin:/usr/local/bin:/usr/bin")
 if not node or os.path.realpath(node).startswith(HOME + os.sep):
     print("review not available: Node.js must be installed outside the home folder (Homebrew); the change waits.")
@@ -34,6 +41,11 @@ if not diff.strip():
 if len(diff) > MAX_DIFF_CHARS:
     print(f"REQUEST_CHANGES\n- The diff has {len(diff):,} characters, over the review limit of {MAX_DIFF_CHARS:,}. "
           "It is not reviewed in part. Split the change into smaller pull requests.")
+    sys.exit(1)
+binary = [l for l in diff.splitlines() if l.startswith("Binary files ") or l == "GIT binary patch"]
+if binary:
+    print("REQUEST_CHANGES\n- The diff changes binary files, whose contents cannot be reviewed as text: "
+          + "; ".join(binary[:5]) + ". High-risk paths take text only.")
     sys.exit(1)
 policy = open(os.path.join(HERE, "..", "policy", "merge-policy.yml")).read()
 prompt = (
@@ -68,7 +80,10 @@ with tempfile.TemporaryDirectory(prefix="review-", dir="/private/tmp") as work: 
                 f"(deny file-read* file-write* (subpath {q(HOME)}) (subpath \"/Volumes\"))\n"
                 f"(allow file-read-metadata (subpath {q(HOME)}))\n"   # Node lstats each folder on the way; never contents
                 f"(allow file-read* (subpath {q(codex_pkg)}))\n"
-                f"(allow file-read* file-write* (subpath {q(codex_home)}))\n")
+                f"(allow file-read* file-write* (subpath {q(codex_home)}))\n"
+                # Outbound HTTPS only (Codex's own service) and the system DNS resolver; nothing else.
+                "(deny network-outbound)\n(allow network-outbound (remote tcp \"*:443\"))\n"
+                "(allow network-outbound (literal \"/private/var/run/mDNSResponder\"))\n")
     no_tools = ["shell_tool", "unified_exec", "code_mode_host", "view_image", "image_generation", "multi_agent",
                 "multi_agent_v2", "plugins", "remote_plugin", "apps", "browser_use", "browser_use_external",
                 "computer_use", "in_app_browser", "hooks", "tool_suggest", "skill_search", "goals", "sleep_tool",

@@ -7,8 +7,8 @@ name: merge
 # main to run the gate (tools/high-risk-changed.sh, tools/review-other-family.py) and to read policy/merge-policy.yml.
 # The pull request's commits are fetched as data only: diffed, never checked out, built or run. A pull request
 # therefore cannot change the gate that judges it; a change to the gate takes effect only after it has merged.
-# workflow_dispatch re-runs the gate for one pull request (for example after `codex login`); it uses the gate of the
-# branch it is started from, and only people with write access can start it.
+# workflow_dispatch re-runs the gate for one pull request (for example after `codex login`). It runs only when started
+# from main, so a dispatch can never use a proposed gate.
 on:
   pull_request_target:
     branches: [main]
@@ -31,7 +31,9 @@ env:
   SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
 jobs:
   risk-review:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: [self-hosted, mac-mini]
     timeout-minutes: 20
     env:
@@ -69,6 +71,7 @@ jobs:
         id: review
         if: steps.risk.outputs.files != ''
         # Codex CLI, signed in on the Mac mini with the owner's existing plan: no API key, no new spending.
+        shell: bash -euo pipefail {0}    # a failed diff fails the step; a partial diff is never reviewed
         run: git diff refs/gate/main...refs/gate/pr | tools/review-other-family.py
       - name: Report risk-review on the pull request's head commit
         if: always() && steps.pr.outputs.head != ''
@@ -82,7 +85,9 @@ jobs:
             -f description="gate from ${GITHUB_WORKFLOW_SHA:0:7}: $state" \
             -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" --silent
   auto-merge:
-    if: github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft
+    if: >-
+      github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name == github.repository &&
+      !github.event.pull_request.draft
     runs-on: [self-hosted, mac-mini]
     timeout-minutes: 5
     steps:

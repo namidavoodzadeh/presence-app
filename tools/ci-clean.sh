@@ -9,11 +9,10 @@ refuse() { echo "ci-clean: refusing to clean $OUT ($1)"; exit 1; }
 # must be a folder strictly inside the real ~/ci-build.
 case "/$OUT/" in */../*|*/./*) refuse "it contains . or .. components";; esac
 case "$OUT" in "$HOME"/ci-build/?*) ;; *) refuse "build output must be under $HOME/ci-build";; esac
-mkdir -p "$HOME/ci-build"
-[ -L "$HOME/ci-build" ] && refuse "$HOME/ci-build is a symlink"
-ROOT_REAL="$(cd "$HOME/ci-build" && pwd -P)"
-mkdir -p "$OUT"
+# Every part of the path that already exists is checked before anything is created or deleted.
 p="$OUT"; while [ "$p" != "/" ] && [ "$p" != "$HOME" ]; do [ -L "$p" ] && refuse "$p is a symlink"; p="$(dirname "$p")"; done
+mkdir -p "$OUT"
+ROOT_REAL="$(cd "$HOME/ci-build" && pwd -P)"
 OUT_REAL="$(cd "$OUT" && pwd -P)"
 case "$OUT_REAL" in "$ROOT_REAL"/?*) ;; *) refuse "it resolves to $OUT_REAL, which is not inside $ROOT_REAL";; esac
 rm -rf "$OUT_REAL"; mkdir -p "$OUT_REAL"
