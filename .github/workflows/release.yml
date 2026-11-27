@@ -38,6 +38,16 @@ jobs:
           [ -r "$ASC_KEY_PATH" ] || { echo "::error::App Store Connect key not readable at ASC_KEY_PATH on this Mac."; exit 3; }
       - name: Contract client up to date
         run: app/Packages/Contract/generate.sh --check
+      - name: Unlock CI signing keychain
+        env:
+          CI_KEYCHAIN_PASSWORD: ${{ secrets.CI_KEYCHAIN_PASSWORD }}
+        run: |
+          # The runner is a launchd agent and cannot use the login keychain; sign from a dedicated one.
+          keychain="$HOME/Library/Keychains/ci-signing.keychain-db"
+          [ -n "$CI_KEYCHAIN_PASSWORD" ] || { echo "::error::Set repository secret CI_KEYCHAIN_PASSWORD."; exit 3; }
+          [ -f "$keychain" ] || { echo "::error::CI signing keychain missing at $keychain on this Mac."; exit 3; }
+          security unlock-keychain -p "$CI_KEYCHAIN_PASSWORD" "$keychain"
+          security set-keychain-settings "$keychain"
       - name: Archive
         env:
           ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
@@ -50,6 +60,7 @@ jobs:
             -destination 'generic/platform=iOS' -archivePath "$CI_BUILD_ROOT/Presence.xcarchive" \
             -derivedDataPath "$CI_BUILD_ROOT/dd" -allowProvisioningUpdates \
             -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            OTHER_CODE_SIGN_FLAGS="--keychain=$HOME/Library/Keychains/ci-signing.keychain-db" \
             CURRENT_PROJECT_VERSION="$build"
       - name: Upload to TestFlight
         env:
