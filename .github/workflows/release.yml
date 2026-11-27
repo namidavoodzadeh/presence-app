@@ -47,6 +47,9 @@ jobs:
           [ -n "$CI_KEYCHAIN_PASSWORD" ] || { echo "::error::Set repository secret CI_KEYCHAIN_PASSWORD."; exit 3; }
           [ -f "$keychain" ] || { echo "::error::CI signing keychain missing at $keychain on this Mac."; exit 3; }
           security unlock-keychain -p "$CI_KEYCHAIN_PASSWORD" "$keychain"
+          # Archive and export both find the identity through the user search list; keep this keychain first in it.
+          others="$(security list-keychains -d user | tr -d '"' | grep -v '/ci-signing.keychain-db$' || true)"
+          security list-keychains -d user -s "$keychain" $others
       - name: Archive
         env:
           ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
@@ -84,4 +87,4 @@ jobs:
             -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
       - name: Lock CI signing keychain
         if: always()
-        run: security lock-keychain "$HOME/Library/Keychains/ci-signing.keychain-db" || true
+        run: security lock-keychain "$HOME/Library/Keychains/ci-signing.keychain-db"
