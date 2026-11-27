@@ -31,7 +31,8 @@ if (!deviceSecret) {
   } catch { /* no file: the call proceeds without it */ }
 }
 const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
-const dir = new URL(`../../../../outputs/engine/verification/${stamp}-safety-floor-live/`, import.meta.url);
+const opsHome = Deno.env.get("PRESENCE_OPERATIONS_HOME"); // overrides the checkout-relative default, as in deploy_gate.py
+const dir = opsHome ? new URL(`outputs/engine/verification/${stamp}-safety-floor-live/`, "file://" + encodeURI(opsHome.replace(/\/?$/, "/"))) : new URL(`../../../../outputs/engine/verification/${stamp}-safety-floor-live/`, import.meta.url);
 await Deno.mkdir(dir, { recursive: true });
 const lines: string[] = [`# Safety floor live checks ${stamp}`, "", `Target ${base}. Sender ${senderPersona} → receiver ${receiverPersona}. Cap ${cap}¢.`, ""];
 const log = (s: string) => {

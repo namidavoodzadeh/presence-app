@@ -35,8 +35,8 @@ CAP_CENTS = 300
 UNAPPROVED_MAX_CENTS = 1000
 OWNER_APPROVED_MAX_CENTS = 5000
 OWNER_APPROVAL_DAYS = 14
-# staging_ai.py lives at <operations-home>/work/<lane>-wt/next/scripts/.
-OPERATIONS_HOME = Path(__file__).resolve().parents[4]
+# staging_ai.py lives at <operations-home>/work/<lane>-wt/next/scripts/; PRESENCE_OPERATIONS_HOME overrides it, as in deploy_gate.py.
+OPERATIONS_HOME = Path(os.environ.get("PRESENCE_OPERATIONS_HOME") or Path(__file__).resolve().parents[4])
 EVAL_LOCK = OPERATIONS_HOME / "outputs" / "engine" / ".eval-door.lock"
 EVAL_LOCK_STALE_SECONDS = 30 * 60
 

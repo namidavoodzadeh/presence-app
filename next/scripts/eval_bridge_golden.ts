@@ -122,7 +122,8 @@ for (const c of cases) {
 const passed = scores.filter((s) => s.pass).length;
 lines.splice(4, 0, `**${passed} of ${scores.length} pass; ${spent}¢ spent.** ${passed === scores.length ? "Gate green." : `Gate red: ${scores.filter((s) => !s.pass).map((s) => s.id).join(", ")}.`}`, "");
 console.log(`\n${passed}/${scores.length} pass, ${spent}¢`);
-const dir = new URL("../../../../outputs/engine/evals/", import.meta.url);
+const opsHome = Deno.env.get("PRESENCE_OPERATIONS_HOME"); // overrides the checkout-relative default, as in deploy_gate.py
+const dir = opsHome ? new URL("outputs/engine/evals/", "file://" + encodeURI(opsHome.replace(/\/?$/, "/"))) : new URL("../../../../outputs/engine/evals/", import.meta.url);
 await Deno.mkdir(dir, { recursive: true });
 // --tag names a partial or diagnostic run's file, so it never overwrites the day's gate report.
 const tag = flag("tag");
