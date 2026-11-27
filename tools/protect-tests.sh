@@ -21,6 +21,10 @@ case "$rel" in
 esac
 if [ "$is_test" = 1 ]; then
   base="${PROTECT_BASE:-origin/main}"
+  # Fail closed: on a fresh checkout without the base (a GitHub-hosted runner), no test edit is allowed.
+  if ! git -C "$ROOT" rev-parse --verify --quiet "$base^{commit}" >/dev/null; then
+    echo "protect: cannot tell whether $rel is an existing test: $base is not in this checkout. Fetch main first." >&2; exit 2
+  fi
   if git -C "$ROOT" cat-file -e "$base:$rel" 2>/dev/null; then
     echo "protect: $rel is an existing test. Fix the code, not the test. If the test is wrong, say so on the issue and stop." >&2; exit 2
   fi
