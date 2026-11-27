@@ -91,8 +91,8 @@ def append_record(rec: dict, path: Path | None = None) -> None:
 
 def parse_report(text: str) -> tuple[int, int, int] | None:
     """(passed, total, cents) from '**20 of 20 pass; 54¢ spent.**' in a golden report."""
-    m = re.search(r"\*\*(\d+) of (\d+) pass; (\d+)¢ spent", text)
-    return (int(m[1]), int(m[2]), int(m[3])) if m else None
+    m = re.search(r"\*\*(\d+) of (\d+) pass; (\d+(?:\.\d+)?)¢ spent", text)  # cents may be fractional (e.g. 28.56015¢)
+    return (int(m[1]), int(m[2]), round(float(m[3]))) if m else None
 
 
 def last_score(records: list[dict], suite: str, before_sha: str | None = None) -> dict | None:

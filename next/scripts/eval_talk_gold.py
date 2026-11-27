@@ -124,7 +124,7 @@ def main() -> int:
         lines.append(f"- {c['id']}: {'PASS' if not bad else 'FAIL — ' + '; '.join(bad)} ({len(fin.get('beliefs') or [])} cards)"
                      + ("" if not bad else " " + diagnosis(turn_status, turn_ms, cid, s, fin, fin_ms)))
     cents = int(round(spent() - start))
-    out = HERE.parents[3] / "outputs" / "engine" / "evals" / f"talk-gold-{time.strftime('%Y-%m-%d', time.gmtime())}-{a.tag}.md"
+    out = Path(os.environ.get("PRESENCE_OPERATIONS_HOME") or HERE.parents[3]) / "outputs" / "engine" / "evals" / f"talk-gold-{time.strftime('%Y-%m-%d', time.gmtime())}-{a.tag}.md"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("# Talk gold set (staging)\n\n" + "\n".join(lines) + f"\n\n**{passed} of {len(cases)} pass; {cents}¢ spent.**\n")
     print(f"{passed} of {len(cases)} pass; {cents}¢ spent")
