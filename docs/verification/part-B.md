@@ -1,4 +1,22 @@
-# Part B verification on the Mac mini, 24 Nov 2026
+# Part B verification on the Mac mini, 25 Nov 2026 (runner on the internal disk)
+
+Handover `docs/handover/test-author.md`, Part 2. The runner and its build output moved to the internal disk, so no Full Disk Access is needed. Every check below ran on the self-hosted runner, using the workflows of PR #43 (through `workflow_dispatch` on throwaway `verify/*` branches built on it, never merged).
+
+| Task | Result | Evidence |
+| --- | --- | --- |
+| B1 | pass | Runner v2.338.2 copied to `/Users/nami/actions-runner`; `.runner` workFolder `/Users/nami/actions-runner/_work`; launchd agent reinstalled from there; online as `mac-mini`. Build root `/Users/nami/ci-build/ci`, emptied by `tools/ci-clean.sh` at the start of every job, which fails the job under 25 GB free (`tools/selftest.sh`: 30 GB passes, 20 GB fails with `JOB COULD NOT RUN…`, a path outside `~/ci-build` is refused). **One after the other:** runs 45691130240 (dispatched 20:02:53) and 45691291160 (20:03:51) ran their four jobs with no overlap: 20:02:56–20:04:38, 20:04:40–20:07:02, 20:07:05–20:07:27, 20:07:41–20:09:19. **Ten runs:** ten `ci` runs in a row on the PR #43 branch, 45692266580 to 45697585759, 20:09–20:46, all green (fast and simulator). Free space on the internal disk (`df -k ~`): 38,960,012 KB at the start, 36,060,436 KB after the tenth, so 3.0 GB used, within 5 GB. Most of it came in the tenth run (2.5 GB), which is simulator data outside the build root. Concurrency is now one group per workflow and branch (see below) |
+| B2 | pass | Run 45691031809 on `verify/b2-wrong-xcode` (`XCODE_PATH=/Applications/Xcode-wrong.app`): job `fast`, step 1 after checkout "Toolchain (pinned)" failed with exit 3 and `JOB COULD NOT RUN: Pinned Xcode not found at /Applications/Xcode-wrong.app. Install it there or change XCODE_PATH in the workflow.`, also as the annotation "Job could not run"; every later step skipped |
+| B3 | pass | Run 45691130240 on `verify/b3-flows-change` (a change to `app/Packages/Flows/Sources/Flows/LoadState.swift`): `fast` green in 1 m 42 s, and `xcrun simctl list devices booted` polled every 5 s during it found no booted simulator; `simulator` green (snapshots, journey, accessibility audit). Run 45691291160 on `verify/b3-spacing` (`Space.m` 16 → 18): `simulator` failed with `snapshot template-loaded differs from reference`, and `fast` failed in DesignKit `testSpacingScaleIsIncreasingOnFourPointGrid`. On CI the grid test stops a 2-point change before any snapshot runs (`simulator` needs `fast`); the throwaway branch dropped `needs: fast` only to show the snapshot failure too |
+
+Changes in PR #43:
+- `CI_BUILD_ROOT=/Users/nami/ci-build/ci` in every workflow; `CONTRACT_GEN_BUILD` under it; `EVAL_CACHE=/Users/nami/ci-build/eval-cache`, outside the build root so cleaning keeps it.
+- **One concurrency group per workflow and branch** (`ci-<ref>`, `merge-<ref>`, `engine-eval-<ref>`, `build-item-<issue or branch>`, `release`) in place of the shared `mac-mini` group. With the runner online, every CI run was cancelled: each issue label or comment queues a `build-item` run, and the shared group keeps only one pending run. This is the fallback recorded below on 24 Nov. The one runner still runs one job at a time (B1 evidence above).
+- `tools/review-other-family.py` uses the Codex CLI on this Mac (`codex exec`, read-only sandbox, `--ignore-user-config`, apps and browser off, empty working folder, JSON answer schema). Input: the diff on stdin. Output: the review printed and added to the job summary, exit 0 only on APPROVE. It fails closed when Codex is missing, signed out, or off-shape. Checked here: REQUEST_CHANGES (exit 1) for a diff that adds `exit 0` to the protect hook; APPROVE (exit 0) for a comment-only diff; exit 1 with no Codex. `merge.yml` no longer passes `REVIEW_API_*`. Residual risk: the reviewer runs on this Mac and could be steered by text in a diff into reading local files. The sandbox is read-only and only same-repository PRs run it.
+- The old runner copy at `/Volumes/PresenceSSD/actions-runner` is left in place, with no service.
+
+Not done: the App Store Connect variables (B7). Searching the disk for the key file was refused by the session's safety check (see setup-report).
+
+# Part B verification on the Mac mini, 24 Nov 2026 (superseded above for B1–B3)
 
 Every Part B check is about runs on the self-hosted runner, and the runner cannot start yet (B1). The workflows are written, `actionlint` is clean, and each part that can run without the runner was run on this Mac. Those local results are listed as evidence. None of them counts as the check passing.
 

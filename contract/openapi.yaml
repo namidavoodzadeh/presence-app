@@ -1,5 +1,582 @@
 openapi: 3.1.0
 info:
   title: Presence API
-  version: 0.0.0
-paths: {}
+  version: 0.1.0
+  description: >-
+    The routes package 01 uses (packages/01/routes.md, "By view"), with the fields the package reads. Routes the package
+    marks "Not ready" enter this file with their engine issue. Every call also sends Authorization, apikey, Content-Type,
+    X-Presence-Client and X-Presence-TZ (next/api/CONTRACT.md section 0); every error is {error, ref, message?, ...}.
+    Responses may carry fields not listed here; the app reads only what is listed.
+servers:
+  - url: https://api.kenember.invalid
+    description: Placeholder; the app supplies the hosted URL.
+paths:
+  /auth/apple:
+    post:
+      operationId: signInWithApple
+      summary: Sign in with Apple
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identity_token, nonce, adult_confirmed]
+              properties:
+                identity_token: { type: string }
+                nonce: { type: string }
+                name: { type: [string, "null"] }
+                adult_confirmed: { type: boolean, const: true }
+                authorization_code: { type: [string, "null"] }
+      responses:
+        "200":
+          description: Signed in
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [access_token, refresh_token, expires_at, created, me]
+                properties:
+                  access_token: { type: string }
+                  refresh_token: { type: string }
+                  expires_at: { type: [string, "null"] }
+                  created: { type: boolean }
+                  me: { $ref: "#/components/schemas/Me" }
+        default: { $ref: "#/components/responses/Error" }
+  /home:
+    get:
+      operationId: getHome
+      summary: The greeting's real line; the people rows (the array ends with the most urgent)
+      responses:
+        "200":
+          description: Home
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [order, people]
+                properties:
+                  order: { type: string }
+                  people:
+                    type: array
+                    items: { $ref: "#/components/schemas/HomeRow" }
+        default: { $ref: "#/components/responses/Error" }
+  /beliefs/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: getBelief
+      summary: The receipt (quote and date) of a kept item
+      responses:
+        "200":
+          description: The belief and its receipts
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [belief, receipts]
+                properties:
+                  belief: { $ref: "#/components/schemas/Belief" }
+                  receipts:
+                    type: array
+                    items: { $ref: "#/components/schemas/Receipt" }
+        default: { $ref: "#/components/responses/Error" }
+    patch:
+      operationId: patchBelief
+      summary: Mark a kept item Partly
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating: { type: string, enum: [not, partly, very] }
+      responses:
+        "200":
+          description: The belief as it is now
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [belief]
+                properties:
+                  belief: { $ref: "#/components/schemas/Belief" }
+        default: { $ref: "#/components/responses/Error" }
+  /people:
+    get:
+      operationId: getPeople
+      summary: Names under Who sees this
+      responses:
+        "200":
+          description: The people linked to the caller
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [people]
+                properties:
+                  people:
+                    type: array
+                    items: { $ref: "#/components/schemas/PeopleRow" }
+        default: { $ref: "#/components/responses/Error" }
+  /links/{person}/share/items/{belief_id}:
+    parameters:
+      - { name: person, in: path, required: true, schema: { type: string } }
+      - { name: belief_id, in: path, required: true, schema: { type: string } }
+    put:
+      operationId: shareItem
+      summary: Share a kept item with a person
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [shared]
+              properties:
+                shared: { type: boolean }
+      responses:
+        "200":
+          description: The grant as it is now
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [item]
+                properties:
+                  item:
+                    type: object
+                    required: [belief_id, shared, shared_wording]
+                    properties:
+                      belief_id: { type: string }
+                      shared: { type: boolean }
+                      shared_wording: { type: [string, "null"] }
+        default: { $ref: "#/components/responses/Error" }
+  /invites/{code}/accept:
+    parameters:
+      - { name: code, in: path, required: true, schema: { type: string } }
+    post:
+      operationId: acceptInvite
+      summary: Link the two people (409 already linked; 404 used, expired or revoked)
+      responses:
+        "200":
+          description: Linked
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [person, link_id]
+                properties:
+                  person:
+                    $ref: "#/components/schemas/PersonOrNull"
+                  link_id: { type: string }
+        default: { $ref: "#/components/responses/Error" }
+  /threads/{person}:
+    parameters:
+      - { name: person, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: getThread
+      summary: The cards between the two people
+      responses:
+        "200":
+          description: The thread
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [person, link, items, draft]
+                properties:
+                  person:
+                    $ref: "#/components/schemas/PersonOrNull"
+                  link:
+                    type: object
+                    required: [status]
+                    properties:
+                      status: { type: string }
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/ThreadItem" }
+                  draft:
+                    $ref: "#/components/schemas/Draft"
+        default: { $ref: "#/components/responses/Error" }
+  /drafts/{person}:
+    parameters:
+      - { name: person, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: getDraft
+      summary: Unsent words for this person
+      responses:
+        "200":
+          description: The draft, or null
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DraftReply" }
+        default: { $ref: "#/components/responses/Error" }
+    put:
+      operationId: putDraft
+      summary: Keep unsent words
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text: { type: string }
+                reply_to: { type: [string, "null"] }
+      responses:
+        "200":
+          description: The draft as kept
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DraftReply" }
+        default: { $ref: "#/components/responses/Error" }
+    delete:
+      operationId: deleteDraft
+      summary: Forget unsent words
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [deleted]
+                properties:
+                  deleted: { type: boolean }
+        default: { $ref: "#/components/responses/Error" }
+  /people/{person}/map:
+    parameters:
+      - { name: person, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: getPersonMap
+      summary: Only to pick the basis line; 403 means the person has shared nothing. Nothing from the reply is shown
+      responses:
+        "200":
+          description: The person shares something
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [person]
+                properties:
+                  person:
+                    $ref: "#/components/schemas/PersonOrNull"
+        default: { $ref: "#/components/responses/Error" }
+  /bridge/insight:
+    post:
+      operationId: bridgeInsight
+      summary: Underlines and notes at a pause
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [person_id, text, seq]
+              properties:
+                person_id: { type: string }
+                text: { type: string }
+                seq: { type: integer }
+                with_wording: { type: boolean }
+                reply_to: { type: string }
+                from_me_skip:
+                  type: array
+                  items: { type: string }
+      responses:
+        "200":
+          description: The insight for this seq
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [seq, state, spans, line, resources]
+                properties:
+                  seq: { type: integer }
+                  state: { type: string }
+                  spans:
+                    type: array
+                    items: { $ref: "#/components/schemas/Span" }
+                  line: { type: [string, "null"] }
+                  resources: { type: [object, "null"] }
+                  headline: { type: [string, "null"] }
+                  highlights:
+                    type: array
+                    items: { $ref: "#/components/schemas/Highlight" }
+                  from_me:
+                    $ref: "#/components/schemas/FromMe"
+        default: { $ref: "#/components/responses/Error" }
+  /bridges:
+    post:
+      operationId: sendBridge
+      summary: Send now
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [person_id, original, final, used]
+              properties:
+                person_id: { type: string }
+                original: { type: string }
+                bridged: { type: [string, "null"] }
+                final: { type: string }
+                used: { type: string, enum: [mine, edited] }
+                show_original: { type: boolean }
+                heads_up: { type: boolean }
+                deliver_at: { type: string }
+                tz: { type: string }
+                reply_to: { type: [string, "null"] }
+      responses:
+        "200":
+          description: The bridge as its sender sees it
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [bridge]
+                properties:
+                  bridge: { $ref: "#/components/schemas/Bridge" }
+        default: { $ref: "#/components/responses/Error" }
+  /bridges/{id}/open:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    post:
+      operationId: openBridge
+      summary: Open a folded card
+      responses:
+        "200":
+          description: The bridge as its receiver sees it, with its words
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [bridge, opened_at]
+                properties:
+                  bridge:
+                    allOf:
+                      - { $ref: "#/components/schemas/Bridge" }
+                      - type: object
+                        required: [final]
+                        properties:
+                          final: { type: string }
+                  opened_at: { type: string }
+        default: { $ref: "#/components/responses/Error" }
+  /devices/apns:
+    put:
+      operationId: registerApnsDevice
+      summary: Register for the bridge_ready push
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [installation_id, token, environment, bundle_id]
+              properties:
+                installation_id: { type: string }
+                token: { type: string }
+                environment: { type: string, enum: [sandbox, production] }
+                bundle_id: { type: string }
+                locale: { type: string }
+      responses:
+        "200":
+          description: The device as registered
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [device]
+                properties:
+                  device:
+                    type: object
+                    required: [installation_id, enabled]
+                    properties:
+                      installation_id: { type: string }
+                      enabled: { type: boolean }
+        default: { $ref: "#/components/responses/Error" }
+  /devices/apns/{installation_id}:
+    parameters:
+      - { name: installation_id, in: path, required: true, schema: { type: string } }
+    delete:
+      operationId: removeApnsDevice
+      summary: Log out (stop pushes to this phone)
+      responses:
+        "200":
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [removed, installation_id]
+                properties:
+                  removed: { type: boolean }
+                  installation_id: { type: string }
+        default: { $ref: "#/components/responses/Error" }
+  /export:
+    get:
+      operationId: exportData
+      summary: Download your data (the app saves the whole reply as a file)
+      responses:
+        "200":
+          description: Everything the account holds
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [exported_at, me]
+                properties:
+                  exported_at: { type: string }
+                  me: { $ref: "#/components/schemas/Me" }
+        default: { $ref: "#/components/responses/Error" }
+  /account:
+    delete:
+      operationId: deleteAccount
+      summary: Delete my account (revokes the Apple token first; refused on preview and example accounts)
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [deleted]
+                properties:
+                  deleted: { type: boolean }
+        default: { $ref: "#/components/responses/Error" }
+components:
+  responses:
+    Error:
+      description: Every error (CONTRACT section 0)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+  schemas:
+    Error:
+      type: object
+      required: [error, ref]
+      properties:
+        error: { type: string }
+        ref: { type: [string, "null"] }
+        message: { type: string }
+        reason: { type: string }
+        field: { type: string }
+    Person:
+      type: object
+      required: &person-required [id, name, initial, color, deleted]
+      properties: &person-properties
+        id: { type: string }
+        name: { type: string }
+        initial: { type: string }
+        color: { type: string }
+        photo_url: { type: [string, "null"] }
+        deleted: { type: boolean }
+        tz: { type: [string, "null"] }
+    PersonOrNull:
+      description: A Person, or null when the profile can no longer be read.
+      type: [object, "null"]
+      required: *person-required
+      properties: *person-properties
+    Me:
+      type: object
+      required: [person]
+      properties:
+        person: { $ref: "#/components/schemas/Person" }
+        created_at: { type: string }
+    HomeRow:
+      type: object
+      required: [person, reasons, unread, draft, activity_at]
+      properties:
+        person:
+          $ref: "#/components/schemas/PersonOrNull"
+        reasons:
+          type: array
+          items: { type: string }
+        unread: { type: integer }
+        draft: { type: boolean }
+        activity_at: { type: [string, "null"] }
+    PeopleRow:
+      type: object
+      required: [person, status]
+      properties:
+        person:
+          $ref: "#/components/schemas/PersonOrNull"
+        relationship: { type: [string, "null"] }
+        status: { type: string }
+    Belief:
+      type: object
+      required: [belief_id, statement, own_wording, rating, status]
+      properties:
+        belief_id: { type: string }
+        statement: { type: string }
+        own_wording: { type: [string, "null"] }
+        rating: { type: [string, "null"] }
+        status: { type: string }
+    Receipt:
+      type: object
+      required: [quote, said_at]
+      properties:
+        quote: { type: string }
+        said_at: { type: string }
+    Draft:
+      description: Unsent words, or null when there are none.
+      type: [object, "null"]
+      required: [text, reply_to, updated_at]
+      properties:
+        text: { type: string }
+        reply_to: { type: [string, "null"] }
+        updated_at: { type: string }
+    DraftReply:
+      type: object
+      required: [draft]
+      properties:
+        draft:
+          $ref: "#/components/schemas/Draft"
+    Bridge:
+      description: A bridge as its sender or its receiver sees it (CONTRACT section 1.7); a sealed card carries no words.
+      type: object
+      required: [id, from, deliver_at, opened_at, reply_to]
+      properties:
+        id: { type: string }
+        from:
+          $ref: "#/components/schemas/PersonOrNull"
+        deliver_at: { type: string }
+        opened_at: { type: [string, "null"] }
+        reply_to: { type: [string, "null"] }
+        final: { type: [string, "null"] }
+        sealed: { type: boolean }
+        ready: { type: boolean }
+        status: { type: string }
+    ThreadItem:
+      type: object
+      required: [kind]
+      properties:
+        kind: { type: string }
+        bridge: { $ref: "#/components/schemas/Bridge" }
+    Span:
+      type: object
+      required: [start, end]
+      properties:
+        start: { type: integer }
+        end: { type: integer }
+        kind: { type: string }
+    Highlight:
+      type: object
+      required: [start, end, original, suggested, why_line, friction_kind]
+      properties:
+        start: { type: integer }
+        end: { type: integer }
+        original: { type: string }
+        suggested: { type: string }
+        why_line: { type: string }
+        friction_kind: { type: [string, "null"] }
+    FromMe:
+      description: An item the sender already shares with this person, or null.
+      type: [object, "null"]
+      required: [item_id, wording]
+      properties:
+        item_id: { type: string }
+        wording: { type: string }

@@ -31,6 +31,8 @@ export const COMM_KIND_COPY: Record<CommKind, { heading: string; starter: string
 
 /** The two kinds that get field-level encryption (COMM-MODEL-DESIGN.md) and are private until the person shares them. */
 export const SENSITIVE_KINDS: readonly CommKind[] = ["lands_hard", "this_week"];
+/** Package 01 routes.md "Not ready" 7 (issue #9): until field-level encryption exists for them, Talk never offers an item of these kinds. */
+export const NOT_OFFERED_IN_TALK: readonly CommKind[] = SENSITIVE_KINDS;
 /** Kinds that may only ever be shared with one person at a time (spec: "One person at a time"). */
 export const ONE_PERSON_AT_A_TIME: readonly CommKind[] = ["lands_hard", "gets_heated", "coming_back", "this_week"];
 export const THIS_WEEK_DEFAULT_DAYS = 14;
