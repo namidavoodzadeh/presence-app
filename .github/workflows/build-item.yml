@@ -8,7 +8,7 @@ on:
     workflows: [ci]
     types: [completed]
 concurrency:
-  group: build-item-${{ github.event.issue.number || github.event.workflow_run.head_branch }}   # one session per item; the one runner runs one job at a time
+  group: build-item-${{ github.event.issue.number || github.event.workflow_run.head_branch }}   # one session per item; items run in parallel on the builder runners
   cancel-in-progress: false
 permissions:
   contents: read
@@ -17,7 +17,6 @@ env:
   XCODE_VERSION: "27.2"
   SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
   DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-  CI_BUILD_ROOT: /Users/nami/ci-build/ci
   GH_TOKEN: ${{ secrets.FACTORY_TOKEN }}          # pushes and PRs must trigger ci.yml, which GITHUB_TOKEN cannot
   CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 jobs:
@@ -25,16 +24,20 @@ jobs:
     if: >-
       github.event_name == 'issues' && github.event.label.name == 'ready' &&
       github.event.sender.login == github.repository_owner
-    runs-on: [self-hosted, mac-mini]
+    runs-on: [self-hosted, builder]
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.FACTORY_TOKEN }}
+      - name: Build folder for this runner
+        run: echo "CI_BUILD_ROOT=$HOME/ci-build/$RUNNER_NAME" >> "$GITHUB_ENV"
       - name: Toolchain (pinned)
         run: tools/ci-preflight.sh
       - name: Clean build output
         run: tools/ci-clean.sh
+        env:
+          CI_CLEAN_KEEP_SIMULATORS: "1"   # builders run beside CI: never delete the simulators a CI job may be using
       - name: Builder session, round 1
         run: |
           n=${{ github.event.issue.number }}
@@ -52,17 +55,21 @@ jobs:
       github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure' &&
       startsWith(github.event.workflow_run.head_branch, 'item/') &&
       github.event.workflow_run.head_repository.full_name == github.repository
-    runs-on: [self-hosted, mac-mini]
+    runs-on: [self-hosted, builder]
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.FACTORY_TOKEN }}
           ref: ${{ github.event.workflow_run.head_branch }}
+      - name: Build folder for this runner
+        run: echo "CI_BUILD_ROOT=$HOME/ci-build/$RUNNER_NAME" >> "$GITHUB_ENV"
       - name: Toolchain (pinned)
         run: tools/ci-preflight.sh
       - name: Clean build output
         run: tools/ci-clean.sh
+        env:
+          CI_CLEAN_KEEP_SIMULATORS: "1"   # builders run beside CI: never delete the simulators a CI job may be using
       - name: Count CI rounds
         id: count
         run: |
