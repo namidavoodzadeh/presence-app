@@ -13,6 +13,12 @@ tries to steer it cannot make it read credentials on this Mac.
 Size: a diff over MAX_DIFF_CHARS is rejected, never cut short, so nothing is approved unseen."""
 import json, os, shutil, subprocess, sys, tempfile
 
+def record(decision):
+    """Step output `decision`, so merge.yml can tell a REQUEST_CHANGES (a red round for the builder) from a review
+    that could not run (the change just waits)."""
+    with open(os.environ.get("GITHUB_OUTPUT", os.devnull), "a") as f:
+        f.write(f"decision={decision}\n")
+
 MAX_DIFF_CHARS = 180_000
 HERE = os.path.dirname(os.path.abspath(__file__))
 HOME = os.path.realpath(os.path.expanduser("~"))
@@ -41,11 +47,13 @@ if not diff.strip():
 if len(diff) > MAX_DIFF_CHARS:
     print(f"REQUEST_CHANGES\n- The diff has {len(diff):,} characters, over the review limit of {MAX_DIFF_CHARS:,}. "
           "It is not reviewed in part. Split the change into smaller pull requests.")
+    record("REQUEST_CHANGES")
     sys.exit(1)
 binary = [l for l in diff.splitlines() if l.startswith("Binary files ") or l == "GIT binary patch"]
 if binary:
     print("REQUEST_CHANGES\n- The diff changes binary files, whose contents cannot be reviewed as text: "
           + "; ".join(binary[:5]) + ". High-risk paths take text only.")
+    record("REQUEST_CHANGES")
     sys.exit(1)
 policy = open(os.path.join(HERE, "..", "policy", "merge-policy.yml")).read()
 prompt = (
@@ -118,4 +126,5 @@ text = decision + ("\n" + "\n".join(f"- {x}" for x in findings) if findings else
 print(text)
 with open(os.environ.get("GITHUB_STEP_SUMMARY", os.devnull), "a") as f:
     f.write(f"## Review by Codex (a different model family)\n\n{text}\n")
+record(decision)
 sys.exit(0 if decision == "APPROVE" else 1)

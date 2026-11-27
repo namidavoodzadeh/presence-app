@@ -73,6 +73,11 @@ jobs:
         # Codex CLI, signed in on the Mac mini with the owner's existing plan: no API key, no new spending.
         shell: bash -euo pipefail {0}    # a failed diff fails the step; a partial diff is never reviewed
         run: git diff refs/gate/main...refs/gate/pr | tools/review-other-family.py
+      - name: Changes requested
+        # Marks this run as a red round: build-item.yml looks for this step (success, not skipped) and starts the
+        # builder's next round with the review text as the failure log. A review that could not run is not marked.
+        if: failure() && steps.review.outputs.decision == 'REQUEST_CHANGES'
+        run: echo "risk-review requested changes on ${{ steps.pr.outputs.head }}"
       - name: Report risk-review on the pull request's head commit
         if: always() && steps.pr.outputs.head != ''
         env:

@@ -16,5 +16,7 @@ This is CI round $round of at most 2.
 $issue
 EOP
 if [ -n "$log" ] && [ -s "$log" ]; then
-  echo; echo "## Round 1 failed in CI. Failing log (last 300 lines):"; echo; echo '```'; tail -300 "$log"; echo '```'
+  echo; echo "## Round 1 was sent back: CI failed, or risk-review (a different model family) requested changes."
+  echo "Address every failure and every review finding below. Failing logs and review text (last 300 lines of each run):"
+  echo; echo '```'; cat "$log"; echo '```'
 fi

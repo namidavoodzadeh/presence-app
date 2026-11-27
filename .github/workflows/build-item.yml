@@ -1,11 +1,12 @@
 name: build-item
 # An issue labelled `ready` (by the owner) starts one Claude Code session on the Mac. The change goes up as a PR.
-# CI round 1 red: a second session gets the failure log. CI round 2 red: the issue is labelled `returned` and stops.
+# Round 1 red (CI failed, or risk-review requested changes): a second session gets the failure log or review text.
+# Round 2 red: the issue is labelled `returned` and stops. A commit red on both CI and risk-review is one round.
 on:
   issues:
     types: [labeled]
   workflow_run:
-    workflows: [ci]
+    workflows: [ci, merge]
     types: [completed]
 concurrency:
   group: build-item-${{ github.event.issue.number || github.event.workflow_run.head_branch }}   # one session per item; the one runner runs one job at a time
@@ -63,25 +64,36 @@ jobs:
         run: tools/ci-preflight.sh
       - name: Clean build output
         run: tools/ci-clean.sh
-      - name: Count CI rounds
+      - name: Count red rounds
         id: count
         run: |
           branch="${{ github.event.workflow_run.head_branch }}"
-          reds=$(gh run list --workflow ci.yml --branch "$branch" --event pull_request --limit 50 --json conclusion \
-            --jq '[.[] | select(.conclusion == "failure")] | length')
-          echo "n=${branch#item/}" >> "$GITHUB_OUTPUT"; echo "reds=$reds" >> "$GITHUB_OUTPUT"; echo "red CI rounds: $reds"
+          sha="${{ github.event.workflow_run.head_sha }}"
+          echo "n=${branch#item/}" >> "$GITHUB_OUTPUT"
+          # A failed merge run is a red round only when risk-review requested changes; a review that could not run
+          # (Codex signed out, timeout) leaves the change waiting for a re-run of risk-review.
+          if ! tools/item-reds.sh is-red ${{ github.event.workflow_run.id }}; then
+            echo "reds=0" >> "$GITHUB_OUTPUT"; echo "run ${{ github.event.workflow_run.id }} is not a red round"; exit 0
+          fi
+          # A newer commit is already on the branch (the other check on the same commit started the next round).
+          if [ "$(git rev-parse HEAD)" != "$sha" ]; then
+            echo "reds=0" >> "$GITHUB_OUTPUT"; echo "stale: $sha is no longer the head of $branch"; exit 0
+          fi
+          reds=$(tools/item-reds.sh count "$branch")
+          echo "reds=$reds" >> "$GITHUB_OUTPUT"; echo "red rounds: $reds"
       - name: Second red, return the issue
         if: steps.count.outputs.reds >= 2
         run: |
           n=${{ steps.count.outputs.n }}
           gh issue edit "$n" --add-label returned --remove-label ready
-          gh issue comment "$n" --body "Returned after two red CI rounds (${{ github.event.workflow_run.html_url }}). Treat as a package defect: say what the package or the item got wrong."
-          gh pr close "item/$n" --comment "Stopped: second red CI round. See issue #$n."
+          gh issue comment "$n" --body "Returned after two red rounds (${{ github.event.workflow_run.html_url }}). Treat as a package defect: say what the package or the item got wrong."
+          gh pr close "item/$n" --comment "Stopped: second red round. See issue #$n."
       - name: Builder session, round 2
         if: steps.count.outputs.reds == 1
         run: |
           n=${{ steps.count.outputs.n }}
-          gh run view ${{ github.event.workflow_run.id }} --log-failed > "$CI_BUILD_ROOT/failed.log" || true
+          tools/item-reds.sh log "${{ github.event.workflow_run.head_branch }}" "${{ github.event.workflow_run.head_sha }}" \
+            "$CI_BUILD_ROOT/failed.log" || true
           PROTECT_ALLOW="$(gh issue view "$n" --json labels --jq '[.labels[].name | select(startswith("path:")) | ltrimstr("path:")] | join(":")')"
           export PROTECT_ALLOW
           tools/item-prompt.sh "$n" 2 "$CI_BUILD_ROOT/failed.log" > "$CI_BUILD_ROOT/prompt.md"
