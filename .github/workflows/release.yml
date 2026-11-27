@@ -47,9 +47,8 @@ jobs:
           [ -n "$CI_KEYCHAIN_PASSWORD" ] || { echo "::error::Set repository secret CI_KEYCHAIN_PASSWORD."; exit 3; }
           [ -f "$keychain" ] || { echo "::error::CI signing keychain missing at $keychain on this Mac."; exit 3; }
           security unlock-keychain -p "$CI_KEYCHAIN_PASSWORD" "$keychain"
-          # Archive and export both find the identity through the user search list; keep this keychain first in it.
-          others="$(security list-keychains -d user | tr -d '"' | grep -v '/ci-signing.keychain-db$' || true)"
-          security list-keychains -d user -s "$keychain" $others
+          # The owner put this keychain first in the user search list once, at setup; export finds the identity there.
+          security list-keychains -d user | grep -q '/ci-signing.keychain-db"' || { echo "::error::ci-signing keychain is not in the user search list on this Mac."; exit 3; }
       - name: Archive
         env:
           ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
