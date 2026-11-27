@@ -13,6 +13,7 @@ import { keywordRisk, RESOURCES, stops } from "../engine/safety.ts";
 import type { EntryResult } from "../engine/safety_entry.ts";
 import { MIRROR_UNREAD_LINE, unreadBody } from "./lib/safety_gate.ts";
 import { requireSafetyPass } from "./_shared/safety/gate.ts";
+import { requireAiConsent } from "./lib/ai_consent.ts";
 import { decide } from "../engine/mirror/gate.ts";
 import {
   OBSERVE_MAX_CHARS,
@@ -68,10 +69,13 @@ export const ASK_MOMENT_LINE =
 const SLUG_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
 export const SAMPLE_CAP_CENTS = 15;
 
-/** Test seam, as in bridge_engine.ts: the $0 check swaps both models for recorded ones. */
+/** Test seam, as in bridge_engine.ts: the $0 check swaps both models for recorded ones. `authenticate` stands in for the bearer
+ *  check on the routes that authenticate themselves (the preview sample), so a test can drive them on the fake database. Hosted code
+ *  never sets either. */
 export const hooks: {
   client: ((ctx: Ctx, ledger: PostgresLedger, model: "observe" | "synthesise") => ModelClient) | null;
-} = { client: null };
+  authenticate?: ((ctx: Ctx) => Promise<Caller>) | null;
+} = { client: null, authenticate: null };
 
 function clientFor(ctx: Ctx, ledger: PostgresLedger, which: "observe" | "synthesise"): ModelClient {
   if (hooks.client) return hooks.client(ctx, ledger, which);
@@ -1041,8 +1045,9 @@ route("POST", "/preview/mirror-sample", async (ctx) => {
   // Release build never reaches this, authenticated or not (CONTRACT.md's release switch); checked before
   // authenticate() so an unauthenticated caller on a release build still gets 404, not 401.
   if (ctx.env.releaseBuild) throw new ApiError("not_found", "", { path: "/preview/mirror-sample" });
-  const caller = await authenticate(ctx.env, ctx.req);
+  const caller = hooks.authenticate ? await hooks.authenticate(ctx) : await authenticate(ctx.env, ctx.req);
   if (!caller.isPreview) throw new ApiError("forbidden", "", { reason: "preview_only" });
+  await requireAiConsent(ctx, {}, caller);
   const owner = caller.id;
   const b = await ctx.body();
   const cap = Number.isFinite(Number(b.cap_cents)) && Number(b.cap_cents) > 0
@@ -1061,10 +1066,10 @@ route("POST", "/preview/mirror-sample", async (ctx) => {
     }
   }
   if (old?.length) await service.from("outside_perspectives").delete().in("id", old.map((p) => p.id));
-  await service.from("mirror_contributions").delete().eq("link_id", link.id).like(
-    "contributor_key",
-    "example:%",
-  );
+  // The example people's earlier sample moments go; a real contributor's never do.
+  const { data: earlier } = await service.from("mirror_contributions").select("id,contributor_key").eq("link_id", link.id);
+  const sampleIds = (earlier ?? []).filter((c) => String(c.contributor_key ?? "").startsWith("example:")).map((c) => c.id);
+  if (sampleIds.length) await service.from("mirror_contributions").delete().in("id", sampleIds);
   const { data: profile } = await service.from("profiles").select("name").eq("id", owner).maybeSingle();
   const name = firstName(profile?.name);
   const { data: spend0 } = await service.rpc("ledger_snapshot");

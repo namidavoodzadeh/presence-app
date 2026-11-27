@@ -41,6 +41,8 @@ export interface ApiEnv {
   commOwnerIds?: string[];
   /** Private Talk listener guide. Off unless PRESENCE_TALK_GUIDE is "true"; it uses the same owner list as communication items. */
   talkGuide?: boolean;
+  /** CONTRACT §7 AI consent (§11.4 L6): the model-call gate. Off unless PRESENCE_REQUIRE_AI_CONSENT is "true" (off in preview, on in release). */
+  requireAiConsent?: boolean;
   isHosted: boolean;
   releaseBuild: boolean;
 }
@@ -146,6 +148,7 @@ export async function loadEnv(): Promise<ApiEnv> {
   const commItems = enabledSwitch(get("PRESENCE_COMM_ITEMS"));
   const commOwnerIds = (get("PRESENCE_COMM_OWNER_IDS") || "").split(",").map((x) => x.trim()).filter(Boolean);
   const talkGuide = enabledSwitch(get("PRESENCE_TALK_GUIDE"));
+  const requireAiConsent = enabledSwitch(get("PRESENCE_REQUIRE_AI_CONSENT"));
   if (!url || !anon || !service || !preview || !anthropic || !workspace) {
     const home = get("HOME");
     const root = get("PRESENCE_HOME_ROOT") || `${home}/Library/Application Support/PresenceHome`;
@@ -194,6 +197,7 @@ export async function loadEnv(): Promise<ApiEnv> {
     commItems,
     commOwnerIds,
     talkGuide,
+    requireAiConsent,
     isHosted,
     releaseBuild,
   };

@@ -29,6 +29,7 @@ import type { OpenerSource } from "./lib/talk_opener.ts";
 import { finishFailureDisposition, turnFailureDisposition } from "./lib/talk_recovery.ts";
 import { unreadBody } from "./lib/safety_gate.ts";
 import { requireSafetyPass } from "./_shared/safety/gate.ts";
+import { requireAiConsent } from "./lib/ai_consent.ts";
 import { afterReply } from "./bridge_engine.ts";
 import { guideBrief, GUIDE_MODEL, guideAvoidTopics } from "../engine/talk/guide.ts";
 import type { GuideBrief } from "../engine/talk/guide.ts";
@@ -166,6 +167,8 @@ async function runTurn(
 ): Promise<TurnOutcome> {
   const started = performance.now();
   const db = ctx.caller!.db, owner = ctx.caller!.id, cid = conversation.id as string;
+  // CONTRACT §7 AI consent: no model call without a current consent; the person's row is already stored, so it is kept.
+  await requireAiConsent(ctx, { saved: true, message_id: meRow.id });
   let about: Row | null = null;
   if (conversation.belief_id) {
     const { data } = await db.from("beliefs").select("id,label,statement").eq("id", conversation.belief_id as string).maybeSingle();
@@ -569,6 +572,8 @@ route("POST", "/talk/turn", async (ctx) => {
   const b = await ctx.body();
   if (isOpenerRequest(b)) return json(openerBody(b.source as OpenerSource, readAbout(b.about)));  // v1.54: no model call, nothing stored
   const prepared = await prepareTurn(ctx, b);
+  // Before the stream opens, so a refusal is the ordinary 403 (the words are saved, as with 429 daily_limit).
+  await requireAiConsent(ctx, { saved: true, message_id: prepared.meRow.id });
   if (streaming) return streamTurn(ctx, prepared);
   return turnReply(
     ctx,
@@ -649,6 +654,7 @@ route("POST", "/talk/edit", async (ctx) => {
   const b = await ctx.body();
   if (typeof b.message_id !== "string") throw new ApiError("invalid", "", { field: "message_id" });
   const newText = text(b);
+  await requireAiConsent(ctx);                  // the edited words are read by a model before anything changes
   const row = await loadMeRow(db, b.message_id);
   const conversation = await loadConversation(db, row.conversation_id as string);
   const turn = row.turn as number;
@@ -738,6 +744,8 @@ route("POST", "/talk/finish", async (ctx) => {
   let hypothesesAfter: Belief[] | null = [];
   let stillWorking = false;
   if (conversation.risk_turn === null || conversation.risk_turn === undefined) {
+    // CONTRACT §7 AI consent: the ratings above are kept; the summary call waits for consent.
+    await requireAiConsent(ctx, { saved: true });
     const loaded = await loadState(db, { id: owner, name: await profileName(db, owner) }, conversation);
     const ratings = new Map<string, Rating>();
     for (const h of loaded.state.hypotheses.values()) { const r = engineRating(loaded.rows.get(h.id)?.rating); if (r) ratings.set(h.id, r); }

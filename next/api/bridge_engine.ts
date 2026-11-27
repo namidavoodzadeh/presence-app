@@ -30,6 +30,7 @@ import { loadPairContext } from "./pair_context.ts";
 import { runWritePipeline, type WriteInput } from "../engine/bridge/write_pipeline.ts";
 import { unreadBody } from "./lib/safety_gate.ts";
 import { requireSafetyPass } from "./_shared/safety/gate.ts";
+import { requireAiConsent } from "./lib/ai_consent.ts";
 
 export const INSIGHT_MODEL = "claude-haiku-5-5";        // APP-V1-BUILD §3: insight on Haiku, small and fast
 export const RUN_MODEL = "claude-sonnet-5-5";           // Bridge it on Sonnet (8/12 vs Haiku's 1/6)
@@ -243,11 +244,13 @@ route("POST", "/bridge/insight", async (ctx) => {
   const seq = insightSeq(b);
   const empty = { seq, state: "insight", tone: "neutral" as Feeling, spans: [], points: [], line: null, resources: null, ref: null };
   if (text.trim().length < MIN_INSIGHT_CHARS) return json(empty);
+  // The floor is local (no model); a risk it routes still shows resources without consent (law 8). Every model call below waits for consent.
   let floor = floorSafety(text);
   // PSY 15 Nov ruling 2 (as in Talk and Bridge): a candidate floor row clears only with two keys, two parallel readings read alone
   // before the analysis; with the semantic check off by config nothing clears.
   let classReading: SemanticRisk | null = null;
   if (floor.routed !== "none" && ctx.env.safetySemantic === true && candidateClasses(text, floor).length) {
+    await requireAiConsent(ctx);
     const both = await classReadings(clientFor(ctx, new PostgresLedger(ctx.service, scopeFor(ctx)), "insight"), text);
     classReading = both[0];
     const cleared = settleClear(text, floor, both);
@@ -255,6 +258,7 @@ route("POST", "/bridge/insight", async (ctx) => {
   }
   if (floor.routed === "risk") return json({ ...empty, state: "risk", line: RESOURCES.message, resources: RESOURCES });
   if (floor.routed === "threat_or_abuse") { return json({ ...empty, state: "declined", line: DECLINE_LINE, ...refusal(flaggedSpans(text, null, floor)) }); }
+  await requireAiConsent(ctx);
   const scope = scopeFor(ctx), ledger = new PostgresLedger(ctx.service, scope);
   // K-0152: V3 previously read every draft twice: first its required semantic
   // reader, then helperStop's independent classifier. Reuse the mandatory
@@ -473,6 +477,7 @@ route("POST", "/bridge/run", async (ctx) => {
   const b = await ctx.body();
   if (typeof b.person_id !== "string") throw new ApiError("invalid", "", { field: "person_id" });
   const text = textOf(b);
+  await requireAiConsent(ctx);
   // The V3 pipeline replaces the old run path, so it must carry the safety
   // stop itself before any pair read or model call (law 8).
   if (ownerWriteV3(ctx)) {
@@ -531,6 +536,7 @@ route("POST", "/bridge/reword-part", async (ctx) => {
   const start = Number(b.start), end = Number(b.end);
   if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end > text.length || end <= start) throw new ApiError("invalid", "", { field: "start" });
   const part = text.slice(start, end);
+  await requireAiConsent(ctx);
   const stopped = await helperStop(ctx, text);
   if (stopped) return stopped;
   const { sender, relationship } = await senderFromPairContext(db, owner, b.person_id);
@@ -567,6 +573,7 @@ route("POST", "/bridge/why-it-matters", async (ctx) => {
   if (typeof b.person_id !== "string") throw new ApiError("invalid", "", { field: "person_id" });
   if (typeof b.belief_id !== "string") throw new ApiError("invalid", "", { field: "belief_id" });
   const text = textOf(b);
+  await requireAiConsent(ctx);
   const stopped = await helperStop(ctx, text);
   if (stopped) return stopped;
   const { data: row, error } = await db.from("beliefs").select("*").eq("id", b.belief_id).eq("owner", owner).eq("status", "confirmed").maybeSingle();

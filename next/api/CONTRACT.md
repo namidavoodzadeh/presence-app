@@ -6,6 +6,8 @@ Engine lane, 2026-10-27 13:10 Tehran. Built from `docs/APP-V1-BUILD.md` §4–§
 
 ## Changed
 
+- v1.98 (2026-11-27, issue #8, package 01 routes.md "Not ready" 6; migration 0084): AI consent and the model-call gate, built from §11.4 as §7 "AI consent". `GET /me` gains `ai_consent`; new `POST /consent/ai` and `DELETE /consent/ai`; with `PRESENCE_REQUIRE_AI_CONSENT=true` every model route answers `403 forbidden`, `reason: "ai_consent_required"` without a current consent and makes no model call. The gate also covers `POST /comm/talk/turn` and `POST /comm/items` (when it makes a model call). Not built: the Mirror contributor's consent (§11.4 "Mirror"). Rollback: unset the switch; the table can stay.
+
 - v1.97 (2026-11-20, K-0046, PSY card and Ask me eligibility; migrations 0077 and 0078; behind `PRESENCE_COMM_ITEMS`, owner-only, staging first): `GET /comm/eligible-items?surface=card|ask` is the sole server-side eligibility read for card picker, Surprise me, pre-selection, story/photo preview and Ask me presets. It returns `{surface, items, question, adults_only}`. `items` includes only owner-confirmed, sufficiently scoped items that pass the conservative content and safety exclusions; `question` is `"Describe a time it happened."` and `adults_only` is true for `ask`, otherwise both are null/false. The content reader sees the item's own wording, is cached by wording hash, and fails closed; no item is made eligible by a reader. An Ask whose source is set aside, retired, or narrowed stops accepting new answers while retaining answers already received. Rollback: revert the route and migrations; no cards, asks, or answers are deleted.
 
 - v1.42 (in progress on engine/v2, not on hosted; E27, CEO 09:55 PT 07 Nov: Bridge that uses both maps).
@@ -1327,11 +1329,24 @@ Card = { "bridge_id", "direction": "sent"|"received", "text": "…"|null, "deliv
               "notify": { "bridges_ready": true, "talk_reminders": true, "mirror": true, "talk_replies": true, "previews": false },
               "server": "hosted"                         // hosted | mac (app-side only; stored for convenience)
             } },
-    "plan": { "active": true, "source": "partner", "partner_name": "Lea" } }
+    "plan": { "active": true, "source": "partner", "partner_name": "Lea" },
+    "ai_consent": { "required_version": "2027-01", "providers": ["anthropic"],
+                    "given": { "version": "2027-01", "providers": ["anthropic"], "at": "…" } | null } }   // GET only (v1.98)
 → { "name": "Nami" }  |  { "settings": { "frost": false } }  |  { "photo": "<base64 jpeg ≤ 200 KB>" }     ← { "me": Me }
 ```
 
 `PATCH` merges `settings` shallowly (send only the keys that change). `PATCH /me { "tz": "Asia/Tehran" }` sets the person's zone (v1.7; `null` clears it; a name the runtime does not know, or a bare offset, is `400 invalid`, `field: "tz"`). The zone is also learned from `X-Presence-TZ` on login and `GET /me` while the profile has none.
+
+### AI consent (v1.98; migration 0084; built from §11.4 L6, App Store 5.1.2(i))
+
+The person agrees, by version, that their words go to the named AI provider before any is sent. The provider list is `["anthropic"]` (voice is on-device); a change of the list or of the consent wording moves `required_version` on.
+
+- `GET /me` carries `ai_consent` (above). `given` is the current record: the latest one not withdrawn, and only when its version is `required_version`; otherwise `null` (none, withdrawn, or behind: the app shows the consent screen again).
+- `POST /consent/ai { "version": "2027-01", "providers": ["anthropic"] }` → `{ "ai_consent": … }`. Adds a row to `ai_consent (owner, version, providers, at, withdrawn_at, client_ref)` unless that exact consent is already current (a repeat adds nothing). A `version` the server does not know is `400 invalid`, `field: "version"`; a provider list other than `["anthropic"]` is `400 invalid`, `field: "providers"`. Nothing is stored on a 400.
+- `DELETE /consent/ai` → `{ "ai_consent": { …, "given": null } }`: sets `withdrawn_at` on the open record; nothing else is deleted. Rows are never changed in place otherwise, so the history of what was agreed and when stays whole. `DELETE /account` removes them with everything else.
+- **The gate**, behind `PRESENCE_REQUIRE_AI_CONSENT=true` (off in preview, on in release). Every route that can send the person's words to a model checks before its first model call and before the ledger reserve: `POST /talk/turn`, `POST /talk/finish`, `POST /bridge/insight`, `POST /bridge/run`, `POST /bridge/reword-part`, `POST /bridge/why-it-matters`, `POST /preview/mirror-sample`, `POST /comm/talk/turn` (with `text`; the opener makes no call) and `POST /comm/items` (only when the semantic safety reading is on, the one model call it makes). The list is `MODEL_ROUTES` in `next/api/lib/ai_consent.ts`; `next/tests/ai_consent_gate_test.ts` drives every entry. The Talk turns of `POST /talk/consent` and `POST /talk/edit` pass the same check.
+- Without a current consent: `403 forbidden`, `reason: "ai_consent_required"`, `required_version`, and no model call. `POST /talk/turn` and `POST /comm/talk/turn` keep the person's words (`saved: true`, `message_id`, as `429 daily_limit` does), so the same text sent again once consent exists is answered once (the v1.1 retry rule; on `/comm/talk/turn` send the returned `conversation_id`). `POST /talk/finish` keeps the ratings it was sent (`saved: true`). `POST /bridge/insight` still answers a risk its local floor finds with resources (law 8), with no call.
+- With the switch off nothing is gated; the routes still work and store, so a preview account can give and withdraw consent to test the screens. Mirror contributors' consent (§11.4 "Mirror") is not built yet.
 
 ### Mirror (Y01, Y02, M08; thesis v3 "Mirror")
 
@@ -1505,6 +1520,8 @@ The engine rules already hold and are restated here as the release contract; the
 - **Teaser text.** No reply in §2–§7 is allowed to carry text meant for a notification before the gate, and none does; the §8 table is the whole list of app-scheduled notifications and every row names the reply field it comes from. A new notification needs a new row there and a Changed line.
 
 ### 11.4 L6 — consent naming the AI providers, stored with a version, and the model-call gate
+
+Built in v1.98 as §7 "AI consent", except the Mirror contributor's part below.
 
 Apple 5.1.2(i): a user is told which third parties receive their data and agrees before anything is sent. Today the API sends user text only to Anthropic (`claude-sonnet-5-5`, `claude-haiku-5-5`, §9). Voice is on-device (the app uses Apple speech; the web page uses the browser's own speech recognition); no audio or transcript goes to OpenAI or any other provider, so the provider list is `["anthropic"]` until that changes, and a change bumps the version. The existing `consent` table is the per-area Talk consent (§1.5) and is not reused.
 

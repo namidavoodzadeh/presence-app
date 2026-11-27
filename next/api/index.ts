@@ -6,10 +6,11 @@
 
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { loadEnv } from "./lib/env.ts";
-import { ApiError, errorReply, json, recordClientRefs, recordError } from "./lib/errors.ts";
+import { ApiError, clientRefs, errorReply, json, recordClientRefs, recordError } from "./lib/errors.ts";
 import { anonClient, authenticate, dbError, serviceClient, type Caller } from "./lib/db.ts";
 import { apiPath, route, routes, type Params } from "./lib/router.ts";
 import { secretEquals } from "./lib/secret.ts";
+import { aiConsentObject, giveAiConsent, withdrawAiConsent } from "./lib/ai_consent.ts";
 import { cardsFor, conversationObject, conversationWithCounts, DEFAULT_SETTINGS, loadConversation, meObject, meObjectFromRow, messageObject, pendingReply, PERSONAS } from "./lib/objects.ts";
 import "./talk.ts";
 import "./map.ts";
@@ -168,7 +169,11 @@ async function learnZone(db: SupabaseClient, id: string, headerTz: string, known
 route("GET", "/me", async ({ caller, service, env, tz }) => {
   const learned = await learnZone(caller!.db, caller!.id, tz, caller!.profile.tz as string | null);
   if (learned && !caller!.profile.tz) caller!.profile.tz = learned;
-  return json({ me: meObjectFromRow(caller!.profile), plan: await loadPlan(service, caller!.id, env.partnerEntitlements === true) });
+  const [plan, ai_consent] = await Promise.all([
+    loadPlan(service, caller!.id, env.partnerEntitlements === true),
+    aiConsentObject(caller!.db, caller!.id),
+  ]);
+  return json({ me: meObjectFromRow(caller!.profile), plan, ai_consent });
 });
 
 route("PATCH", "/me", async ({ caller, body }) => {
@@ -195,6 +200,18 @@ route("PATCH", "/me", async ({ caller, body }) => {
   const { error } = await caller!.db.from("profiles").update(patch).eq("id", caller!.id);
   if (error) dbError(error, "profiles.update");
   return json({ me: await meObject(caller!.db, caller!.id) });
+});
+
+// ------------------------------------------------------------------ AI consent (CONTRACT §7, from §11.4 L6)
+
+route("POST", "/consent/ai", async ({ caller, body, req }) => {
+  const b = await body();
+  const ref = clientRefs(req.headers.get("x-client-ref"))[0] ?? null;
+  return json({ ai_consent: await giveAiConsent(caller!.db, caller!.id, b.version, b.providers, ref) });
+});
+
+route("DELETE", "/consent/ai", async ({ caller }) => {
+  return json({ ai_consent: await withdrawAiConsent(caller!.db, caller!.id) });
 });
 
 // ------------------------------------------------------------------ conversations ($0 reads and edits; turns live in talk.ts)

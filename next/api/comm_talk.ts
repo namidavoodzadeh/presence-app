@@ -23,6 +23,7 @@ import { RESOURCES } from "../engine/safety.ts";
 import { requireSafetyPass } from "./_shared/safety/gate.ts";
 import { unreadBody } from "./lib/safety_gate.ts";
 import { loadPairContext } from "./pair_context.ts";
+import { aiConsentRefusal, hasAiConsent } from "./lib/ai_consent.ts";
 
 const WAYS: readonly WayIn[] = ["invited_by_partner", "invited_by_friend", "own_download"];
 const MAX_NAME = 40;
@@ -45,6 +46,29 @@ async function conversationFor(ctx: Ctx, b: Row): Promise<Row> {
   const { data, error } = await db.from("conversations").insert({ owner, mode: "voice", source: "talk" }).select("*").single();
   if (error) dbError(error, "conversations.insert");
   return data as Row;
+}
+
+/** The person's last answer still waiting for its reply (a refused or failed call), or null. */
+function pendingAnswer(rows: Row[]): Row | null {
+  const last = rows.filter((m) => m.role === "me").at(-1);
+  if (!last || rows.some((m) => m.role === "presence" && m.turn === last.turn)) return null;
+  return last;
+}
+
+/** Keep the person's answer: the same words still waiting for a reply are the same row (a retry adds nothing). */
+async function keepAnswer(ctx: Ctx, cid: string, rows: Row[], raw: string): Promise<{ me: Row; turn: number }> {
+  const pending = pendingAnswer(rows);
+  if (pending && String(pending.text ?? "").trim() === raw) return { me: pending, turn: pending.turn as number };
+  const turn = rows.filter((m) => m.role === "me").length + 1;
+  const { data, error } = await ctx.caller!.db.from("messages").insert({ owner: ctx.caller!.id, conversation_id: cid, role: "me", turn, text: raw, answer_kind: "told" }).select("*").single();
+  if (error) dbError(error, "messages.insert");
+  return { me: data as Row, turn };
+}
+
+async function answerRows(ctx: Ctx, cid: string): Promise<Row[]> {
+  const { data: msgs, error: mErr } = await ctx.caller!.db.from("messages").select("*").eq("conversation_id", cid).neq("superseded", true).order("turn");
+  if (mErr) dbError(mErr, "messages.comm");
+  return ((msgs ?? []) as Row[]).filter((m) => !m.deleted_at);
 }
 
 async function planFor(ctx: Ctx, conversation: Row, marks: CommMark[], wayIn: WayIn, name: string | undefined) {
@@ -79,6 +103,14 @@ route("POST", "/comm/talk/turn", async (ctx) => {
   // Law 8 first: a risky answer stops here, with nothing stored and no call. (Mapping stays off for this conversation: no item is ever drafted.)
   if (raw && commTurnPrecheck(raw).stop) return json({ conversation: null, message: null, reply: { state: "safety", reflection: "", question: "", comm: null, item: null, resources: RESOURCES }, latency_ms: 0 });
 
+  // CONTRACT §7 AI consent: without it no model is called (the safety reading included). The answer is kept, as Talk keeps it
+  // (flows/talk.md "the words were kept"), so the same words are answered once consent exists.
+  if (raw && !(await hasAiConsent(ctx))) {
+    const conversation = await conversationFor(ctx, b);
+    const { me } = await keepAnswer(ctx, conversation.id as string, await answerRows(ctx, conversation.id as string), raw);
+    throw aiConsentRefusal({ saved: true, message_id: me.id, conversation_id: conversation.id });
+  }
+
   // K-0002: the one safety gate, before any row is made or model called; held (unreadable) stores nothing.
   if (raw) {
     const g = await requireSafetyPass(ctx, raw, "comm_talk");
@@ -88,14 +120,14 @@ route("POST", "/comm/talk/turn", async (ctx) => {
 
   const conversation = await conversationFor(ctx, b);
   const cid = conversation.id as string;
-  const { data: msgs, error: mErr } = await db.from("messages").select("*").eq("conversation_id", cid).neq("superseded", true).order("turn");
-  if (mErr) dbError(mErr, "messages.comm");
-  const rows = ((msgs ?? []) as Row[]).filter((m) => !m.deleted_at);
+  const rows = await answerRows(ctx, cid);
   const presence = rows.filter((m) => m.role === "presence");
   const marks = presence.map(markOf).filter((m): m is CommMark => !!m);
   const answeredKind = marks.at(-1)?.kind ?? null;
   const { input, plan } = await planFor(ctx, conversation, marks, wayIn, name);
-  const turn = rows.filter((m) => m.role === "me").length + 1;
+  const pending = raw ? pendingAnswer(rows) : null;
+  const kept = pending && String(pending.text ?? "").trim() === raw ? pending : null;
+  const turn = kept ? kept.turn as number : rows.filter((m) => m.role === "me").length + 1;
   const convPatch: Row = { last_active_at: new Date().toISOString(), status: "active" };
 
   const finish = async (reply: Record<string, unknown>, meRow: Row | null, spoken: string, patch: Row = {}) => {
@@ -122,9 +154,9 @@ route("POST", "/comm/talk/turn", async (ctx) => {
     return finish(askReply(plan.question, plan.kind, "bank"), null, plan.question);
   }
 
-  // The person's answer is stored as they said it (like every Talk turn), then one checked model call.
-  const { data: me, error: meErr } = await db.from("messages").insert({ owner, conversation_id: cid, role: "me", turn, text: raw, answer_kind: "told" }).select("*").single();
-  if (meErr) dbError(meErr, "messages.insert");
+  // The person's answer is stored as they said it (like every Talk turn; a kept answer from a refused turn is the same row), then one
+  // checked model call.
+  const { me } = await keepAnswer(ctx, cid, rows, raw);
 
   // When the session's budget is spent this answer is the last: it still gets its reflection and its item, but no next question.
   const closing = plan.done;
