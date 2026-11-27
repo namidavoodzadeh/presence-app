@@ -34,4 +34,5 @@ clean 30000000 "$T/home/ci-build/../../keep"; [ $? -eq 1 ] && [ -e "$T/keep/prec
 ln -s "$T/keep" "$T/home/ci-build/link"
 clean 30000000 "$T/home/ci-build/link"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && ok "ci-clean: refuses a symlink out of ~/ci-build" || no "ci-clean: refuses a symlink out of ~/ci-build"
 clean 30000000 "$T/home/ci-build/link/sub"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && [ ! -e "$T/keep/sub" ] && ok "ci-clean: refuses a symlinked ancestor and creates nothing" || no "ci-clean: refuses a symlinked ancestor and creates nothing"
+python3 -I "$ROOT/tools/test_review_split.py" >"$T/split.out" 2>&1 && ok "review: diff splitter parts rejoin to the exact diff" || { cat "$T/split.out"; no "review: diff splitter parts rejoin to the exact diff"; }
 rm -rf "$T"; echo "$pass passed, $failn failed"; [ "$failn" -eq 0 ]
