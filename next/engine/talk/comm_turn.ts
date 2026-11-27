@@ -6,7 +6,7 @@
 import type { ModelRequest } from "../model/client.ts";
 import { keywordRisk, RESOURCES, stops } from "../safety.ts";
 import { type CheckVerdict, checkBeforeSuggesting, COMM_NEVER_ON_SCREEN, talkQuestionProblems } from "../comm_checks.ts";
-import type { CommKind } from "../comm.ts";
+import { type CommKind, NOT_OFFERED_IN_TALK } from "../comm.ts";
 import type { Plan } from "../comm_planner.ts";
 
 export const COMM_TURN_MODEL = "claude-haiku-5-5";   // only after its gold run passes (the staging run records it); Sonnet is the fallback
@@ -87,7 +87,8 @@ export function finishCommTurn(raw: string, i: CommTurnInput): CommTurnOutput {
   // The item: only for a kind the person was just asked about, grounded in their own words, through the 4.3 checks as something they said.
   const item = typeof o.item === "string" ? o.item.replace(/\s+/g, " ").trim() : "";
   if (item && i.answeredKind) {
-    if (item.length > MAX_ITEM_CHARS || words(item).length > 40) out.itemRefused = "too_long";
+    if (NOT_OFFERED_IN_TALK.includes(i.answeredKind)) out.itemRefused = "kind_not_offered";   // no field-level encryption yet (#9)
+    else if (item.length > MAX_ITEM_CHARS || words(item).length > 40) out.itemRefused = "too_long";
     else if (groundedShare(item, i.answer) < MIN_GROUNDED) out.itemRefused = "not_their_words";
     else {
       const v = checkBeforeSuggesting({ text: item, kind: i.answeredKind, source: "talk_said" });
