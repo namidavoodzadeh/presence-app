@@ -35,7 +35,7 @@ jobs:
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: [self-hosted, mac-mini]
-    timeout-minutes: 20
+    timeout-minutes: 60    # a large diff is reviewed in parts, one after another, each allowed up to 15 minutes
     env:
       PR: ${{ github.event.pull_request.number || inputs.pr }}
     steps:
