@@ -72,19 +72,26 @@ jobs:
         if: steps.risk.outputs.files != ''
         # Codex CLI, signed in on the Mac mini with the owner's existing plan: no API key, no new spending.
         shell: bash -euo pipefail {0}    # a failed diff fails the step; a partial diff is never reviewed
-        # The generated Swift client is left out only after the gate regenerates it itself: main's generator
-        # (from refs/gate/main, never the PR's) runs on the PR's contract/openapi.yaml and must reproduce the PR's
-        # Generated/ files exactly. If it does not, the full diff goes to review (and fails the size limit closed).
+        # The generated Swift client is left out only after the gate regenerates it itself, outside any PR checkout:
+        # main's generator (from refs/gate/main) runs in a temporary directory on the PR's contract/openapi.yaml,
+        # read as a blob. Its output must match the PR's Generated/ tree blob for blob (regular files only).
+        # Otherwise the full diff goes to review (and fails the size limit closed).
         run: |
-          gen="app/Packages/Contract/Sources/Contract/Generated/"
-          wt="$(mktemp -d)"; trap 'git worktree remove --force "$wt" >/dev/null 2>&1 || true' EXIT
-          git worktree add --detach -q "$wt" refs/gate/pr
-          rm -rf "$wt/app/Packages/Contract/generator" "$wt/app/Packages/Contract/generate.sh"
-          git archive refs/gate/main app/Packages/Contract/generator app/Packages/Contract/generate.sh | tar -x -C "$wt"
-          if CONTRACT_GEN_BUILD="$RUNNER_TEMP/contract-gen" "$wt/app/Packages/Contract/generate.sh" --check; then
+          gen="app/Packages/Contract/Sources/Contract/Generated"
+          t="$(mktemp -d)"; trap 'rm -rf "$t"' EXIT
+          git archive refs/gate/main app/Packages/Contract/generator app/Packages/Contract/generate.sh | tar -x -C "$t"
+          mkdir -p "$t/contract" "$t/$gen"
+          git cat-file blob refs/gate/pr:contract/openapi.yaml > "$t/contract/openapi.yaml"
+          match=no
+          if CONTRACT_GEN_BUILD="$RUNNER_TEMP/contract-gen" "$t/app/Packages/Contract/generate.sh"; then
+            want="$(cd "$t/$gen" && for f in *; do if [ -f "$f" ] && [ ! -L "$f" ]; then printf '100644 %s\t%s\n' "$(git hash-object --no-filters "$f")" "$f"; fi; done | sort)"
+            have="$(git ls-tree "refs/gate/pr:$gen" 2>/dev/null | awk -F'\t' '{split($1,m," "); print m[1]" "m[3]"\t"$2}' | sort || true)"
+            [ -n "$want" ] && [ "$want" = "$have" ] && match=yes
+          fi
+          if [ "$match" = yes ]; then
             {
-              echo "Note from the gate (merge.yml on main): generated client code under $gen was left out of this diff. The gate regenerated it with main's generator from this PR's contract/openapi.yaml and it matched exactly."
-              git diff refs/gate/main...refs/gate/pr -- . ":(exclude)$gen"
+              echo "Note from the gate (merge.yml on main): generated client code under $gen/ was left out of this diff. The gate regenerated it with main's generator, in a directory outside the PR checkout, from this PR's contract/openapi.yaml; every file matched the PR's committed blob exactly."
+              git diff refs/gate/main...refs/gate/pr -- . ":(exclude)$gen/"
             } | tools/review-other-family.py
           else
             echo "Gate regeneration did not match the PR's generated client; reviewing the full diff."
