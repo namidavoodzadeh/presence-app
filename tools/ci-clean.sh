@@ -16,11 +16,14 @@ ROOT_REAL="$(cd "$HOME/ci-build" && pwd -P)"
 OUT_REAL="$(cd "$OUT" && pwd -P)"
 case "$OUT_REAL" in "$ROOT_REAL"/?*) ;; *) refuse "it resolves to $OUT_REAL, which is not inside $ROOT_REAL";; esac
 rm -rf "$OUT_REAL"; mkdir -p "$OUT_REAL"
-# Builder jobs run beside CI on other runners and set CI_CLEAN_KEEP_SIMULATORS=1: only CI jobs delete CI simulators.
-if [ "${CI_CLEAN_KEEP_SIMULATORS:-}" != "1" ]; then
-  DEVELOPER_DIR="${XCODE_PATH:-/Applications/Xcode.app}/Contents/Developer" xcrun simctl list devices -j 2>/dev/null \
-    | grep -oE '"name" : "presence-ci-[^"]*"' | cut -d'"' -f4 | while read -r d; do xcrun simctl delete "$d" || true; done
-fi
+# Jobs run in parallel on several runners: never delete a booted CI simulator (another job may be using it). Each simulator
+# job deletes its own simulator at the end; this sweeps only shut-down leftovers from jobs that died.
+DEVELOPER_DIR="${XCODE_PATH:-/Applications/Xcode.app}/Contents/Developer" xcrun simctl list devices -j 2>/dev/null \
+  | python3 -I -c 'import json,sys
+for rt in json.load(sys.stdin).get("devices",{}).values():
+    for d in rt:
+        if d.get("name","").startswith("presence-ci-") and d.get("state")=="Shutdown": print(d["udid"])' \
+  | while read -r u; do xcrun simctl delete "$u" || true; done
 MIN_FREE_GB=25
 # CI_FREE_KB is for tools/selftest.sh only: it stands in for the measured free space.
 free_kb="${CI_FREE_KB:-$(df -k "$HOME" | awk 'NR==2 {print $4}')}"

@@ -34,7 +34,7 @@ jobs:
     if: >-
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name == github.repository)
-    runs-on: [self-hosted, mac-mini]
+    runs-on: [self-hosted]
     timeout-minutes: 20
     env:
       PR: ${{ github.event.pull_request.number || inputs.pr }}
@@ -88,7 +88,7 @@ jobs:
     if: >-
       github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name == github.repository &&
       !github.event.pull_request.draft
-    runs-on: [self-hosted, mac-mini]
+    runs-on: [self-hosted]
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4            # main (pull_request_target); the pull request's code is never checked out
