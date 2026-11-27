@@ -63,7 +63,7 @@ class Helpers(unittest.TestCase):
     def test_install_writes_uuid_file_private(self):
         p = FIXTURE["data"][6]
         with tempfile.TemporaryDirectory() as d:
-            uuid = rp.install(p, os.path.join(d, "Provisioning Profiles"))
+            uuid = rp.install(p, os.path.join(d, "Provisioning Profiles"), trusted_root=d)
             path = os.path.join(d, "Provisioning Profiles", f"{uuid}.mobileprovision")
             with open(path, "rb") as f:
                 self.assertEqual(f.read(), b"content of P7")
@@ -105,7 +105,7 @@ class Review(unittest.TestCase):
                 f.write(b"keep me")
             os.symlink(target, os.path.join(d, f"{uuid}.mobileprovision"))
             with self.assertRaises(rp.Fail):
-                rp.install(p, d)
+                rp.install(p, d, trusted_root=d)
             with open(target, "rb") as f:
                 self.assertEqual(f.read(), b"keep me")
         with tempfile.TemporaryDirectory() as d:
@@ -113,7 +113,7 @@ class Review(unittest.TestCase):
             with open(path, "wb") as f:
                 f.write(b"old")
             os.chmod(path, 0o644)
-            rp.install(p, d)
+            rp.install(p, d, trusted_root=d)
             with open(path, "rb") as f:
                 self.assertEqual(f.read(), b"content of P7")
             self.assertEqual(os.stat(path).st_mode & 0o777, 0o600)
@@ -124,7 +124,57 @@ class Review(unittest.TestCase):
         p["attributes"]["profileContent"] = "!!not base64!!"
         with tempfile.TemporaryDirectory() as d:
             with self.assertRaises(rp.Fail):
-                rp.install(p, d)
+                rp.install(p, d, trusted_root=d)
+
+
+class ReviewRound2(unittest.TestCase):
+    def test_symlinked_parent_folder_refused(self):
+        p = FIXTURE["data"][6]
+        with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as other:
+            os.symlink(other, os.path.join(d, "Library"))
+            with self.assertRaises(rp.Fail):
+                rp.install(p, os.path.join(d, "Library", "Provisioning Profiles"), trusted_root=d)
+            self.assertEqual(os.listdir(other), [])
+
+    def test_folder_outside_root_refused(self):
+        with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as other:
+            with self.assertRaises(rp.Fail):
+                rp.install(FIXTURE["data"][6], other, trusted_root=d)
+
+    def test_http_error_logs_codes_only(self):
+        import io, urllib.error
+        body = json.dumps({"errors": [{"code": "NOT_AUTHORIZED", "detail": "::set-output secret=abc"},
+                                      {"code": "bad code\n::warning::x", "detail": "y"}]}).encode()
+        err = urllib.error.HTTPError("https://api.appstoreconnect.apple.com/v1/x", 401, "no", {}, io.BytesIO(body))
+        class Opener:
+            def open(self, req, timeout=60):
+                raise err
+        old = rp._OPENER
+        rp._OPENER = Opener()
+        try:
+            with self.assertRaises(rp.Fail) as cm:
+                rp.Api("t").call("GET", "/v1/x")
+        finally:
+            rp._OPENER = old
+        msg = str(cm.exception)
+        self.assertIn("HTTP 401", msg)
+        self.assertIn("NOT_AUTHORIZED", msg)
+        self.assertNotIn("::", msg)
+        self.assertNotIn("secret", msg)
+
+    def test_certificates_fetched_when_relationship_is_cut_short(self):
+        doc = json.loads(json.dumps(FIXTURE))
+        target = next(p for p in doc["data"] if p["id"] == "P5")
+        target["relationships"]["certificates"] = {"data": [], "meta": {"paging": {"total": 1, "limit": 50}}}
+        calls = []
+        b_cert = next(i for i in FIXTURE["included"] if i["type"] == "certificates" and rp.cert_sha1(i) == B)
+        class FakeApi:
+            def get_all(self, path, params):
+                calls.append(path)
+                return {"data": [b_cert] if path == "/v1/profiles/P5/certificates" else [], "included": []}
+        rp.complete_certificates(FakeApi(), doc, "B1")
+        self.assertIn("/v1/profiles/P5/certificates", calls)
+        self.assertEqual(rp.pick_profile(doc, "B1", [B], now=NOW)[0]["id"], "P5")
 
 
 if __name__ == "__main__":

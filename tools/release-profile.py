@@ -186,16 +186,21 @@ class Api:
             with _OPENER.open(req, timeout=60) as resp:
                 return json.loads(resp.read() or b"{}")
         except urllib.error.HTTPError as e:
-            # Report only the error details, never a response body that could hold profile content.
+            # Only the status and validated error codes: response text never reaches the log (no secrets, no
+            # injected workflow commands).
+            codes = []
             try:
-                errs = json.loads(e.read()).get("errors", [])
-                detail = "; ".join(f"{x.get('code')}: {x.get('detail')}" for x in errs)
+                for x in json.loads(e.read()).get("errors", [])[:3]:
+                    c = str(x.get("code", ""))
+                    if re.fullmatch(r"[A-Z][A-Z0-9_.]{0,63}", c):
+                        codes.append(c)
             except Exception:
-                detail = ""
-            path = urllib.parse.urlparse(url).path
+                pass
+            detail = " ".join(codes)
+            path = urllib.parse.urlsplit(url).path
             raise Fail(f"App Store Connect {method} {path} returned HTTP {e.code} {detail}".strip())
-        except urllib.error.URLError as e:
-            raise Fail(f"App Store Connect unreachable: {e.reason}")
+        except urllib.error.URLError:
+            raise Fail("App Store Connect unreachable")
 
     def get_all(self, path, params):
         """GET with pagination; merges data and included across pages."""
@@ -214,6 +219,33 @@ class Api:
         return merged
 
 
+def complete_certificates(api, doc, bundle_resource_id):
+    """The included certificates relationship holds at most one page. For each candidate profile whose list is
+    cut short (or whose length is unknown), fetch every page of its certificates and merge them in."""
+    seen = {(i.get("type"), i.get("id")) for i in doc.get("included", [])}
+    for p in doc.get("data", []):
+        a = p.get("attributes") or {}
+        rel = p.setdefault("relationships", {})
+        if a.get("profileType") != PROFILE_TYPE or a.get("profileState") != "ACTIVE":
+            continue
+        if ((rel.get("bundleId") or {}).get("data") or {}).get("id") != bundle_resource_id:
+            continue
+        certs = rel.setdefault("certificates", {})
+        have = certs.get("data") or []
+        total = ((certs.get("meta") or {}).get("paging") or {}).get("total")
+        if isinstance(total, int) and total <= len(have):
+            continue
+        if not re.fullmatch(r"[A-Za-z0-9]{1,64}", str(p.get("id", ""))):
+            raise Fail("profile id has an unexpected form")
+        full = api.get_all(f"/v1/profiles/{p['id']}/certificates", {"limit": 200})
+        certs["data"] = [{"type": "certificates", "id": c["id"]} for c in full["data"]]
+        for c in full["data"]:
+            k = (c.get("type"), c.get("id"))
+            if k not in seen:
+                seen.add(k)
+                doc.setdefault("included", []).append(c)
+
+
 def local_identities(keychain):
     r = subprocess.run(["security", "find-identity", "-v", "-p", "codesigning", keychain],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -222,7 +254,27 @@ def local_identities(keychain):
     return parse_identities(r.stdout)
 
 
-def install(profile, profiles_dir):
+def _safe_dir(profiles_dir, trusted_root):
+    """Create profiles_dir under trusted_root, refusing any symlink in the path below the root.
+    The root itself (the home folder) may resolve through system links; nothing under it may."""
+    root = os.path.realpath(trusted_root)
+    target = os.path.abspath(os.path.expanduser(profiles_dir))
+    rel = os.path.relpath(target, os.path.abspath(trusted_root))
+    if rel == os.pardir or rel.startswith(os.pardir + os.sep) or os.path.isabs(rel):
+        raise Fail("the profiles folder is outside the trusted folder")
+    cur = root
+    for part in [] if rel == os.curdir else rel.split(os.sep):
+        cur = os.path.join(cur, part)
+        if os.path.islink(cur):
+            raise Fail("a folder in the profiles path is a symlink; refusing to write")
+        if not os.path.exists(cur):
+            os.mkdir(cur, 0o700)
+        elif not os.path.isdir(cur):
+            raise Fail("a part of the profiles path is not a folder")
+    return cur
+
+
+def install(profile, profiles_dir, trusted_root=None):
     """Decode and check the profile first, then write it atomically as <uuid>.mobileprovision, mode 0600.
     Refuses a symlinked profiles folder or target; never truncates an existing file before the new one is ready."""
     a = profile["attributes"]
@@ -235,9 +287,7 @@ def install(profile, profiles_dir):
         raise Fail("profile content is not valid base64")
     if not content or len(content) > 1_000_000:
         raise Fail("profile content is empty or too large")
-    os.makedirs(profiles_dir, exist_ok=True)
-    if os.path.islink(profiles_dir.rstrip(os.sep)):
-        raise Fail("the profiles folder is a symlink; refusing to write")
+    profiles_dir = _safe_dir(profiles_dir, trusted_root or os.path.expanduser("~"))
     path = os.path.join(profiles_dir, f"{uuid}.mobileprovision")
     if os.path.islink(path):
         raise Fail("the profile path is a symlink; refusing to write")
@@ -283,6 +333,7 @@ def main(argv):
     profiles = api.get_all("/v1/profiles", {
         "filter[profileType]": PROFILE_TYPE, "include": "bundleId,certificates",
         "limit": 200, "limit[certificates]": 50})
+    complete_certificates(api, profiles, bundle_res)
     picked = pick_profile(profiles, bundle_res, local)
     if picked:
         profile, sha = picked
