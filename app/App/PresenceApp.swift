@@ -4,11 +4,20 @@ import SwiftUI
 
 @main
 struct PresenceApp: App {
-    init() { Fonts.register() }
+    /// The real client the flows' calls run on (#108). Nil only when the build carries no API base or anon key,
+    /// which release.yml refuses to archive.
+    private let api: APIClient?
+
+    init() {
+        Fonts.register()
+        api = (try? AppConfiguration.fromBundle()).map { APIClient(configuration: $0) }
+    }
 
     var body: some Scene {
         WindowGroup {
-            TemplateScreen(state: .loading, retry: {})
+            // The sign-in, Talk, You, Thread and Settings flows are injected with `api` as their screens land
+            // (#13, #14, #15, #16, #18 on the surface of #21); until then the template stands.
+            TemplateScreen(state: api == nil ? .failed(LoadFailure(kind: .server, canRetry: false)) : .loading, retry: {})
                 .testerReportButton()
         }
     }

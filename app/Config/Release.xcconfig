@@ -1,0 +1,5 @@
+// TestFlight and Release (#108): empty here on purpose. release.yml passes PRESENCE_API_BASE and SUPABASE_ANON_KEY
+// from the repository variables of the same names and fails when either is unset. Production base (issue #3):
+// https://hqtbaphcfwoaxeikytck.supabase.co/functions/v1/api
+PRESENCE_API_BASE =
+SUPABASE_ANON_KEY =

@@ -54,7 +54,12 @@ jobs:
           ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
           ASC_KEY_ID: ${{ vars.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ vars.ASC_ISSUER_ID }}
+          # The server the build talks to (#108); app/Config/Release.xcconfig leaves both empty on purpose.
+          PRESENCE_API_BASE: ${{ vars.PRESENCE_API_BASE }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
         run: |
+          [ -n "$PRESENCE_API_BASE" ] && [ -n "$SUPABASE_ANON_KEY" ] \
+            || { echo "::error::Set repository variables PRESENCE_API_BASE and SUPABASE_ANON_KEY."; exit 3; }
           # Old app reached build 55 under the same bundle id; stay above it.
           build=$(( ${{ github.run_number }} + 100 ))
           xcodebuild archive -project app/Presence.xcodeproj -scheme Presence -configuration Release \
@@ -62,7 +67,7 @@ jobs:
             -derivedDataPath "$CI_BUILD_ROOT/dd" -allowProvisioningUpdates \
             -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             OTHER_CODE_SIGN_FLAGS="--keychain=$HOME/Library/Keychains/ci-signing.keychain-db" \
-            CURRENT_PROJECT_VERSION="$build"
+            CURRENT_PROJECT_VERSION="$build" PRESENCE_API_BASE="$PRESENCE_API_BASE" SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
       - name: App Store provisioning profile
         id: profile
         env:
