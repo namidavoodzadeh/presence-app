@@ -72,13 +72,24 @@ jobs:
         if: steps.risk.outputs.files != ''
         # Codex CLI, signed in on the Mac mini with the owner's existing plan: no API key, no new spending.
         shell: bash -euo pipefail {0}    # a failed diff fails the step; a partial diff is never reviewed
-        # The generated Swift client is left out: it is produced from contract/openapi.yaml (which stays in the
-        # diff) and CI's "Contract client up to date" check proves it matches. The note comes from main, not the PR.
+        # The generated Swift client is left out only after the gate regenerates it itself: main's generator
+        # (from refs/gate/main, never the PR's) runs on the PR's contract/openapi.yaml and must reproduce the PR's
+        # Generated/ files exactly. If it does not, the full diff goes to review (and fails the size limit closed).
         run: |
-          {
-            echo "Note from the gate (merge.yml on main): generated client code under app/Packages/Contract/Sources/Contract/Generated/ was left out of this diff; it is generated from contract/openapi.yaml and checked by CI (Contract client up to date)."
-            git diff refs/gate/main...refs/gate/pr -- . ':(exclude)app/Packages/Contract/Sources/Contract/Generated/'
-          } | tools/review-other-family.py
+          gen="app/Packages/Contract/Sources/Contract/Generated/"
+          wt="$(mktemp -d)"; trap 'git worktree remove --force "$wt" >/dev/null 2>&1 || true' EXIT
+          git worktree add --detach -q "$wt" refs/gate/pr
+          rm -rf "$wt/app/Packages/Contract/generator" "$wt/app/Packages/Contract/generate.sh"
+          git archive refs/gate/main app/Packages/Contract/generator app/Packages/Contract/generate.sh | tar -x -C "$wt"
+          if CONTRACT_GEN_BUILD="$RUNNER_TEMP/contract-gen" "$wt/app/Packages/Contract/generate.sh" --check; then
+            {
+              echo "Note from the gate (merge.yml on main): generated client code under $gen was left out of this diff. The gate regenerated it with main's generator from this PR's contract/openapi.yaml and it matched exactly."
+              git diff refs/gate/main...refs/gate/pr -- . ":(exclude)$gen"
+            } | tools/review-other-family.py
+          else
+            echo "Gate regeneration did not match the PR's generated client; reviewing the full diff."
+            git diff refs/gate/main...refs/gate/pr | tools/review-other-family.py
+          fi
       - name: Report risk-review on the pull request's head commit
         if: always() && steps.pr.outputs.head != ''
         env:
