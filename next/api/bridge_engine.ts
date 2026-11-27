@@ -477,7 +477,7 @@ route("POST", "/bridge/run", async (ctx) => {
   const b = await ctx.body();
   if (typeof b.person_id !== "string") throw new ApiError("invalid", "", { field: "person_id" });
   const text = textOf(b);
-  await requireAiConsent(ctx);
+  { const held = await consentOrFloor(ctx, text); if (held) return held; }
   // The V3 pipeline replaces the old run path, so it must carry the safety
   // stop itself before any pair read or model call (law 8).
   if (ownerWriteV3(ctx)) {
@@ -520,6 +520,17 @@ function lineProblems(line: string, allowed: string, maxWords: number): string[]
 
 /** QA-B336 (QA 03:50Z): the helper routes send the draft to a model, so the draft goes through the one safety entry first (fails closed).
  *  Returns the stop reply, or null to go on. The marked part is inside `text`, so one read covers both. Nothing is sent to a model on a stop. */
+/** Without consent no model may read the words, but the local floor still runs (law 8): a risk shows resources and a threat or
+ * abuse is declined, exactly as helperStop answers; anything else is the consent refusal. With consent this does nothing. */
+async function consentOrFloor(ctx: Ctx, text: string): Promise<Response | null> {
+  if (await hasAiConsent(ctx)) return null;
+  const floor = floorSafety(text);
+  if (floor.routed === "risk") return json({ state: "risk", line: RESOURCES.message, resources: RESOURCES, ref: null });
+  if (floor.routed === "threat_or_abuse") return json({ state: "declined", line: DECLINE_LINE, ...refusal(flaggedSpans(text, null, floor)), ref: null });
+  await requireAiConsent(ctx);
+  return null;
+}
+
 async function helperStop(ctx: Ctx, text: string): Promise<Response | null> {
   const g = await requireSafetyPass(ctx, text, "bridge_engine", [], null, true);
   if (!g.stop) return null;
@@ -536,7 +547,7 @@ route("POST", "/bridge/reword-part", async (ctx) => {
   const start = Number(b.start), end = Number(b.end);
   if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end > text.length || end <= start) throw new ApiError("invalid", "", { field: "start" });
   const part = text.slice(start, end);
-  await requireAiConsent(ctx);
+  { const held = await consentOrFloor(ctx, text); if (held) return held; }
   const stopped = await helperStop(ctx, text);
   if (stopped) return stopped;
   const { sender, relationship } = await senderFromPairContext(db, owner, b.person_id);
@@ -573,7 +584,7 @@ route("POST", "/bridge/why-it-matters", async (ctx) => {
   if (typeof b.person_id !== "string") throw new ApiError("invalid", "", { field: "person_id" });
   if (typeof b.belief_id !== "string") throw new ApiError("invalid", "", { field: "belief_id" });
   const text = textOf(b);
-  await requireAiConsent(ctx);
+  { const held = await consentOrFloor(ctx, text); if (held) return held; }
   const stopped = await helperStop(ctx, text);
   if (stopped) return stopped;
   const { data: row, error } = await db.from("beliefs").select("*").eq("id", b.belief_id).eq("owner", owner).eq("status", "confirmed").maybeSingle();

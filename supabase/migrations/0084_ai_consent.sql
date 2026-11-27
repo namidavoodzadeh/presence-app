@@ -26,6 +26,10 @@ begin
   new.at := now();
   new.created_at := now();
   new.withdrawn_at := null;
+  -- Only the version the API offers today; a client cannot add an unknown (newer) version that would hide a valid one.
+  if new.version <> '2027-01' then
+    raise exception 'invalid: unknown ai_consent version';
+  end if;
   if not (new.providers @> array['anthropic']::text[]) then
     raise exception 'invalid: an ai_consent row must name every provider that receives words (anthropic)';
   end if;
