@@ -1,0 +1,265 @@
+{
+ "data": [
+  {
+   "type": "profiles",
+   "id": "P1",
+   "attributes": {
+    "name": "profile P1",
+    "profileType": "IOS_APP_STORE",
+    "profileState": "ACTIVE",
+    "uuid": "00000001-AAAA-BBBB-CCCC-DDDDDDDDDDDD",
+    "expirationDate": "2027-12-01T00:00:00.000+00:00",
+    "profileContent": "Y29udGVudCBvZiBQMQ=="
+   },
+   "relationships": {
+    "bundleId": {
+     "data": {
+      "type": "bundleIds",
+      "id": "B1"
+     }
+    },
+    "certificates": {
+     "data": [
+      {
+       "type": "certificates",
+       "id": "C_OTHER"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "profiles",
+   "id": "P2",
+   "attributes": {
+    "name": "profile P2",
+    "profileType": "IOS_APP_STORE",
+    "profileState": "INVALID",
+    "uuid": "00000002-AAAA-BBBB-CCCC-DDDDDDDDDDDD",
+    "expirationDate": "2027-12-01T00:00:00.000+00:00",
+    "profileContent": "Y29udGVudCBvZiBQMg=="
+   },
+   "relationships": {
+    "bundleId": {
+     "data": {
+      "type": "bundleIds",
+      "id": "B1"
+     }
+    },
+    "certificates": {
+     "data": [
+      {
+       "type": "certificates",
+       "id": "C_A"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "profiles",
+   "id": "P3",
+   "attributes": {
+    "name": "profile P3",
+    "profileType": "IOS_APP_DEVELOPMENT",
+    "profileState": "ACTIVE",
+    "uuid": "00000003-AAAA-BBBB-CCCC-DDDDDDDDDDDD",
+    "expirationDate": "2027-12-01T00:00:00.000+00:00",
+    "profileContent": "Y29udGVudCBvZiBQMw=="
+   },
+   "relationships": {
+    "bundleId": {
+     "data": {
+      "type": "bundleIds",
+      "id": "B1"
+     }
+    },
+    "certificates": {
+     "data": [
+      {
+       "type": "certificates",
+       "id": "C_A"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "profiles",
+   "id": "P4",
+   "attributes": {
+    "name": "profile P4",
+    "profileType": "IOS_APP_STORE",
+    "profileState": "ACTIVE",
+    "uuid": "00000004-AAAA-BBBB-CCCC-DDDDDDDDDDDD",
+    "expirationDate": "2027-12-01T00:00:00.000+00:00",
+    "profileContent": "Y29udGVudCBvZiBQNA=="
+   },
+   "relationships": {
+    "bundleId": {
+     "data": {
+      "type": "bundleIds",
+      "id": "B2"
+     }
+    },
+    "certificates": {
+     "data": [
+      {
+       "type": "certificates",
+       "id": "C_A"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "profiles",
+   "id": "P5",
+   "attributes": {
+    "name": "profile P5",
+    "profileType": "IOS_APP_STORE",
+    "profileState": "ACTIVE",
+    "uuid": "00000005-AAAA-BBBB-CCCC-DDDDDDDDDDDD",
+    "expirationDate": "2027-06-01T00:00:00.000+00:00",
+    "profileContent": "Y29udGVudCBvZiBQNQ=="
+   },
+   "relationships": {
+    "bundleId": {
+     "data": {
+      "type": "bundleIds",
+      "id": "B1"
+     }
+    },
+    "certificates": {
+     "data": [
+      {
+       "type": "certificates",
+       "id": "C_OTHER"
+      },
+      {
+       "type": "certificates",
+       "id": "C_B"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "profiles",
+   "id": "P6",
+   "attributes": {
+    "name": "profile P6",
+    "profileType": "IOS_APP_STORE",
+    "profileState": "ACTIVE",
+    "uuid": "00000006-AAAA-BBBB-CCCC-DDDDDDDDDDDD",
+    "expirationDate": "2027-01-01T00:00:00.000+00:00",
+    "profileContent": "Y29udGVudCBvZiBQNg=="
+   },
+   "relationships": {
+    "bundleId": {
+     "data": {
+      "type": "bundleIds",
+      "id": "B1"
+     }
+    },
+    "certificates": {
+     "data": [
+      {
+       "type": "certificates",
+       "id": "C_A"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "profiles",
+   "id": "P7",
+   "attributes": {
+    "name": "profile P7",
+    "profileType": "IOS_APP_STORE",
+    "profileState": "ACTIVE",
+    "uuid": "00000007-AAAA-BBBB-CCCC-DDDDDDDDDDDD",
+    "expirationDate": "2027-09-01T00:00:00.000+00:00",
+    "profileContent": "Y29udGVudCBvZiBQNw=="
+   },
+   "relationships": {
+    "bundleId": {
+     "data": {
+      "type": "bundleIds",
+      "id": "B1"
+     }
+    },
+    "certificates": {
+     "data": [
+      {
+       "type": "certificates",
+       "id": "C_A"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "type": "profiles",
+   "id": "P8",
+   "attributes": {
+    "name": "profile P8",
+    "profileType": "IOS_APP_STORE",
+    "profileState": "ACTIVE",
+    "uuid": "00000008-AAAA-BBBB-CCCC-DDDDDDDDDDDD",
+    "expirationDate": "2025-01-01T00:00:00.000+00:00",
+    "profileContent": "Y29udGVudCBvZiBQOA=="
+   },
+   "relationships": {
+    "bundleId": {
+     "data": {
+      "type": "bundleIds",
+      "id": "B1"
+     }
+    },
+    "certificates": {
+     "data": [
+      {
+       "type": "certificates",
+       "id": "C_A"
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "included": [
+  {
+   "type": "bundleIds",
+   "id": "B1",
+   "attributes": {
+    "identifier": "com.namidavoodzadeh.presence"
+   }
+  },
+  {
+   "type": "certificates",
+   "id": "C_A",
+   "attributes": {
+    "certificateType": "DISTRIBUTION",
+    "certificateContent": "Y2VydCBB"
+   }
+  },
+  {
+   "type": "certificates",
+   "id": "C_B",
+   "attributes": {
+    "certificateType": "IOS_DISTRIBUTION",
+    "certificateContent": "Y2VydCBC"
+   }
+  },
+  {
+   "type": "certificates",
+   "id": "C_OTHER",
+   "attributes": {
+    "certificateType": "DISTRIBUTION",
+    "certificateContent": "Y2VydCBvdGhlcg=="
+   }
+  }
+ ]
+}

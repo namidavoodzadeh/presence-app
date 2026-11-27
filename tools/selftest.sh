@@ -34,4 +34,5 @@ clean 30000000 "$T/home/ci-build/../../keep"; [ $? -eq 1 ] && [ -e "$T/keep/prec
 ln -s "$T/keep" "$T/home/ci-build/link"
 clean 30000000 "$T/home/ci-build/link"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && ok "ci-clean: refuses a symlink out of ~/ci-build" || no "ci-clean: refuses a symlink out of ~/ci-build"
 clean 30000000 "$T/home/ci-build/link/sub"; [ $? -eq 1 ] && [ -e "$T/keep/precious" ] && [ ! -e "$T/keep/sub" ] && ok "ci-clean: refuses a symlinked ancestor and creates nothing" || no "ci-clean: refuses a symlinked ancestor and creates nothing"
+python3 -I "$ROOT/tools/test_release_profile.py" >"$T/rp.out" 2>&1 && ok "release-profile: picks the right profile from the fixture" || { cat "$T/rp.out"; no "release-profile: picks the right profile from the fixture"; }
 rm -rf "$T"; echo "$pass passed, $failn failed"; [ "$failn" -eq 0 ]
