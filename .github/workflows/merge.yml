@@ -72,7 +72,13 @@ jobs:
         if: steps.risk.outputs.files != ''
         # Codex CLI, signed in on the Mac mini with the owner's existing plan: no API key, no new spending.
         shell: bash -euo pipefail {0}    # a failed diff fails the step; a partial diff is never reviewed
-        run: git diff refs/gate/main...refs/gate/pr | tools/review-other-family.py
+        # The generated Swift client is left out: it is produced from contract/openapi.yaml (which stays in the
+        # diff) and CI's "Contract client up to date" check proves it matches. The note comes from main, not the PR.
+        run: |
+          {
+            echo "Note from the gate (merge.yml on main): generated client code under app/Packages/Contract/Sources/Contract/Generated/ was left out of this diff; it is generated from contract/openapi.yaml and checked by CI (Contract client up to date)."
+            git diff refs/gate/main...refs/gate/pr -- . ':(exclude)app/Packages/Contract/Sources/Contract/Generated/'
+          } | tools/review-other-family.py
       - name: Report risk-review on the pull request's head commit
         if: always() && steps.pr.outputs.head != ''
         env:
