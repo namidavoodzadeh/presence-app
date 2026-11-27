@@ -1,6 +1,8 @@
 // A minimal in-memory stand-in for the Supabase query builder, shared by Mirror's fixture tests: just the chain
 // mirror.ts's pipeline actually calls (select/insert/update/delete, eq/neq/in/not/order/limit, single/maybeSingle, the
 // {count, head} select option, and the one join mirror.ts relies on). Never hosted, never a real network call.
+// Also: .or() with PostgREST filter text (col.op.value items, nested and()/or()), and db.rpc(name, args) answered from
+// the fixture's `__rpc` entry (see fakeClient), falling back to the ledger stub.
 
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 
@@ -51,6 +53,12 @@ class FakeQuery implements PromiseLike<{ data: unknown; count?: number; error: n
   }
   in(column: string, values: unknown[]) {
     this.#predicates.push((row) => values.includes(row[column]));
+    return this;
+  }
+  /** PostgREST `or` filter text, e.g. `and(a.eq.1,b.eq.2),and(a.eq.2,b.eq.1)` or `a.eq.1,b.in.(2,3)`. */
+  or(filters: string) {
+    const test = orFilter(filters);
+    this.#predicates.push(test);
     return this;
   }
   not(column: string, op: string, value: unknown) {
@@ -143,6 +151,80 @@ class FakeQuery implements PromiseLike<{ data: unknown; count?: number; error: n
   }
 }
 
+/** Split PostgREST filter text on commas that are not inside parentheses. */
+function splitTop(text: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === "(") depth++;
+    else if (c === ")") depth--;
+    else if (c === "," && depth === 0) {
+      parts.push(text.slice(start, i));
+      start = i + 1;
+    }
+  }
+  parts.push(text.slice(start));
+  return parts.map((p) => p.trim()).filter((p) => p.length > 0);
+}
+
+type RowTest = (row: FakeRow) => boolean;
+
+function filterItem(item: string): RowTest {
+  const group = /^(and|or)\((.*)\)$/s.exec(item);
+  if (group) {
+    const tests = splitTop(group[2]).map(filterItem);
+    return group[1] === "and" ? (row) => tests.every((t) => t(row)) : (row) => tests.some((t) => t(row));
+  }
+  const [column, op, ...rest] = item.split(".");
+  const raw = rest.join(".");
+  const text = (v: unknown) => (v === null || v === undefined ? null : String(v));
+  switch (op) {
+    case "eq":
+      return (row) => text(row[column]) === raw;
+    case "neq":
+      return (row) => text(row[column]) !== raw;
+    case "gt":
+      return (row) => text(row[column]) !== null && text(row[column])! > raw;
+    case "gte":
+      return (row) => text(row[column]) !== null && text(row[column])! >= raw;
+    case "lt":
+      return (row) => text(row[column]) !== null && text(row[column])! < raw;
+    case "lte":
+      return (row) => text(row[column]) !== null && text(row[column])! <= raw;
+    case "is":
+      return raw === "null" ? (row) => text(row[column]) === null : (row) => text(row[column]) === raw;
+    case "in": {
+      const values = splitTop(raw.replace(/^\(/, "").replace(/\)$/, "")).map((v) => v.replace(/^"(.*)"$/, "$1"));
+      return (row) => values.includes(text(row[column]) ?? "");
+    }
+    default:
+      throw new Error(`fake_supabase: .or() operator "${op}" is not supported (${item})`);
+  }
+}
+
+function orFilter(filters: string): RowTest {
+  return filterItem(`or(${filters})`);
+}
+
+/** A fixture's reply to one database function: a value, or a function of the call's arguments. */
+export type FakeRpcReply = unknown | ((args: Record<string, unknown> | undefined) => unknown);
+
+const LEDGER_STUB = { ok: true, id: "ledger-row" };
+
+/**
+ * The fake database. `tables.__rpc` (optional) maps a database function name to its reply; it may be the map itself
+ * or a one-element array holding it, so a fixture typed as rows can carry it. A function with no entry answers with
+ * the ledger stub `{ok: true, id: "ledger-row"}`.
+ */
 export function fakeClient(tables: FakeTables): SupabaseClient {
-  return { from: (table: string) => new FakeQuery(tables, table), rpc: () => Promise.resolve({ data: { ok: true, id: "ledger-row" }, error: null }) } as unknown as SupabaseClient;
+  const rpc = (name: string, args?: Record<string, unknown>) => {
+    const entry = (tables as Record<string, unknown>).__rpc;
+    const replies = (Array.isArray(entry) ? entry[0] : entry) as Record<string, FakeRpcReply> | undefined;
+    if (!replies || !Object.hasOwn(replies, name)) return Promise.resolve({ data: LEDGER_STUB, error: null });
+    const reply = replies[name];
+    return Promise.resolve(typeof reply === "function" ? reply(args) : reply).then((data) => ({ data, error: null }));
+  };
+  return { from: (table: string) => new FakeQuery(tables, table), rpc } as unknown as SupabaseClient;
 }
