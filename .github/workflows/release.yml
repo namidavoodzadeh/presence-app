@@ -63,12 +63,26 @@ jobs:
             -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             OTHER_CODE_SIGN_FLAGS="--keychain=$HOME/Library/Keychains/ci-signing.keychain-db" \
             CURRENT_PROJECT_VERSION="$build"
-      - name: Upload to TestFlight
+      - name: App Store provisioning profile
+        id: profile
         env:
           ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
           ASC_KEY_ID: ${{ vars.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ vars.ASC_ISSUER_ID }}
         run: |
+          # The API key cannot use cloud-managed certificates; sign manually with the local distribution identity
+          # and an App Store profile that includes it. Prints only uuid= and sha1= lines.
+          python3 -I tools/release-profile.py --bundle-id com.namidavoodzadeh.presence \
+            --keychain "$HOME/Library/Keychains/ci-signing.keychain-db" >> "$GITHUB_OUTPUT"
+      - name: Upload to TestFlight
+        env:
+          ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
+          ASC_KEY_ID: ${{ vars.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ vars.ASC_ISSUER_ID }}
+          PROFILE_UUID: ${{ steps.profile.outputs.uuid }}
+          SIGNING_SHA1: ${{ steps.profile.outputs.sha1 }}
+        run: |
+          [ -n "$PROFILE_UUID" ] && [ -n "$SIGNING_SHA1" ] || { echo "::error::No provisioning profile from the previous step."; exit 3; }
           cat > "$CI_BUILD_ROOT/ExportOptions.plist" <<PLIST
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -76,14 +90,20 @@ jobs:
             <key>method</key><string>app-store-connect</string>
             <key>destination</key><string>upload</string>
             <key>teamID</key><string>UK39PYVJ96</string>
-            <key>signingStyle</key><string>automatic</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>signingCertificate</key><string>$SIGNING_SHA1</string>
+            <key>provisioningProfiles</key><dict>
+              <key>com.namidavoodzadeh.presence</key><string>$PROFILE_UUID</string>
+            </dict>
             <key>testFlightInternalTestingOnly</key><true/>
           </dict></plist>
           PLIST
+          plutil -lint "$CI_BUILD_ROOT/ExportOptions.plist"
           xcodebuild -exportArchive -archivePath "$CI_BUILD_ROOT/Presence.xcarchive" \
             -exportOptionsPlist "$CI_BUILD_ROOT/ExportOptions.plist" -exportPath "$CI_BUILD_ROOT/export" \
             -allowProvisioningUpdates \
-            -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+            -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            OTHER_CODE_SIGN_FLAGS="--keychain=$HOME/Library/Keychains/ci-signing.keychain-db"
       - name: Lock CI signing keychain
         if: always()
         run: security lock-keychain "$HOME/Library/Keychains/ci-signing.keychain-db"
