@@ -70,5 +70,62 @@ class Helpers(unittest.TestCase):
             self.assertEqual(os.stat(path).st_mode & 0o777, 0o600)
 
 
+class Review(unittest.TestCase):
+    def test_expiry_must_be_valid_and_zoned(self):
+        mk = lambda e: {"attributes": {} if e is None else {"expirationDate": e}}
+        self.assertIsNone(rp._expiry(mk(None)))
+        self.assertIsNone(rp._expiry(mk("not a date")))
+        self.assertIsNone(rp._expiry(mk("2027-01-01T00:00:00")))  # no zone
+        self.assertEqual(rp._expiry(mk("2026-11-27T05:00:00.000+08:00")),
+                         datetime.datetime(2026, 11, 26, 21, tzinfo=datetime.timezone.utc))
+        self.assertEqual(rp._expiry(mk("2026-11-27T00:00:00Z")), NOW)
+
+    def test_profile_with_bad_expiry_is_skipped(self):
+        doc = json.loads(json.dumps(FIXTURE))
+        for p in doc["data"]:
+            if p["id"] == "P7":
+                del p["attributes"]["expirationDate"]
+        r = rp.pick_profile(doc, "B1", [A, B], now=NOW)
+        self.assertNotEqual(r[0]["id"], "P7")
+
+    def test_requests_only_to_the_api_origin(self):
+        self.assertEqual(rp._api_url("/v1/profiles"), "https://api.appstoreconnect.apple.com/v1/profiles")
+        for bad in ("http://api.appstoreconnect.apple.com/v1/x", "https://evil.example/v1/x",
+                    "https://api.appstoreconnect.apple.com.evil.example/v1", "https://u:p@api.appstoreconnect.apple.com/v1",
+                    "https://api.appstoreconnect.apple.com:8443/v1"):
+            with self.assertRaises(rp.Fail):
+                rp._api_url(bad)
+
+    def test_install_refuses_symlink_and_replaces_atomically(self):
+        p = FIXTURE["data"][6]
+        uuid = p["attributes"]["uuid"]
+        with tempfile.TemporaryDirectory() as d:
+            target = os.path.join(d, "elsewhere")
+            with open(target, "wb") as f:
+                f.write(b"keep me")
+            os.symlink(target, os.path.join(d, f"{uuid}.mobileprovision"))
+            with self.assertRaises(rp.Fail):
+                rp.install(p, d)
+            with open(target, "rb") as f:
+                self.assertEqual(f.read(), b"keep me")
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, f"{uuid}.mobileprovision")
+            with open(path, "wb") as f:
+                f.write(b"old")
+            os.chmod(path, 0o644)
+            rp.install(p, d)
+            with open(path, "rb") as f:
+                self.assertEqual(f.read(), b"content of P7")
+            self.assertEqual(os.stat(path).st_mode & 0o777, 0o600)
+            self.assertEqual([n for n in os.listdir(d) if n.endswith(".tmp")], [])
+
+    def test_install_rejects_bad_content(self):
+        p = json.loads(json.dumps(FIXTURE["data"][6]))
+        p["attributes"]["profileContent"] = "!!not base64!!"
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaises(rp.Fail):
+                rp.install(p, d)
+
+
 if __name__ == "__main__":
     unittest.main()

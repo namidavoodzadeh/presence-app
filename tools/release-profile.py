@@ -53,21 +53,25 @@ def find_bundle_resource(doc, identifier):
     return None
 
 
-def _not_expired(profile, now):
+def _expiry(profile):
+    """The profile's expiration as an aware UTC datetime, or None when it is missing, malformed or has no zone."""
     exp = (profile.get("attributes") or {}).get("expirationDate")
-    if not exp:
-        return True
+    if not isinstance(exp, str) or not exp:
+        return None
     try:
-        when = datetime.datetime.strptime(exp[:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=datetime.timezone.utc)
+        when = datetime.datetime.fromisoformat(exp.replace("Z", "+00:00"))
     except ValueError:
-        return True
-    return when > now
+        return None
+    if when.tzinfo is None or when.utcoffset() is None:
+        return None
+    return when.astimezone(datetime.timezone.utc)
 
 
 def pick_profile(doc, bundle_resource_id, local_sha1s, now=None):
     """From a /v1/profiles response with include=bundleId,certificates, pick (profile, sha1).
 
-    The profile must be ACTIVE, IOS_APP_STORE, for the bundle resource, not expired, with a certificate whose
+    The profile must be ACTIVE, IOS_APP_STORE, for the bundle resource, with a valid zoned expiry in the future,
+    and a certificate whose
     SHA-1 is a local identity. Prefers the earliest local identity, then the latest expiry. None if no match."""
     now = now or datetime.datetime.now(datetime.timezone.utc)
     certs = {}
@@ -82,12 +86,13 @@ def pick_profile(doc, bundle_resource_id, local_sha1s, now=None):
             continue
         if ((rel.get("bundleId") or {}).get("data") or {}).get("id") != bundle_resource_id:
             continue
-        if not a.get("uuid") or not a.get("profileContent") or not _not_expired(p, now):
+        when = _expiry(p)
+        if not a.get("uuid") or not a.get("profileContent") or when is None or when <= now:
             continue
         shas = {certs.get(c["id"]) for c in ((rel.get("certificates") or {}).get("data") or [])}
         for rank, sha in enumerate(local_sha1s):
             if sha in shas:
-                found.append((rank, a.get("expirationDate") or "", p, sha))
+                found.append((rank, when, p, sha))
                 break
     if not found:
         return None
@@ -149,18 +154,36 @@ def make_token(key_path, key_id, issuer):
     return f"{header}.{claims}.{_b64url(_der_to_raw(r.stdout))}"
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Never follow a redirect: the Authorization header must not reach any other address."""
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise Fail(f"App Store Connect answered with a redirect (HTTP {code}); not followed")
+
+
+_OPENER = urllib.request.build_opener(_NoRedirect)
+
+
+def _api_url(url):
+    """Absolute https URL on the App Store Connect origin only; anything else is refused before a request is made."""
+    if url.startswith("/"):
+        url = API + url
+    u = urllib.parse.urlsplit(url)
+    if u.scheme != "https" or u.hostname != "api.appstoreconnect.apple.com" or u.port not in (None, 443) or u.username or u.password:
+        raise Fail("refused a request outside https://api.appstoreconnect.apple.com")
+    return url
+
+
 class Api:
     def __init__(self, token):
         self.token = token
 
     def call(self, method, url, body=None):
-        if not url.startswith("http"):
-            url = API + url
+        url = _api_url(url)
         data = json.dumps(body).encode() if body is not None else None
         req = urllib.request.Request(url, data=data, method=method, headers={
             "Authorization": f"Bearer {self.token}", "Content-Type": "application/json"})
         try:
-            with urllib.request.urlopen(req, timeout=60) as resp:
+            with _OPENER.open(req, timeout=60) as resp:
                 return json.loads(resp.read() or b"{}")
         except urllib.error.HTTPError as e:
             # Report only the error details, never a response body that could hold profile content.
@@ -200,15 +223,39 @@ def local_identities(keychain):
 
 
 def install(profile, profiles_dir):
+    """Decode and check the profile first, then write it atomically as <uuid>.mobileprovision, mode 0600.
+    Refuses a symlinked profiles folder or target; never truncates an existing file before the new one is ready."""
     a = profile["attributes"]
     uuid = a["uuid"]
     if not re.fullmatch(r"[0-9A-Fa-f-]{36}", uuid):
         raise Fail("profile uuid has an unexpected form")
+    try:
+        content = base64.b64decode(a.get("profileContent") or "", validate=True)
+    except (ValueError, TypeError):
+        raise Fail("profile content is not valid base64")
+    if not content or len(content) > 1_000_000:
+        raise Fail("profile content is empty or too large")
     os.makedirs(profiles_dir, exist_ok=True)
+    if os.path.islink(profiles_dir.rstrip(os.sep)):
+        raise Fail("the profiles folder is a symlink; refusing to write")
     path = os.path.join(profiles_dir, f"{uuid}.mobileprovision")
-    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
-    with os.fdopen(fd, "wb") as f:
-        f.write(base64.b64decode(a["profileContent"]))
+    if os.path.islink(path):
+        raise Fail("the profile path is a symlink; refusing to write")
+    tmp = os.path.join(profiles_dir, f".{uuid}.{os.getpid()}.tmp")
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0), 0o600)
+    try:
+        with os.fdopen(fd, "wb") as f:
+            f.write(content)
+            f.flush()
+            os.fsync(f.fileno())
+        os.chmod(tmp, 0o600)
+        os.replace(tmp, path)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except FileNotFoundError:
+            pass
+        raise
     return uuid
 
 
