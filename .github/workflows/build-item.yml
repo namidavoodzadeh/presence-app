@@ -1,6 +1,10 @@
 name: build-item
 # An issue labelled `ready` (by the owner) starts one Claude Code session on the Mac. The change goes up as a PR.
 # CI round 1 red: a second session gets the failure log. CI round 2 red: the issue is labelled `returned` and stops.
+# Engine items (label `track:engine`) run on GitHub-hosted Linux, in parallel with the Mac; every other item on the Mac.
+# Secrets reach only the steps that need them: FACTORY_TOKEN the steps that push, open or close (it must trigger
+# ci.yml, which GITHUB_TOKEN cannot), CLAUDE_CODE_OAUTH_TOKEN the builder session. Checkouts keep no credentials, so
+# neither token is on disk for the session or for package install scripts. Other steps use the read-only job token.
 on:
   issues:
     types: [labeled]
@@ -8,7 +12,7 @@ on:
     workflows: [ci]
     types: [completed]
 concurrency:
-  group: build-item-${{ github.event.issue.number || github.event.workflow_run.head_branch }}   # one session per item; the one runner runs one job at a time
+  group: build-item-${{ github.event.issue.number || github.event.workflow_run.head_branch }}   # one session per item
   cancel-in-progress: false
 permissions:
   contents: read
@@ -17,54 +21,136 @@ env:
   XCODE_VERSION: "27.2"
   SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
   DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-  CI_BUILD_ROOT: /Users/nami/ci-build/ci
-  GH_TOKEN: ${{ secrets.FACTORY_TOKEN }}          # pushes and PRs must trigger ci.yml, which GITHUB_TOKEN cannot
-  CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+  CI_BUILD_ROOT: /Users/nami/ci-build/ci         # Mac; on Linux the work folder is $RUNNER_TEMP/ci (ITEM_WORK)
+  DENO_VERSION: "2.9.8"            # as on the Mac
+  CLAUDE_CODE_VERSION: "2.1.332"   # as on the Mac
 jobs:
-  start:
+  route:
+    # Same trust conditions as start and round below: owner-labelled issues, red CI on this repository's item branches.
     if: >-
-      github.event_name == 'issues' && github.event.label.name == 'ready' &&
-      github.event.sender.login == github.repository_owner
-    runs-on: [self-hosted, mac-mini]
+      (github.event_name == 'issues' && github.event.label.name == 'ready' &&
+       github.event.sender.login == github.repository_owner) ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure' &&
+       startsWith(github.event.workflow_run.head_branch, 'item/') &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: read
+    outputs:
+      runner: ${{ steps.track.outputs.runner }}
+    steps:
+      - name: Engine items to GitHub-hosted Linux, the rest to the Mac
+        id: track
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          n="${ISSUE:-${BRANCH#item/}}"
+          case "$n" in ''|*[!0-9]*) echo "not an issue number: $n"; exit 1;; esac
+          labels="$(gh issue view "$n" -R "$GITHUB_REPOSITORY" --json labels --jq '[.labels[].name] | join(",")')"
+          echo "issue #$n labels: $labels"
+          case ",$labels," in
+            *,track:engine,*) runner='"ubuntu-latest"' ;;
+            *) runner='["self-hosted","mac-mini"]' ;;
+          esac
+          echo "runner=$runner" >> "$GITHUB_OUTPUT"; echo "runs on: $runner"
+  start:
+    needs: route
+    if: github.event_name == 'issues'
+    runs-on: ${{ fromJSON(needs.route.outputs.runner) }}
     timeout-minutes: 120
+    permissions:              # the job token, for reading only; FACTORY_TOKEN is passed to the writing steps
+      contents: read
+      issues: read
+      pull-requests: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.FACTORY_TOKEN }}
+          persist-credentials: false
+      - name: Main for the protect hook (it fails closed without it)
+        run: git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
       - name: Toolchain (pinned)
+        if: runner.os == 'macOS'
         run: tools/ci-preflight.sh
       - name: Clean build output
+        if: runner.os == 'macOS'
         run: tools/ci-clean.sh
+      - name: Linux build folder
+        if: runner.os == 'Linux'
+        run: mkdir -p "$RUNNER_TEMP/ci" && echo "ITEM_WORK=$RUNNER_TEMP/ci" >> "$GITHUB_ENV"
+      - name: Deno (Linux)
+        if: runner.os == 'Linux'
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: ${{ env.DENO_VERSION }}
+      - name: Claude Code (Linux)
+        if: runner.os == 'Linux'
+        run: npm install -g "@anthropic-ai/claude-code@$CLAUDE_CODE_VERSION"
       - name: Builder session, round 1
+        env:
+          GH_TOKEN: ${{ github.token }}                                   # read-only: issue, labels, run logs
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
           n=${{ github.event.issue.number }}
+          work="${ITEM_WORK:-$CI_BUILD_ROOT}"
           git checkout -B "item/$n"
           # Labels like path:contract/ allow that protected path for this session only.
           PROTECT_ALLOW="$(gh issue view "$n" --json labels --jq '[.labels[].name | select(startswith("path:")) | ltrimstr("path:")] | join(":")')"
           export PROTECT_ALLOW
-          tools/item-prompt.sh "$n" 1 > "$CI_BUILD_ROOT/prompt.md"
-          claude -p "$(cat "$CI_BUILD_ROOT/prompt.md")" --permission-mode acceptEdits \
+          tools/item-prompt.sh "$n" 1 > "$work/prompt.md"
+          claude -p "$(cat "$work/prompt.md")" --permission-mode acceptEdits \
             --allowedTools "Bash Edit Write Read Glob Grep" --max-turns 200
       - name: Open the change
+        env:
+          GH_TOKEN: ${{ secrets.FACTORY_TOKEN }}
+          # git push authenticates through gh with the token above, for this step only.
+          GIT_CONFIG_COUNT: "2"
+          GIT_CONFIG_KEY_0: credential.helper
+          GIT_CONFIG_VALUE_0: ""
+          GIT_CONFIG_KEY_1: credential.helper
+          GIT_CONFIG_VALUE_1: "!gh auth git-credential"
         run: tools/item-publish.sh ${{ github.event.issue.number }} 1
   round:
-    if: >-
-      github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure' &&
-      startsWith(github.event.workflow_run.head_branch, 'item/') &&
-      github.event.workflow_run.head_repository.full_name == github.repository
-    runs-on: [self-hosted, mac-mini]
+    needs: route
+    if: github.event_name == 'workflow_run'
+    runs-on: ${{ fromJSON(needs.route.outputs.runner) }}
     timeout-minutes: 120
+    permissions:              # the job token, for reading only; FACTORY_TOKEN is passed to the writing steps
+      contents: read
+      issues: read
+      pull-requests: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.FACTORY_TOKEN }}
+          persist-credentials: false
           ref: ${{ github.event.workflow_run.head_branch }}
+      - name: Main for the protect hook (it fails closed without it)
+        run: git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
       - name: Toolchain (pinned)
+        if: runner.os == 'macOS'
         run: tools/ci-preflight.sh
       - name: Clean build output
+        if: runner.os == 'macOS'
         run: tools/ci-clean.sh
+      - name: Linux build folder
+        if: runner.os == 'Linux'
+        run: mkdir -p "$RUNNER_TEMP/ci" && echo "ITEM_WORK=$RUNNER_TEMP/ci" >> "$GITHUB_ENV"
+      - name: Deno (Linux)
+        if: runner.os == 'Linux'
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: ${{ env.DENO_VERSION }}
+      - name: Claude Code (Linux)
+        if: runner.os == 'Linux'
+        run: npm install -g "@anthropic-ai/claude-code@$CLAUDE_CODE_VERSION"
       - name: Count CI rounds
         id: count
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           branch="${{ github.event.workflow_run.head_branch }}"
           reds=$(gh run list --workflow ci.yml --branch "$branch" --event pull_request --limit 50 --json conclusion \
@@ -72,6 +158,8 @@ jobs:
           echo "n=${branch#item/}" >> "$GITHUB_OUTPUT"; echo "reds=$reds" >> "$GITHUB_OUTPUT"; echo "red CI rounds: $reds"
       - name: Second red, return the issue
         if: steps.count.outputs.reds >= 2
+        env:
+          GH_TOKEN: ${{ secrets.FACTORY_TOKEN }}
         run: |
           n=${{ steps.count.outputs.n }}
           gh issue edit "$n" --add-label returned --remove-label ready
@@ -79,12 +167,26 @@ jobs:
           gh pr close "item/$n" --comment "Stopped: second red CI round. See issue #$n."
       - name: Builder session, round 2
         if: steps.count.outputs.reds == 1
+        env:
+          GH_TOKEN: ${{ github.token }}                                   # read-only: issue, labels, run logs
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
           n=${{ steps.count.outputs.n }}
-          gh run view ${{ github.event.workflow_run.id }} --log-failed > "$CI_BUILD_ROOT/failed.log" || true
+          work="${ITEM_WORK:-$CI_BUILD_ROOT}"
+          gh run view ${{ github.event.workflow_run.id }} --log-failed > "$work/failed.log" || true
           PROTECT_ALLOW="$(gh issue view "$n" --json labels --jq '[.labels[].name | select(startswith("path:")) | ltrimstr("path:")] | join(":")')"
           export PROTECT_ALLOW
-          tools/item-prompt.sh "$n" 2 "$CI_BUILD_ROOT/failed.log" > "$CI_BUILD_ROOT/prompt.md"
-          claude -p "$(cat "$CI_BUILD_ROOT/prompt.md")" --permission-mode acceptEdits \
+          tools/item-prompt.sh "$n" 2 "$work/failed.log" > "$work/prompt.md"
+          claude -p "$(cat "$work/prompt.md")" --permission-mode acceptEdits \
             --allowedTools "Bash Edit Write Read Glob Grep" --max-turns 200
-          tools/item-publish.sh "$n" 2
+      - name: Publish round 2
+        if: steps.count.outputs.reds == 1
+        env:
+          GH_TOKEN: ${{ secrets.FACTORY_TOKEN }}
+          # git push authenticates through gh with the token above, for this step only.
+          GIT_CONFIG_COUNT: "2"
+          GIT_CONFIG_KEY_0: credential.helper
+          GIT_CONFIG_VALUE_0: ""
+          GIT_CONFIG_KEY_1: credential.helper
+          GIT_CONFIG_VALUE_1: "!gh auth git-credential"
+        run: tools/item-publish.sh ${{ steps.count.outputs.n }} 2

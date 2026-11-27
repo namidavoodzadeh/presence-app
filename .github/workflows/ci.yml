@@ -1,5 +1,14 @@
 name: ci
-# Fast stage needs no simulator. Simulator stage: build, snapshots, accessibility audit, journeys.
+# Branch protection requires `fast` and `simulator` (and `risk-review` from merge.yml).
+# `engine` (server tests, Deno only) runs on GitHub-hosted Linux, in parallel with the Mac.
+# `mac` (tool self-test, lints, Swift package tests, contract validation) runs on the Mac unless the change is
+# engine-only (every changed file under next/, supabase/ or evals/).
+# `fast` is the required gate: green only when `engine` is green and `mac` is green or was skipped as engine-only.
+# `simulator` (build, snapshots, accessibility audit, journeys) runs on the Mac when the change can reach the app:
+# app/, contract/, app-facing API (next/api/) or database behaviour (supabase/migrations/), or the factory files that
+# define CI (.github/, tools/). It is skipped only for changes that cannot reach the app (for example next/tests/,
+# next/engine/, evals/). Pushes to main and manual runs always run every stage.
+# Renames count as a delete plus an add, so a file moved out of a gated folder counts for both folders.
 on:
   push:
     branches: [main]
@@ -17,11 +26,60 @@ env:
   SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
   DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
   CI_BUILD_ROOT: /Users/nami/ci-build/ci
-  CONTRACT_GEN_BUILD: /Users/nami/ci-build/ci/contract-gen
+  # Build caches kept between jobs, keyed by the Xcode version (tools/ci-clean.sh checks the key and removes caches of
+  # other versions). Releases do not use them and still build clean.
+  BUILD_CACHE: /Users/nami/ci-build/cache/xcode-27.2
+  CONTRACT_GEN_BUILD: /Users/nami/ci-build/cache/xcode-27.2/contract-gen
+  DENO_VERSION: "2.9.8"
 jobs:
-  fast:
-    # Never run code from a fork on the Mac.
+  changes:
+    # Never run code from a fork.
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      mac: ${{ steps.paths.outputs.mac }}
+      simulator: ${{ steps.paths.outputs.simulator }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2                 # the pull request's merge commit and its first parent (main)
+          persist-credentials: false
+      - name: Which stages this change needs
+        id: paths
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != pull_request ]; then
+            echo "mac=true" >> "$GITHUB_OUTPUT"; echo "simulator=true" >> "$GITHUB_OUTPUT"
+            echo "$GITHUB_EVENT_NAME: every stage runs"; exit 0
+          fi
+          files="$(git diff --no-renames --name-only HEAD^1 HEAD)"
+          printf '%s\n' "$files"
+          mac=false; sim=false
+          while IFS= read -r f; do
+            [ -n "$f" ] || continue
+            case "$f" in next/*|supabase/*|evals/*) ;; *) mac=true;; esac
+            case "$f" in app/*|contract/*|next/api/*|supabase/migrations/*|.github/*|tools/*) sim=true;; esac
+          done <<< "$files"
+          [ -n "$files" ] || { mac=true; sim=true; }      # nothing to compare: run everything
+          echo "mac=$mac" >> "$GITHUB_OUTPUT"; echo "simulator=$sim" >> "$GITHUB_OUTPUT"
+          echo "mac stage: $mac; simulator stage: $sim"
+  engine:
+    needs: changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: ${{ env.DENO_VERSION }}
+      - name: Server tests
+        working-directory: next
+        run: deno task test
+  mac:
+    needs: changes
+    if: needs.changes.outputs.mac == 'true'
     runs-on: [self-hosted, mac-mini]
     timeout-minutes: 30
     steps:
@@ -37,16 +95,37 @@ jobs:
       - name: Token lint
         run: tools/lint-tokens.sh
       - name: Flows tests
-        run: swift test --package-path app/Packages/Flows --scratch-path "$CI_BUILD_ROOT/spm-flows"
+        run: swift test --package-path app/Packages/Flows --scratch-path "$BUILD_CACHE/spm-flows"
       - name: DesignKit tests
-        run: swift test --package-path app/Packages/DesignKit --scratch-path "$CI_BUILD_ROOT/spm-designkit"
-      - name: Server tests
-        working-directory: next
-        run: deno task test
+        run: swift test --package-path app/Packages/DesignKit --scratch-path "$BUILD_CACHE/spm-designkit"
       - name: Contract validation
         run: app/Packages/Contract/generate.sh --check
+  fast:
+    needs: [changes, engine, mac]
+    if: >-
+      always() &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Engine green, Mac green or not needed
+        env:
+          CHANGES: ${{ needs.changes.result }}
+          ENGINE: ${{ needs.engine.result }}
+          MAC: ${{ needs.mac.result }}
+          MAC_NEEDED: ${{ needs.changes.outputs.mac }}
+        run: |
+          echo "changes: $CHANGES; engine: $ENGINE; mac: $MAC (needed: $MAC_NEEDED)"
+          [ "$CHANGES" = success ] || { echo "the change detection job did not succeed"; exit 1; }
+          [ "$ENGINE" = success ] || { echo "engine (server tests) did not succeed"; exit 1; }
+          if [ "$MAC_NEEDED" = false ]; then
+            [ "$MAC" = skipped ] || { echo "mac stage was not needed but ended $MAC"; exit 1; }
+          else
+            [ "$MAC" = success ] || { echo "mac stage did not succeed"; exit 1; }
+          fi
   simulator:
-    needs: fast
+    needs: [changes, fast]
+    if: needs.changes.outputs.simulator == 'true'
     runs-on: [self-hosted, mac-mini]
     timeout-minutes: 45
     steps:
@@ -62,7 +141,7 @@ jobs:
         run: |
           xcodebuild test -project app/Presence.xcodeproj -scheme Presence \
             -destination "id=${{ steps.sim.outputs.udid }}" \
-            -derivedDataPath "$CI_BUILD_ROOT/dd" -resultBundlePath "$CI_BUILD_ROOT/test.xcresult"
+            -derivedDataPath "$BUILD_CACHE/dd" -resultBundlePath "$CI_BUILD_ROOT/test.xcresult"
       - name: Keep the result bundle
         if: failure()
         uses: actions/upload-artifact@v4

@@ -1,3 +1,30 @@
+# Issue #58, 26–27 Nov 2026: engine CI on GitHub-hosted Linux, simulator only when needed, build caches kept
+
+What changed:
+- `ci.yml`. `changes` (ubuntu-latest) reads the pull request's files with `git diff --no-renames`, so a file moved out of a gated folder counts for the old and the new folder. `engine` (ubuntu-latest, Deno 2.9.8 as on the Mac) runs the server tests on every run. `mac` (self-test, lints, Flows and DesignKit tests, contract validation) runs on the Mac unless every changed file is under `next/`, `supabase/` or `evals/`. `fast` (ubuntu-latest) is the required gate: green only when `engine` is green and `mac` is green, or skipped because the change is engine-only. `simulator` runs when the change can reach the app: `app/`, `contract/`, app-facing API (`next/api/`), database behaviour (`supabase/migrations/`), or the files that define CI (`.github/`, `tools/`). It is skipped for changes that cannot reach the app (`next/tests/`, `next/engine/`, `evals/`, …); a skipped job counts as passed for branch protection. Pushes to main and manual runs always run every stage. The required check names (`fast`, `simulator`, `risk-review`) are unchanged.
+- `build-item.yml`. A `route` job (ubuntu-latest, read-only job token) reads the issue's labels: `track:engine` sessions run on ubuntu-latest (Deno 2.9.8 and Claude Code 2.1.332 installed, as on the Mac), every other item on the Mac. Secrets are scoped to steps: `FACTORY_TOKEN` only in the steps that push, open or close (publish, return), `CLAUDE_CODE_OAUTH_TOKEN` only in the builder session. Checkouts keep no credentials; publishing authenticates `git push` through `gh` for that step only. The route job, the checkouts and the `npm install` of Claude Code see neither secret; reading the issue, labels and failed log uses the read-only job token. The trust conditions (owner-labelled issue, red CI on this repository's `item/*` branch), the two-round limit and `PROTECT_ALLOW` are unchanged.
+- Build caches. `BUILD_CACHE=/Users/nami/ci-build/cache/xcode-27.2` holds DerivedData, the SwiftPM scratch folders and the contract generator build, outside `CI_BUILD_ROOT`. `tools/ci-clean.sh` refuses any other path (the cache must be named for the pinned Xcode), removes caches of other Xcode versions, and removes the whole cache before failing a job for low disk. `release.yml` does not use it and still builds clean.
+- `tools/protect-tests.sh` fails closed when `origin/main` is missing, so a fresh checkout without main (a GitHub-hosted runner) cannot edit existing tests. Both builder jobs fetch main first. `tools/selftest.sh` has five new cases.
+- Unchanged: `risk-review` (Codex, on the Mac) on high-risk paths, the protect hook, at most two CI rounds, no fork code on any runner.
+
+Measured on CI (seconds). Before: the ten green `ci` runs 45877494508 to 45945908479 (Mac `fast`, then `simulator`). After: runs 45940877640 and 45943243753 of this design (PR #62); that change touches `.github/` and `tools/`, so every stage ran.
+
+| Job | Before | After |
+| --- | --- | --- |
+| Server tests | 39–42, inside Mac `fast` | 68–113 on ubuntu-latest, in parallel with the Mac (0 on the Mac) |
+| Mac `fast` work (now `mac`) | 99–106 | 14–15 (cache warm: Flows 2–3, DesignKit 1–2, contract 3) |
+| `simulator` | 97–104 | 81–84 (build and tests 51–55) |
+| Mac time, app change | ≈200 | ≈96–99 |
+| Mac time, engine-only or tests-only change under `next/` | ≈200 | 0 (`mac` and `simulator` skipped; `engine` alone, ≈80–125 wall clock) |
+
+So an app change uses about half the Mac time, and an engine-only change none of it, leaving the Mac free for app items (`risk-review` and, for `next/engine/**` and `evals/**`, `engine-eval` still use the Mac). Server tests are slower on ubuntu-latest than on the Mac (68–113 s against 39–42 s) but no longer queue behind Mac jobs. The engine-only and tests-only cases are timed from the job graph; the first such pull request after the merge confirms them.
+
+Package gaps, simplest behaviour taken:
+- **`engine-eval.yml` stays on the Mac.** It reads the model key from the Mac (`PRESENCE_HOME_ROOT/.env.anthropic.local`) and the reply cache from `EVAL_CACHE`. On Linux it would need the key as a new repository secret, and secrets are owner-only. It still runs only for `next/engine/**` and `evals/**`.
+- **Simulator also runs for `.github/` and `tools/` changes**, because those files define the simulator stage itself. If it were skipped there, a change to that stage would reach main without running it once.
+- **`risk-review` and `auto-merge` stay on the Mac**: the Codex sign-in lives there, and the issue keeps that gate as it is.
+- **Engine builder sessions on Linux** can run the offline evaluation only from cached replies, because the model key is on the Mac. The `engine-eval` gate on the Mac still judges the change.
+
 # Part B verification on the Mac mini, 25 Nov 2026 (runner on the internal disk)
 
 Handover `docs/handover/test-author.md`, Part 2. The runner and its build output moved to the internal disk, so no Full Disk Access is needed. Every check below ran on the self-hosted runner, using the workflows of PR #43 (through `workflow_dispatch` on throwaway `verify/*` branches built on it, never merged).
