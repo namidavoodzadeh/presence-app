@@ -16,8 +16,11 @@ ROOT_REAL="$(cd "$HOME/ci-build" && pwd -P)"
 OUT_REAL="$(cd "$OUT" && pwd -P)"
 case "$OUT_REAL" in "$ROOT_REAL"/?*) ;; *) refuse "it resolves to $OUT_REAL, which is not inside $ROOT_REAL";; esac
 rm -rf "$OUT_REAL"; mkdir -p "$OUT_REAL"
-DEVELOPER_DIR="${XCODE_PATH:-/Applications/Xcode.app}/Contents/Developer" xcrun simctl list devices -j 2>/dev/null \
-  | grep -oE '"name" : "presence-ci-[^"]*"' | cut -d'"' -f4 | while read -r d; do xcrun simctl delete "$d" || true; done
+# Builder jobs run beside CI on other runners and set CI_CLEAN_KEEP_SIMULATORS=1: only CI jobs delete CI simulators.
+if [ "${CI_CLEAN_KEEP_SIMULATORS:-}" != "1" ]; then
+  DEVELOPER_DIR="${XCODE_PATH:-/Applications/Xcode.app}/Contents/Developer" xcrun simctl list devices -j 2>/dev/null \
+    | grep -oE '"name" : "presence-ci-[^"]*"' | cut -d'"' -f4 | while read -r d; do xcrun simctl delete "$d" || true; done
+fi
 MIN_FREE_GB=25
 # CI_FREE_KB is for tools/selftest.sh only: it stands in for the measured free space.
 free_kb="${CI_FREE_KB:-$(df -k "$HOME" | awk 'NR==2 {print $4}')}"
