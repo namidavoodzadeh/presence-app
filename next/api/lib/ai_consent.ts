@@ -47,6 +47,11 @@ async function currentRow(db: SupabaseClient, owner: string): Promise<Row | null
 
 function givenOf(row: Row | null): AiConsentGiven | null {
   if (!row || row.version !== REQUIRED_VERSION) return null;
+  // A record counts only if it names every provider that receives words now, and its time is not in the future.
+  const named = (row.providers as string[] | null) ?? [];
+  if (!AI_PROVIDERS.every((p) => named.includes(p))) return null;
+  const at = Date.parse(String(row.at ?? ""));
+  if (!Number.isFinite(at) || at > Date.now() + 60_000) return null;
   return { version: String(row.version), providers: [...((row.providers as string[] | null) ?? [])], at: String(row.at) };
 }
 
@@ -63,10 +68,12 @@ export async function giveAiConsent(db: SupabaseClient, owner: string, version: 
   }
   const current = givenOf(await currentRow(db, owner));
   if (!current || current.version !== version) {
+    // The database stamps the time itself (trigger) and allows one open record per version: a concurrent duplicate (23505) is
+    // the same agreement.
     const { error } = await db.from("ai_consent").insert({
       owner, version, providers: [...AI_PROVIDERS], at: new Date().toISOString(), withdrawn_at: null, client_ref: clientRef,
     });
-    if (error) dbError(error, "ai_consent.insert");
+    if (error && (error as { code?: string }).code !== "23505") dbError(error, "ai_consent.insert");
   }
   return aiConsentObject(db, owner);
 }

@@ -16,6 +16,24 @@ create table if not exists public.ai_consent (
   check (withdrawn_at is null or withdrawn_at >= at)
 );
 create index if not exists ai_consent_owner_idx on public.ai_consent(owner, at desc);
+-- One open agreement per person and version: two concurrent submissions cannot both add a row.
+create unique index if not exists ai_consent_one_open on public.ai_consent(owner, version) where withdrawn_at is null;
+
+-- A new agreement is stamped by the database: its time is now, never a client's value; it must name Anthropic, the provider
+-- that receives words today; and it starts open.
+create or replace function public.ai_consent_on_insert() returns trigger language plpgsql set search_path = public as $$
+begin
+  new.at := now();
+  new.created_at := now();
+  new.withdrawn_at := null;
+  if not (new.providers @> array['anthropic']::text[]) then
+    raise exception 'invalid: an ai_consent row must name every provider that receives words (anthropic)';
+  end if;
+  return new;
+end;
+$$;
+drop trigger if exists ai_consent_on_insert on public.ai_consent;
+create trigger ai_consent_on_insert before insert on public.ai_consent for each row execute function public.ai_consent_on_insert();
 
 alter table public.ai_consent enable row level security;
 create policy "ai_consent own read" on public.ai_consent for select to authenticated using (owner = auth.uid());
@@ -29,6 +47,10 @@ begin
      or new.providers is distinct from old.providers or new.at is distinct from old.at or new.client_ref is distinct from old.client_ref
      or new.created_at is distinct from old.created_at or old.withdrawn_at is not null then
     raise exception 'invalid: an ai_consent row is history; only withdrawn_at may be set, once';
+  end if;
+  -- A withdrawal is stamped now by the database, never a client's (possibly future) time.
+  if new.withdrawn_at is not null then
+    new.withdrawn_at := now();
   end if;
   return new;
 end;

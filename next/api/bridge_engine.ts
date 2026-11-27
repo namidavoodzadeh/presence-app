@@ -30,7 +30,7 @@ import { loadPairContext } from "./pair_context.ts";
 import { runWritePipeline, type WriteInput } from "../engine/bridge/write_pipeline.ts";
 import { unreadBody } from "./lib/safety_gate.ts";
 import { requireSafetyPass } from "./_shared/safety/gate.ts";
-import { requireAiConsent } from "./lib/ai_consent.ts";
+import { hasAiConsent, requireAiConsent } from "./lib/ai_consent.ts";
 
 export const INSIGHT_MODEL = "claude-haiku-5-5";        // APP-V1-BUILD §3: insight on Haiku, small and fast
 export const RUN_MODEL = "claude-sonnet-5-5";           // Bridge it on Sonnet (8/12 vs Haiku's 1/6)
@@ -249,8 +249,8 @@ route("POST", "/bridge/insight", async (ctx) => {
   // PSY 15 Nov ruling 2 (as in Talk and Bridge): a candidate floor row clears only with two keys, two parallel readings read alone
   // before the analysis; with the semantic check off by config nothing clears.
   let classReading: SemanticRisk | null = null;
-  if (floor.routed !== "none" && ctx.env.safetySemantic === true && candidateClasses(text, floor).length) {
-    await requireAiConsent(ctx);
+  // Without consent no model reads the words, so the floor's routing stands: a risk still shows resources, never a 403 (law 8).
+  if (floor.routed !== "none" && ctx.env.safetySemantic === true && candidateClasses(text, floor).length && await hasAiConsent(ctx)) {
     const both = await classReadings(clientFor(ctx, new PostgresLedger(ctx.service, scopeFor(ctx)), "insight"), text);
     classReading = both[0];
     const cleared = settleClear(text, floor, both);

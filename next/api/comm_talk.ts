@@ -65,6 +65,16 @@ async function keepAnswer(ctx: Ctx, cid: string, rows: Row[], raw: string): Prom
   return { me: data as Row, turn };
 }
 
+/** Remove a pending answer with exactly these words (kept while consent was missing) from the caller's named conversation. */
+async function dropPendingAnswer(ctx: Ctx, b: Row, raw: string): Promise<void> {
+  if (typeof b.conversation_id !== "string") return;
+  const rows = await answerRows(ctx, b.conversation_id);
+  const pending = pendingAnswer(rows);
+  if (!pending || String(pending.text ?? "").trim() !== raw) return;
+  const { error } = await ctx.caller!.db.from("messages").delete().eq("id", pending.id).eq("owner", ctx.caller!.id);
+  if (error) dbError(error, "messages.delete.pending");
+}
+
 async function answerRows(ctx: Ctx, cid: string): Promise<Row[]> {
   const { data: msgs, error: mErr } = await ctx.caller!.db.from("messages").select("*").eq("conversation_id", cid).neq("superseded", true).order("turn");
   if (mErr) dbError(mErr, "messages.comm");
@@ -104,7 +114,8 @@ route("POST", "/comm/talk/turn", async (ctx) => {
   if (raw && commTurnPrecheck(raw).stop) return json({ conversation: null, message: null, reply: { state: "safety", reflection: "", question: "", comm: null, item: null, resources: RESOURCES }, latency_ms: 0 });
 
   // CONTRACT §7 AI consent: without it no model is called (the safety reading included). The answer is kept, as Talk keeps it
-  // (flows/talk.md "the words were kept"), so the same words are answered once consent exists.
+  // (flows/talk.md "the words were kept"), so the same words are answered once consent exists. The kept row is only a pending
+  // answer: nothing reads it until the safety gate below has passed on the consented retry, and a stop there deletes it.
   if (raw && !(await hasAiConsent(ctx))) {
     const conversation = await conversationFor(ctx, b);
     const { me } = await keepAnswer(ctx, conversation.id as string, await answerRows(ctx, conversation.id as string), raw);
@@ -114,6 +125,8 @@ route("POST", "/comm/talk/turn", async (ctx) => {
   // K-0002: the one safety gate, before any row is made or model called; held (unreadable) stores nothing.
   if (raw) {
     const g = await requireSafetyPass(ctx, raw, "comm_talk");
+    // An answer kept while consent was missing has not been read yet: a held or stopped reading removes it (stores nothing).
+    if (g.routed === "unavailable" || g.stop) await dropPendingAnswer(ctx, b, raw);
     if (g.routed === "unavailable") return json({ conversation: null, message: null, reply: { ...unreadBody(), reflection: "", question: "", comm: null, item: null }, latency_ms: 0 });
     if (g.stop) return json({ conversation: null, message: null, reply: { state: "safety", reflection: "", question: "", comm: null, item: null, resources: RESOURCES }, latency_ms: 0 });
   }
