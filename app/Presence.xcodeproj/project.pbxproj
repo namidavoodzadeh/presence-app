@@ -12,6 +12,7 @@
 		6FC524EBFEEDAAB6A06C13FB /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645C1C6C1D82BB612E8A606C /* Snapshot.swift */; };
 		7A106E6810C201C893BD289E /* Flows in Frameworks */ = {isa = PBXBuildFile; productRef = B09C45A8D5CEC2C9E5D6AEEB /* Flows */; };
 		A2C8FFD1F19A50315FA31D29 /* DesignKit in Frameworks */ = {isa = PBXBuildFile; productRef = 067F70EB4489DDF6835922EE /* DesignKit */; };
+		B705C7DB8EE23F191212412B /* TesterReportBuildTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAF636C9286B99CA761A759 /* TesterReportBuildTests.swift */; };
 		CBECA54B77095F695D5D82CF /* JourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2610D308C70B5646D744326 /* JourneyTests.swift */; };
 		FD23A9D338313A2832D299FE /* Contract in Frameworks */ = {isa = PBXBuildFile; productRef = 15AB711FBCC608A29098674F /* Contract */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2BAF636C9286B99CA761A759 /* TesterReportBuildTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesterReportBuildTests.swift; sourceTree = "<group>"; };
 		30C13211DA9D4C4B38694D97 /* Flows */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Flows; path = Packages/Flows; sourceTree = SOURCE_ROOT; };
 		4CF48492D065886C1603895C /* TemplateScreenSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateScreenSnapshotTests.swift; sourceTree = "<group>"; };
 		5928D16C2DDA1B923D776F19 /* PresenceUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PresenceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,6 +96,7 @@
 			children = (
 				645C1C6C1D82BB612E8A606C /* Snapshot.swift */,
 				4CF48492D065886C1603895C /* TemplateScreenSnapshotTests.swift */,
+				2BAF636C9286B99CA761A759 /* TesterReportBuildTests.swift */,
 			);
 			path = Snapshots;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 			files = (
 				6FC524EBFEEDAAB6A06C13FB /* Snapshot.swift in Sources */,
 				6B9A15D6F5E59118CD26C605 /* TemplateScreenSnapshotTests.swift in Sources */,
+				B705C7DB8EE23F191212412B /* TesterReportBuildTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +435,23 @@
 			};
 			name = Release;
 		};
+		4A72EB55555340754D63F6A3 /* TestFlight */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.namidavoodzadeh.presence.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Presence.app/Presence";
+			};
+			name = TestFlight;
+		};
 		59131C671B4382411B4A2082 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -452,6 +473,67 @@
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
+		};
+		6B3F9849BBBAEBABA5DCDBF9 /* TestFlight */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = UK39PYVJ96;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 6.0;
+			};
+			name = TestFlight;
 		};
 		6FF2EA15EF2720A9E5BFADBC /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -487,6 +569,31 @@
 			};
 			name = Debug;
 		};
+		8C911431960A6BA858BA71F5 /* TestFlight */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Kenember;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tester reports: hold the red button and say what you saw. Your voice stays on this iPhone.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Tester reports: what you say is turned into text on this iPhone.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.namidavoodzadeh.presence;
+				PRODUCT_NAME = Presence;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TESTER_REPORT";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = TestFlight;
+		};
 		AF5CC8BA738F820B0BDB00E2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -503,6 +610,23 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Presence.app/Presence";
 			};
 			name = Release;
+		};
+		E40B4A93AE2FEBF0C36A0420 /* TestFlight */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.namidavoodzadeh.presence.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Presence;
+			};
+			name = TestFlight;
 		};
 		E538BD96D166372393BBF96E /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -529,6 +653,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Kenember;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tester reports: hold the red button and say what you saw. Your voice stays on this iPhone.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Tester reports: what you say is turned into text on this iPhone.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -539,6 +665,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.namidavoodzadeh.presence;
 				PRODUCT_NAME = Presence;
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TESTER_REPORT";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -551,6 +678,7 @@
 			buildConfigurations = (
 				6FF2EA15EF2720A9E5BFADBC /* Debug */,
 				AF5CC8BA738F820B0BDB00E2 /* Release */,
+				4A72EB55555340754D63F6A3 /* TestFlight */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -560,6 +688,7 @@
 			buildConfigurations = (
 				EAF08B2DF7EADBEA65F023E6 /* Debug */,
 				59131C671B4382411B4A2082 /* Release */,
+				8C911431960A6BA858BA71F5 /* TestFlight */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -569,6 +698,7 @@
 			buildConfigurations = (
 				1F3B26D85CFD4BECFC7E138D /* Debug */,
 				29204D2917D9D3E71BDBCA9D /* Release */,
+				6B3F9849BBBAEBABA5DCDBF9 /* TestFlight */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -578,6 +708,7 @@
 			buildConfigurations = (
 				7B4504D0A2F4E44277411B2E /* Debug */,
 				E538BD96D166372393BBF96E /* Release */,
+				E40B4A93AE2FEBF0C36A0420 /* TestFlight */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

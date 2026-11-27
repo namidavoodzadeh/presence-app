@@ -7,7 +7,7 @@ on:
     branches: [main]
   workflow_dispatch:
 concurrency:
-  group: mac-mini          # one shared group across every workflow: one job at a time on the Mac
+  group: ci-${{ github.ref }}          # per workflow and branch; jobs of different branches run in parallel on every runner
   cancel-in-progress: false
 permissions:
   contents: read
@@ -16,16 +16,18 @@ env:
   XCODE_VERSION: "27.2"
   SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-27-2
   DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-  CI_BUILD_ROOT: /Volumes/PresenceSSD/build/ci
-  CONTRACT_GEN_BUILD: /Volumes/PresenceSSD/build/ci/contract-gen
 jobs:
   fast:
     # Never run code from a fork on the Mac.
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, mac-mini]
+    runs-on: [self-hosted]
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      - name: Build folder for this runner
+        run: |
+          echo "CI_BUILD_ROOT=$HOME/ci-build/$RUNNER_NAME" >> "$GITHUB_ENV"
+          echo "CONTRACT_GEN_BUILD=$HOME/ci-build/$RUNNER_NAME/contract-gen" >> "$GITHUB_ENV"
       - name: Toolchain (pinned)
         run: tools/ci-preflight.sh
       - name: Clean build output
@@ -47,10 +49,14 @@ jobs:
         run: app/Packages/Contract/generate.sh --check
   simulator:
     needs: fast
-    runs-on: [self-hosted, mac-mini]
+    runs-on: [self-hosted]
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Build folder for this runner
+        run: |
+          echo "CI_BUILD_ROOT=$HOME/ci-build/$RUNNER_NAME" >> "$GITHUB_ENV"
+          echo "CONTRACT_GEN_BUILD=$HOME/ci-build/$RUNNER_NAME/contract-gen" >> "$GITHUB_ENV"
       - name: Toolchain (pinned)
         run: tools/ci-preflight.sh
       - name: Clean build output
@@ -68,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: xcresult
-          path: /Volumes/PresenceSSD/build/ci/test.xcresult
+          path: ${{ env.CI_BUILD_ROOT }}/test.xcresult
           retention-days: 7
       - name: Delete simulator
         if: always() && steps.sim.outputs.udid != ''

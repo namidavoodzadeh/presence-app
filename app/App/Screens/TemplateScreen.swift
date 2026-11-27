@@ -14,6 +14,7 @@ struct TemplateScreen: View {
             content
                 .padding(Space.m)
         }
+        .testerScreen("template")
     }
 
     @ViewBuilder private var content: some View {
