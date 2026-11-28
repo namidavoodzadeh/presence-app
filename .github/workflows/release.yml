@@ -1,9 +1,8 @@
 name: release
-# A merge to main that touches app/ is archived and uploaded to TestFlight (internal group "Owner").
+# Archived and uploaded to TestFlight (internal group "Owner") when dispatched: the lead starts it once the pieces a test
+# needs are on main. Not on every merge, so the owner never receives a half-assembled build and parallel screen merges do
+# not queue a release each on the signing runner.
 on:
-  push:
-    branches: [main]
-    paths: ["app/**"]
   workflow_dispatch:
 concurrency:
   group: release
