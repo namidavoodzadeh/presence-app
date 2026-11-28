@@ -1,7 +1,7 @@
 import Foundation
 
 /// How a call the app performed for a flow failed. Calls are effects; their answers come back as events.
-public enum CallFailure: Equatable, Sendable {
+public enum CallFailure: Error, Equatable, Sendable {
     case http(status: Int, error: String? = nil, reason: String? = nil)
     case offline
     case timeout
@@ -11,6 +11,9 @@ public enum CallFailure: Equatable, Sendable {
         if case .http(401, _, _) = self { return true }
         return false
     }
+
+    /// The same as `endsSession` (the name some flows use).
+    public var isUnauthorized: Bool { endsSession }
 
     /// The failure a screen may show. A 403 `feature_off` or `owner_only` is "not open": no Try again.
     public var loadFailure: LoadFailure {
