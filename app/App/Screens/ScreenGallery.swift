@@ -1,5 +1,4 @@
 #if DEBUG
-import DesignKit
 import Flows
 import SwiftUI
 
@@ -20,6 +19,14 @@ enum ScreenGallery {
         case "you-empty": GalleryYou(list: .empty)
         case "you-failed": GalleryYou(list: .failed(LoadFailure(kind: .offline)))
         case "you-loaded": GalleryYou(list: .loaded(YouFixtures.groups))
+        case "people-loading": GalleryPeople(list: .loading)
+        case "people-empty": GalleryPeople(list: .empty)
+        case "people-failed": GalleryPeople(list: .failed(LoadFailure(kind: .offline)))
+        case "people-loaded": GalleryPeople(list: .loaded(PeopleFixtures.rows))
+        case "signIn-signedOut": GallerySignIn(state: .signedOut)
+        case "signIn-busy": GallerySignIn(state: .exchanging)
+        case "signIn-failed": GallerySignIn(state: .signInFailed(.provider))
+        case "signIn-underAge": GallerySignIn(state: .underAge)
         case "safety-shown": GallerySafety(safety: SafetyFixtures.safety)
         default: Text(name)
         }
@@ -32,6 +39,59 @@ private struct GalleryYou: View {
 
     var body: some View {
         YouScreen(list: list) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
+}
+
+private struct GalleryPeople: View {
+    let list: LoadState<[PeopleScreen.Row]>
+    @State private var lastEvent = ""
+
+    var body: some View {
+        PeopleScreen(list: list) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
+}
+
+/// Rows shaped like `GET /home`, most urgent first: a folded card, words started, nothing open.
+enum PeopleFixtures {
+    static let rows: [PeopleScreen.Row] = [
+        PeopleScreen.Row(id: "p-jan", name: "Jan", line: .unread(when: "this morning"), time: "9:12", isNew: true),
+        PeopleScreen.Row(id: "p-ben", name: "Ben", line: .draft, time: "Tuesday", isNew: false),
+        PeopleScreen.Row(id: "p-ana", name: "Ana", line: .nothing, time: nil, isNew: false),
+    ]
+}
+
+/// A list shaped like `GET /comm/items`: groups in the You order, newest first inside a kind.
+enum YouFixtures {
+    static let groups: [YouFlow.Group] = [
+        YouFlow.Group(kind: "how_i_mean", heading: "How I mean things", items: [
+            YouFlow.Item(id: "b1", kind: "how_i_mean", wording: "When I go quiet, I'm thinking, not upset."),
+            YouFlow.Item(id: "b2", kind: "how_i_mean", wording: "\"Fine\" from me usually means fine."),
+        ]),
+        YouFlow.Group(kind: "feels_like_care", heading: "What feels like care", items: [
+            YouFlow.Item(id: "b3", kind: "feels_like_care", wording: "A message in the morning, even a short one."),
+        ]),
+        YouFlow.Group(kind: "lands_hard", heading: "What lands hard", items: [
+            YouFlow.Item(id: "b4", kind: "lands_hard", wording: "Being told I'm overreacting."),
+        ]),
+    ]
+}
+
+private struct GallerySignIn: View {
+    let state: SignInFlow.State
+    @State private var lastEvent = ""
+
+    var body: some View {
+        SignInScreen(state: state) { event in lastEvent = "\(event)" }
             .overlay(alignment: .bottom) {
                 Text(lastEvent)
                     .accessibilityIdentifier("gallery.lastEvent")
@@ -63,21 +123,5 @@ enum SafetyFixtures {
         TalkFlow.Resource(label: "988 Suicide & Crisis Lifeline", url: "https://988lifeline.org"),
         TalkFlow.Resource(label: "Crisis Text Line", url: "https://www.crisistextline.org"),
     ])
-}
-
-/// A list shaped like `GET /comm/items`: groups in the You order, newest first inside a kind.
-enum YouFixtures {
-    static let groups: [YouFlow.Group] = [
-        YouFlow.Group(kind: "how_i_mean", heading: "How I mean things", items: [
-            YouFlow.Item(id: "b1", kind: "how_i_mean", wording: "When I go quiet, I'm thinking, not upset."),
-            YouFlow.Item(id: "b2", kind: "how_i_mean", wording: "\"Fine\" from me usually means fine."),
-        ]),
-        YouFlow.Group(kind: "feels_like_care", heading: "What feels like care", items: [
-            YouFlow.Item(id: "b3", kind: "feels_like_care", wording: "A message in the morning, even a short one."),
-        ]),
-        YouFlow.Group(kind: "lands_hard", heading: "What lands hard", items: [
-            YouFlow.Item(id: "b4", kind: "lands_hard", wording: "Being told I'm overreacting."),
-        ]),
-    ]
 }
 #endif
