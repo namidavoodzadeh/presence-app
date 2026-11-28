@@ -75,7 +75,7 @@ public enum Package01Fields {
         // GET /comm/items
         \Operations.getCommItems.Output.Ok.Body.jsonPayload.this_week,
         \Operations.getCommItems.Output.Ok.Body.jsonPayload.groups,
-        // POST /comm/items: CommItemReply, below
+        // POST /comm/items: 201 CommItemCreated, 200 CommItemNotKept, below
         // GET /comm/items/{id}/visibility
         \Operations.getCommItemVisibility.Output.Ok.Body.jsonPayload.item_id,
         \Operations.getCommItemVisibility.Output.Ok.Body.jsonPayload.scope,
@@ -100,29 +100,22 @@ public enum Package01Fields {
         \Components.Schemas.CommItem.still_true_due,
         \Components.Schemas.CommItem.source,
         \Components.Schemas.CommItem.dated_at,
-        // CommItemOrNull
-        \Components.Schemas.CommItemOrNull.id,
-        \Components.Schemas.CommItemOrNull.kind,
-        \Components.Schemas.CommItemOrNull.wording,
-        \Components.Schemas.CommItemOrNull.scope,
-        \Components.Schemas.CommItemOrNull.when,
-        \Components.Schemas.CommItemOrNull.expires_at,
-        \Components.Schemas.CommItemOrNull.last_confirmed_at,
-        \Components.Schemas.CommItemOrNull.status,
-        \Components.Schemas.CommItemOrNull.topic,
-        \Components.Schemas.CommItemOrNull.still_true_due,
-        \Components.Schemas.CommItemOrNull.source,
-        \Components.Schemas.CommItemOrNull.dated_at,
         // CommGroup
         \Components.Schemas.CommGroup.kind,
         \Components.Schemas.CommGroup.heading,
         \Components.Schemas.CommGroup.starter,
         \Components.Schemas.CommGroup.items,
-        // CommItemReply
-        \Components.Schemas.CommItemReply.item,
-        \Components.Schemas.CommItemReply.state,
-        \Components.Schemas.CommItemReply.resources,
-        \Components.Schemas.CommItemReply.offer,
+        // CommItemCreated (POST /comm/items 201)
+        \Components.Schemas.CommItemCreated.item,
+        \Components.Schemas.CommItemCreated.state,
+        // CommItemNotKept (POST /comm/items 200: nothing stored)
+        \Components.Schemas.CommItemNotKept.item,
+        \Components.Schemas.CommItemNotKept.state,
+        \Components.Schemas.CommItemNotKept.resources,
+        \Components.Schemas.CommItemNotKept.offer,
+        \Components.Schemas.CommItemNotKept.line,
+        \Components.Schemas.CommItemNotKept.action,
+        \Components.Schemas.CommItemNotKept.help,
         // CommViewer
         \Components.Schemas.CommViewer.person_id,
         \Components.Schemas.CommViewer.name,

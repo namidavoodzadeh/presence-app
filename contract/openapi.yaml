@@ -536,12 +536,12 @@ paths:
           description: Kept, with one receipt of the person's own words
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/CommItemReply" }
+              schema: { $ref: "#/components/schemas/CommItemCreated" }
         "200":
-          description: Nothing stored (safety, unavailable, or a 4.3 check); item is null
+          description: Nothing stored (safety, unavailable, or a 4.3 check); item is always null
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/CommItemReply" }
+              schema: { $ref: "#/components/schemas/CommItemNotKept" }
         default: { $ref: "#/components/responses/Error" }
   /comm/items/{id}/visibility:
     parameters:
@@ -714,8 +714,8 @@ components:
         value: { type: [string, "null"] }
     CommItem:
       type: object
-      required: &comm-item-required [id, kind, wording, scope, when, expires_at, last_confirmed_at, status, topic, still_true_due, source, dated_at]
-      properties: &comm-item-properties
+      required: [id, kind, wording, scope, when, expires_at, last_confirmed_at, status, topic, still_true_due, source, dated_at]
+      properties:
         id: { type: string }
         kind: { type: string }
         wording: { type: string }
@@ -728,11 +728,6 @@ components:
         still_true_due: { type: boolean }
         source: { type: [string, "null"] }
         dated_at: { type: string }
-    CommItemOrNull:
-      description: A CommItem, or null when nothing was stored.
-      type: [object, "null"]
-      required: *comm-item-required
-      properties: *comm-item-properties
     CommGroup:
       type: object
       required: [kind, heading, starter, items]
@@ -743,14 +738,27 @@ components:
         items:
           type: array
           items: { $ref: "#/components/schemas/CommItem" }
-    CommItemReply:
+    CommItemCreated:
+      description: The item as stored (201); never null.
       type: object
       required: [item, state]
       properties:
-        item: { $ref: "#/components/schemas/CommItemOrNull" }
-        state: { type: string }
+        item: { $ref: "#/components/schemas/CommItem" }
+        state: { type: string, enum: [created] }
+    CommItemNotKept:
+      description: >-
+        Nothing was stored (200): a safety stop (resources, law 8), an unreadable safety read (unavailable: line, action,
+        help and resources), or a 4.3 check (offer_request with an offer, offer_i_statement, not_kept).
+      type: object
+      required: [item, state]
+      properties:
+        item: { description: "Always null: nothing was stored.", type: [object, "null"], enum: [null] }
+        state: { type: string, enum: [safety, unavailable, offer_request, offer_i_statement, not_kept] }
         resources: { $ref: "#/components/schemas/Resources" }
         offer: { type: string }
+        line: { type: string }
+        action: { type: string }
+        help: { type: string }
     CommViewer:
       type: object
       required: [person_id, name, sees]

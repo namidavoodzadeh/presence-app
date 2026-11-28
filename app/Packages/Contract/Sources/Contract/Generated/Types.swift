@@ -1134,91 +1134,6 @@ public enum Components {
                 case dated_at
             }
         }
-        /// A CommItem, or null when nothing was stored.
-        ///
-        /// - Remark: Generated from `#/components/schemas/CommItemOrNull`.
-        public struct CommItemOrNull: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/id`.
-            public var id: Swift.String
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/kind`.
-            public var kind: Swift.String
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/wording`.
-            public var wording: Swift.String
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/scope`.
-            public var scope: Components.Schemas.CommScope
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/when`.
-            public var when: Swift.String?
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/expires_at`.
-            public var expires_at: Swift.String?
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/last_confirmed_at`.
-            public var last_confirmed_at: Swift.String?
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/status`.
-            public var status: Swift.String
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/topic`.
-            public var topic: Swift.String?
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/still_true_due`.
-            public var still_true_due: Swift.Bool
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/source`.
-            public var source: Swift.String?
-            /// - Remark: Generated from `#/components/schemas/CommItemOrNull/dated_at`.
-            public var dated_at: Swift.String
-            /// Creates a new `CommItemOrNull`.
-            ///
-            /// - Parameters:
-            ///   - id:
-            ///   - kind:
-            ///   - wording:
-            ///   - scope:
-            ///   - when:
-            ///   - expires_at:
-            ///   - last_confirmed_at:
-            ///   - status:
-            ///   - topic:
-            ///   - still_true_due:
-            ///   - source:
-            ///   - dated_at:
-            public init(
-                id: Swift.String,
-                kind: Swift.String,
-                wording: Swift.String,
-                scope: Components.Schemas.CommScope,
-                when: Swift.String? = nil,
-                expires_at: Swift.String? = nil,
-                last_confirmed_at: Swift.String? = nil,
-                status: Swift.String,
-                topic: Swift.String? = nil,
-                still_true_due: Swift.Bool,
-                source: Swift.String? = nil,
-                dated_at: Swift.String
-            ) {
-                self.id = id
-                self.kind = kind
-                self.wording = wording
-                self.scope = scope
-                self.when = when
-                self.expires_at = expires_at
-                self.last_confirmed_at = last_confirmed_at
-                self.status = status
-                self.topic = topic
-                self.still_true_due = still_true_due
-                self.source = source
-                self.dated_at = dated_at
-            }
-            public enum CodingKeys: String, CodingKey {
-                case id
-                case kind
-                case wording
-                case scope
-                case when
-                case expires_at
-                case last_confirmed_at
-                case status
-                case topic
-                case still_true_due
-                case source
-                case dated_at
-            }
-        }
         /// - Remark: Generated from `#/components/schemas/CommGroup`.
         public struct CommGroup: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/CommGroup/kind`.
@@ -1254,39 +1169,98 @@ public enum Components {
                 case items
             }
         }
-        /// - Remark: Generated from `#/components/schemas/CommItemReply`.
-        public struct CommItemReply: Codable, Hashable, Sendable {
-            /// - Remark: Generated from `#/components/schemas/CommItemReply/item`.
-            public var item: Components.Schemas.CommItemOrNull?
-            /// - Remark: Generated from `#/components/schemas/CommItemReply/state`.
-            public var state: Swift.String
-            /// - Remark: Generated from `#/components/schemas/CommItemReply/resources`.
-            public var resources: Components.Schemas.Resources?
-            /// - Remark: Generated from `#/components/schemas/CommItemReply/offer`.
-            public var offer: Swift.String?
-            /// Creates a new `CommItemReply`.
+        /// The item as stored (201); never null.
+        ///
+        /// - Remark: Generated from `#/components/schemas/CommItemCreated`.
+        public struct CommItemCreated: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommItemCreated/item`.
+            public var item: Components.Schemas.CommItem
+            /// - Remark: Generated from `#/components/schemas/CommItemCreated/state`.
+            @frozen public enum statePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case created = "created"
+            }
+            /// - Remark: Generated from `#/components/schemas/CommItemCreated/state`.
+            public var state: Components.Schemas.CommItemCreated.statePayload
+            /// Creates a new `CommItemCreated`.
             ///
             /// - Parameters:
             ///   - item:
             ///   - state:
+            public init(
+                item: Components.Schemas.CommItem,
+                state: Components.Schemas.CommItemCreated.statePayload
+            ) {
+                self.item = item
+                self.state = state
+            }
+            public enum CodingKeys: String, CodingKey {
+                case item
+                case state
+            }
+        }
+        /// Nothing was stored (200): a safety stop (resources, law 8), an unreadable safety read (unavailable: line, action, help and resources), or a 4.3 check (offer_request with an offer, offer_i_statement, not_kept).
+        ///
+        /// - Remark: Generated from `#/components/schemas/CommItemNotKept`.
+        public struct CommItemNotKept: Codable, Hashable, Sendable {
+            /// Always null: nothing was stored.
+            ///
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/item`.
+            public var item: OpenAPIRuntime.OpenAPIObjectContainer?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/state`.
+            @frozen public enum statePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case safety = "safety"
+                case unavailable = "unavailable"
+                case offer_request = "offer_request"
+                case offer_i_statement = "offer_i_statement"
+                case not_kept = "not_kept"
+            }
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/state`.
+            public var state: Components.Schemas.CommItemNotKept.statePayload
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/resources`.
+            public var resources: Components.Schemas.Resources?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/offer`.
+            public var offer: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/line`.
+            public var line: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/action`.
+            public var action: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/help`.
+            public var help: Swift.String?
+            /// Creates a new `CommItemNotKept`.
+            ///
+            /// - Parameters:
+            ///   - item: Always null: nothing was stored.
+            ///   - state:
             ///   - resources:
             ///   - offer:
+            ///   - line:
+            ///   - action:
+            ///   - help:
             public init(
-                item: Components.Schemas.CommItemOrNull? = nil,
-                state: Swift.String,
+                item: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
+                state: Components.Schemas.CommItemNotKept.statePayload,
                 resources: Components.Schemas.Resources? = nil,
-                offer: Swift.String? = nil
+                offer: Swift.String? = nil,
+                line: Swift.String? = nil,
+                action: Swift.String? = nil,
+                help: Swift.String? = nil
             ) {
                 self.item = item
                 self.state = state
                 self.resources = resources
                 self.offer = offer
+                self.line = line
+                self.action = action
+                self.help = help
             }
             public enum CodingKeys: String, CodingKey {
                 case item
                 case state
                 case resources
                 case offer
+                case line
+                case action
+                case help
             }
         }
         /// - Remark: Generated from `#/components/schemas/CommViewer`.
@@ -5747,12 +5721,12 @@ public enum Operations {
                 /// - Remark: Generated from `#/paths/comm/items/POST/responses/201/content`.
                 @frozen public enum Body: Sendable, Hashable {
                     /// - Remark: Generated from `#/paths/comm/items/POST/responses/201/content/application\/json`.
-                    case json(Components.Schemas.CommItemReply)
+                    case json(Components.Schemas.CommItemCreated)
                     /// The associated value of the enum case if `self` is `.json`.
                     ///
                     /// - Throws: An error if `self` is not `.json`.
                     /// - SeeAlso: `.json`.
-                    public var json: Components.Schemas.CommItemReply {
+                    public var json: Components.Schemas.CommItemCreated {
                         get throws {
                             switch self {
                             case let .json(body):
@@ -5798,12 +5772,12 @@ public enum Operations {
                 /// - Remark: Generated from `#/paths/comm/items/POST/responses/200/content`.
                 @frozen public enum Body: Sendable, Hashable {
                     /// - Remark: Generated from `#/paths/comm/items/POST/responses/200/content/application\/json`.
-                    case json(Components.Schemas.CommItemReply)
+                    case json(Components.Schemas.CommItemNotKept)
                     /// The associated value of the enum case if `self` is `.json`.
                     ///
                     /// - Throws: An error if `self` is not `.json`.
                     /// - SeeAlso: `.json`.
-                    public var json: Components.Schemas.CommItemReply {
+                    public var json: Components.Schemas.CommItemNotKept {
                         get throws {
                             switch self {
                             case let .json(body):
@@ -5822,7 +5796,7 @@ public enum Operations {
                     self.body = body
                 }
             }
-            /// Nothing stored (safety, unavailable, or a 4.3 check); item is null
+            /// Nothing stored (safety, unavailable, or a 4.3 check); item is always null
             ///
             /// - Remark: Generated from `#/paths//comm/items/post(addCommItem)/responses/200`.
             ///
