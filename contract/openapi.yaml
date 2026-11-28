@@ -706,7 +706,9 @@ components:
         partner_name: { type: [string, "null"] }
     CommScope:
       type: object
-      required: [type, value]
+      # `value` may be absent: the server reads a missing value as null (comm_items.ts asScope), and the generated client
+      # omits a nil key, so `{type: everyone}` is a valid request (review round 1, #131).
+      required: [type]
       properties:
         type: { type: string, enum: [everyone, type, person] }
         value: { type: [string, "null"] }
