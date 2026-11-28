@@ -41,6 +41,8 @@ export interface ApiEnv {
   commOwnerIds?: string[];
   /** Private Talk listener guide. Off unless PRESENCE_TALK_GUIDE is "true"; it uses the same owner list as communication items. */
   talkGuide?: boolean;
+  /** CONTRACT §7 AI consent (§11.4 L6): the model-call gate. On for a release build unless PRESENCE_REQUIRE_AI_CONSENT is "false"; elsewhere on only when "true". */
+  requireAiConsent?: boolean;
   isHosted: boolean;
   releaseBuild: boolean;
 }
@@ -146,6 +148,9 @@ export async function loadEnv(): Promise<ApiEnv> {
   const commItems = enabledSwitch(get("PRESENCE_COMM_ITEMS"));
   const commOwnerIds = (get("PRESENCE_COMM_OWNER_IDS") || "").split(",").map((x) => x.trim()).filter(Boolean);
   const talkGuide = enabledSwitch(get("PRESENCE_TALK_GUIDE"));
+  // A release deployment always gates model calls: no switch turns consent off there (review round 4, #8). Elsewhere the gate is
+  // off unless PRESENCE_REQUIRE_AI_CONSENT is "true".
+  const requireAiConsent = aiConsentGateOn(releaseBuild, get("PRESENCE_REQUIRE_AI_CONSENT"));
   if (!url || !anon || !service || !preview || !anthropic || !workspace) {
     const home = get("HOME");
     const root = get("PRESENCE_HOME_ROOT") || `${home}/Library/Application Support/PresenceHome`;
@@ -194,8 +199,14 @@ export async function loadEnv(): Promise<ApiEnv> {
     commItems,
     commOwnerIds,
     talkGuide,
+    requireAiConsent,
     isHosted,
     releaseBuild,
   };
   return cached;
+}
+
+/** The AI consent gate: always on for a release deployment; elsewhere only when the switch is exactly "true". */
+export function aiConsentGateOn(releaseBuild: boolean, setting: string | undefined | null): boolean {
+  return releaseBuild || setting === "true";
 }
