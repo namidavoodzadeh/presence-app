@@ -19,15 +19,16 @@ rm -rf "$OUT_REAL"; mkdir -p "$OUT_REAL"
 # Jobs run in parallel on several runners, but each runner runs one job at a time: a simulator named for this runner
 # (tools/ci-sim.sh) is a leftover of this runner's earlier job and safe to delete. Other runners' simulators are never
 # touched.
-me="presence-ci-${RUNNER_NAME:-local}--"
-DEVELOPER_DIR="${XCODE_PATH:-/Applications/Xcode.app}/Contents/Developer" xcrun simctl list devices -j 2>/dev/null \
+export DEVELOPER_DIR="${XCODE_PATH:-/Applications/Xcode.app}/Contents/Developer"   # list and delete with the same Xcode
+xcrun simctl list devices -j 2>/dev/null \
   | python3 -I -c 'import json,sys
 me=sys.argv[1]
 for rt in json.load(sys.stdin).get("devices",{}).values():
     for d in rt:
-        if d.get("name","").startswith(me): print(d["udid"])' "$me" \
+        n=d.get("name","")
+        # presence-ci-<runner>--<run id>: the runner part must equal this runner exactly.
+        if n.startswith("presence-ci-") and "--" in n and n[len("presence-ci-"):].rsplit("--",1)[0]==me: print(d["udid"])' "${RUNNER_NAME:-local}" \
   | while read -r u; do xcrun simctl delete "$u" || true; done
-DEVELOPER_DIR="${XCODE_PATH:-/Applications/Xcode.app}/Contents/Developer" xcrun simctl delete unavailable 2>/dev/null || true
 MIN_FREE_GB=25
 # CI_FREE_KB is for tools/selftest.sh only: it stands in for the measured free space.
 free_kb="${CI_FREE_KB:-$(df -k "$HOME" | awk 'NR==2 {print $4}')}"
