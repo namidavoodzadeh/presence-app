@@ -68,7 +68,8 @@ jobs:
         run: |
           xcodebuild test -project app/Presence.xcodeproj -scheme Presence \
             -destination "id=${{ steps.sim.outputs.udid }}" \
-            -derivedDataPath "$CI_BUILD_ROOT/dd" -resultBundlePath "$CI_BUILD_ROOT/test.xcresult"
+            -derivedDataPath "$CI_BUILD_ROOT/dd" -resultBundlePath "$CI_BUILD_ROOT/test.xcresult" \
+            -retry-tests-on-failure -test-iterations 2   # TESTING.md flake policy: a failed test runs once more; two failures are red
       - name: Keep the result bundle
         if: failure()
         uses: actions/upload-artifact@v4
