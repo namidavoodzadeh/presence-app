@@ -25,6 +25,7 @@ permissions:
   contents: read
   pull-requests: write
   statuses: write
+  issues: write
 env:
   XCODE_PATH: /Applications/Xcode.app
   XCODE_VERSION: "27.2"
@@ -72,7 +73,19 @@ jobs:
         if: steps.risk.outputs.files != ''
         # Codex CLI, signed in on the Mac mini with the owner's existing plan: no API key, no new spending.
         shell: bash -euo pipefail {0}    # a failed diff fails the step; a partial diff is never reviewed
+        env:
+          REVIEW_FOLLOWUPS: ${{ runner.temp }}/review-followups.md
         run: git diff refs/gate/main...refs/gate/pr | tools/review-other-family.py
+      - name: File the review's follow-ups as one issue
+        if: success() && steps.review.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          f="$RUNNER_TEMP/review-followups.md"
+          [ -s "$f" ] || exit 0
+          { echo "Follow-ups from the other-family review of #$PR (not blocking; the change merged)."; echo; cat "$f"; } > "$RUNNER_TEMP/body.md"
+          gh issue create -R "$GITHUB_REPOSITORY" --title "[review follow-up] #$PR" --body-file "$RUNNER_TEMP/body.md" --label review-follow-up || \
+            gh issue create -R "$GITHUB_REPOSITORY" --title "[review follow-up] #$PR" --body-file "$RUNNER_TEMP/body.md"
       - name: Report risk-review on the pull request's head commit
         if: always() && steps.pr.outputs.head != ''
         env:
