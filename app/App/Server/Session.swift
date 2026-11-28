@@ -127,8 +127,9 @@ actor SessionKeeper {
     /// A sign-in attempt begins: it takes the newest ticket, so an older attempt that finishes later can never take effect
     /// over it, and anything still running for the session before it no longer counts.
     func beginSignIn() -> Int {
+        // The refresh in flight, if any, keeps its entry: a call made meanwhile shares it instead of spending the same
+        // refresh token a second time. Its answer is not applied (the generation moved on).
         generation += 1
-        renewal = nil
         return generation
     }
 
@@ -223,7 +224,8 @@ actor SessionKeeper {
             renewal = (token, task)
         }
         let result = await task.value
-        if renewal?.refreshToken == token { renewal = nil }
+        // Only this refresh's own entry is removed, never a newer one's.
+        if renewal?.task == task { renewal = nil }
         // Signed in again or ended while this ran: the answer belongs to a session that is gone.
         guard generation == started else { return }
         // Another caller sharing this refresh has already applied it.

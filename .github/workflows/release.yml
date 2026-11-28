@@ -71,9 +71,10 @@ jobs:
           # And the project itself must accept it (the signature cannot be checked offline). The key goes in a header only.
           curl -fsS -o /dev/null --max-time 20 -H "apikey: $SUPABASE_ANON_KEY" "https://$project.supabase.co/auth/v1/settings" \
             || { echo "::error::Project $project did not accept SUPABASE_ANON_KEY."; exit 3; }
+          # TestFlight configuration: the Release build with the tester Report button (#61), as the scheme's archive uses.
           # Old app reached build 55 under the same bundle id; stay above it.
           build=$(( ${{ github.run_number }} + 100 ))
-          xcodebuild archive -project app/Presence.xcodeproj -scheme Presence -configuration Release \
+          xcodebuild archive -project app/Presence.xcodeproj -scheme Presence -configuration TestFlight \
             -destination 'generic/platform=iOS' -archivePath "$CI_BUILD_ROOT/Presence.xcarchive" \
             -derivedDataPath "$CI_BUILD_ROOT/dd" -allowProvisioningUpdates \
             -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \

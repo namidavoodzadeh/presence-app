@@ -288,6 +288,32 @@ final class APIClientTests: XCTestCase {
         XCTAssertNil(current)
     }
 
+    func testStartingASignInDoesNotSpendTheSameRefreshTokenTwice() async {
+        let gate = RefreshGate()
+        let counter = RefreshCounter()
+        let now = Date()
+        let keeper = SessionKeeper(
+            storage: MemoryStorage(Session(accessToken: "a-1", refreshToken: "r-1", expiresAt: now.addingTimeInterval(5))),
+            refresh: { _ throws(RefreshFailure) in
+                await counter.tick()
+                await gate.wait()
+                return Session(accessToken: "a-2", refreshToken: "r-2", expiresAt: now.addingTimeInterval(3600))
+            },
+            now: { now }
+        )
+        let first = Task { await keeper.accessToken() }
+        await gate.waitUntilStarted()
+        _ = await keeper.beginSignIn()
+        let second = Task { await keeper.accessToken() }
+        // Let the second call reach the keeper while the first refresh is still held (it then shares that refresh).
+        try? await Task.sleep(nanoseconds: 100_000_000)
+        await gate.open()
+        _ = await first.value
+        _ = await second.value
+        let calls = await counter.count
+        XCTAssertEqual(calls, 1)
+    }
+
     func testOfOverlappingSignInsTheNewerOneStands() async {
         let keeper = SessionKeeper(storage: MemoryStorage(), refresh: { _ throws(RefreshFailure) in throw .unavailable })
         let older = await keeper.beginSignIn()
