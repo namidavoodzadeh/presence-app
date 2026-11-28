@@ -1,4 +1,5 @@
 #if DEBUG
+import DesignKit
 import Flows
 import SwiftUI
 
@@ -19,6 +20,7 @@ enum ScreenGallery {
         case "you-empty": GalleryYou(list: .empty)
         case "you-failed": GalleryYou(list: .failed(LoadFailure(kind: .offline)))
         case "you-loaded": GalleryYou(list: .loaded(YouFixtures.groups))
+        case "safety-shown": GallerySafety(safety: SafetyFixtures.safety)
         default: Text(name)
         }
     }
@@ -36,6 +38,31 @@ private struct GalleryYou: View {
                     .accessibilityHidden(lastEvent.isEmpty)
             }
     }
+}
+
+private struct GallerySafety: View {
+    let safety: TalkFlow.Safety
+    @State private var lastEvent = ""
+
+    var body: some View {
+        ZStack {
+            Greenhouse()
+            SafetyScreen(safety: safety) { event in lastEvent = "\(event)" }
+        }
+        .overlay(alignment: .bottom) {
+            Text(lastEvent)
+                .accessibilityIdentifier("gallery.lastEvent")
+                .accessibilityHidden(lastEvent.isEmpty)
+        }
+    }
+}
+
+/// What a safety reply carries (`safety.message` and `resources`), with two resources.
+enum SafetyFixtures {
+    static let safety = TalkFlow.Safety(message: "You don't have to carry this alone. People are ready to listen, right now.", resources: [
+        TalkFlow.Resource(label: "988 Suicide & Crisis Lifeline", url: "https://988lifeline.org"),
+        TalkFlow.Resource(label: "Crisis Text Line", url: "https://www.crisistextline.org"),
+    ])
 }
 
 /// A list shaped like `GET /comm/items`: groups in the You order, newest first inside a kind.
