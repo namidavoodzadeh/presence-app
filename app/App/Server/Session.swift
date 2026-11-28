@@ -124,6 +124,14 @@ actor SessionKeeper {
     /// Moves on with each sign-in and each ending; a caller that waited across one can tell.
     var generationNow: Int { generation }
 
+    /// A sign-in attempt begins: it takes the newest ticket, so an older attempt that finishes later can never take effect
+    /// over it, and anything still running for the session before it no longer counts.
+    func beginSignIn() -> Int {
+        generation += 1
+        renewal = nil
+        return generation
+    }
+
     /// Called when the session ends, so the root can show `signIn` (keeping any words in the bar).
     func whenEnded(_ action: @escaping @Sendable () -> Void) { onEnded = action }
 
@@ -192,6 +200,9 @@ actor SessionKeeper {
     private func keep(_ session: Session) {
         self.session = session
         unsaved = !storage.save(session)
+        // A failed write must not leave the previous record behind to come back on relaunch (another account, or an older
+        // token): it goes, and this session is written again before the next call.
+        if unsaved { storage.clear() }
     }
 
     private func renew(_ stored: Session) async throws(RefreshFailure) {

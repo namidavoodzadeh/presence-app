@@ -49,7 +49,7 @@ struct APIClient: Sendable {
         adultConfirmed: Bool
     ) async -> Result<Operations.signInWithApple.Output.Ok.Body.jsonPayload, CallFailure> {
         guard adultConfirmed else { return .failure(Self.adultConfirmationMissing) }
-        let started = await session.generationNow
+        let started = await session.beginSignIn()
         let input = Operations.signInWithApple.Input(body: .json(.init(
             identity_token: identityToken,
             nonce: nonce,

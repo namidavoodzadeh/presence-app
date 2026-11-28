@@ -288,6 +288,29 @@ final class APIClientTests: XCTestCase {
         XCTAssertNil(current)
     }
 
+    func testOfOverlappingSignInsTheNewerOneStands() async {
+        let keeper = SessionKeeper(storage: MemoryStorage(), refresh: { _ throws(RefreshFailure) in throw .unavailable })
+        let older = await keeper.beginSignIn()
+        let newer = await keeper.beginSignIn()
+        let olderKept = await keeper.start(Session(accessToken: "old", refreshToken: "r", expiresAt: .distantFuture), ifGeneration: older)
+        let newerKept = await keeper.start(Session(accessToken: "new", refreshToken: "s", expiresAt: .distantFuture), ifGeneration: newer)
+        XCTAssertFalse(olderKept)
+        XCTAssertTrue(newerKept)
+        let current = await keeper.current
+        XCTAssertEqual(current?.accessToken, "new")
+    }
+
+    func testAFailedWriteDoesNotLeaveThePreviousAccountOnDisk() async {
+        let storage = FlakyStorage()
+        let keeper = SessionKeeper(storage: storage, refresh: { _ throws(RefreshFailure) in throw .unavailable })
+        await keeper.start(Session(accessToken: "account-a", refreshToken: "r", expiresAt: .distantFuture))
+        storage.failNextSave = true
+        await keeper.start(Session(accessToken: "account-b", refreshToken: "s", expiresAt: .distantFuture))
+        XCTAssertNil(storage.load())
+        let current = await keeper.current
+        XCTAssertEqual(current?.accessToken, "account-b")
+    }
+
     func testAnUnsavedSessionIsWrittenBeforeTheNextCall() async {
         let storage = FlakyStorage()
         let keeper = SessionKeeper(storage: storage, refresh: { _ throws(RefreshFailure) in throw .unavailable })
