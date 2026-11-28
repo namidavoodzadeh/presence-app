@@ -14,6 +14,15 @@ enum ScreenGallery {
 
     @MainActor @ViewBuilder
     static func view(_ name: String) -> some View {
+        if name.hasPrefix("talk-"), let flow = TalkFixtures.named(String(name.dropFirst("talk-".count))) {
+            GalleryTalk(flow: flow)
+        } else {
+            listed(name)
+        }
+    }
+
+    @MainActor @ViewBuilder
+    private static func listed(_ name: String) -> some View {
         switch name {
         case "you-loading": GalleryYou(list: .loading)
         case "you-empty": GalleryYou(list: .empty)
@@ -86,6 +95,21 @@ enum YouFixtures {
             YouFlow.Item(id: "b4", kind: "lands_hard", wording: "Being told I'm overreacting."),
         ]),
     ]
+}
+
+private struct GalleryTalk: View {
+    let flow: TalkFlow
+    @State private var lastEvent = ""
+
+    var body: some View {
+        TalkScreen(flow: flow, name: TalkFixtures.name, send: { event in lastEvent = "\(event)" },
+                   turnOnAI: { lastEvent = "turnOnAI" })
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
 }
 
 private struct GallerySignIn: View {
