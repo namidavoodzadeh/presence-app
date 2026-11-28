@@ -19,6 +19,10 @@ enum ScreenGallery {
         case "you-empty": GalleryYou(list: .empty)
         case "you-failed": GalleryYou(list: .failed(LoadFailure(kind: .offline)))
         case "you-loaded": GalleryYou(list: .loaded(YouFixtures.groups))
+        case "signIn-signedOut": GallerySignIn(state: .signedOut)
+        case "signIn-busy": GallerySignIn(state: .exchanging)
+        case "signIn-failed": GallerySignIn(state: .signInFailed(.provider))
+        case "signIn-underAge": GallerySignIn(state: .underAge)
         default: Text(name)
         }
     }
@@ -30,6 +34,20 @@ private struct GalleryYou: View {
 
     var body: some View {
         YouScreen(list: list) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
+}
+
+private struct GallerySignIn: View {
+    let state: SignInFlow.State
+    @State private var lastEvent = ""
+
+    var body: some View {
+        SignInScreen(state: state) { event in lastEvent = "\(event)" }
             .overlay(alignment: .bottom) {
                 Text(lastEvent)
                     .accessibilityIdentifier("gallery.lastEvent")
