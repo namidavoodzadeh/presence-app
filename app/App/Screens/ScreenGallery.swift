@@ -19,6 +19,10 @@ enum ScreenGallery {
         case "you-empty": GalleryYou(list: .empty)
         case "you-failed": GalleryYou(list: .failed(LoadFailure(kind: .offline)))
         case "you-loaded": GalleryYou(list: .loaded(YouFixtures.groups))
+        case "reading-loading": GalleryReading(state: .loading)
+        case "reading-empty": GalleryReading(state: .empty)
+        case "reading-failed": GalleryReading(state: .failed(LoadFailure(kind: .offline)))
+        case "reading-loaded": GalleryReading(state: .loaded(ReadingFixtures.reading))
         default: Text(name)
         }
     }
@@ -30,6 +34,20 @@ private struct GalleryYou: View {
 
     var body: some View {
         YouScreen(list: list) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
+}
+
+private struct GalleryReading: View {
+    let state: LoadState<ReadingScreen.Reading>
+    @State private var lastEvent = ""
+
+    var body: some View {
+        ReadingScreen(state: state) { event in lastEvent = "\(event)" }
             .overlay(alignment: .bottom) {
                 Text(lastEvent)
                     .accessibilityIdentifier("gallery.lastEvent")
