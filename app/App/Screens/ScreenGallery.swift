@@ -19,6 +19,10 @@ enum ScreenGallery {
         case "you-empty": GalleryYou(list: .empty)
         case "you-failed": GalleryYou(list: .failed(LoadFailure(kind: .offline)))
         case "you-loaded": GalleryYou(list: .loaded(YouFixtures.groups))
+        case "people-loading": GalleryPeople(list: .loading)
+        case "people-empty": GalleryPeople(list: .empty)
+        case "people-failed": GalleryPeople(list: .failed(LoadFailure(kind: .offline)))
+        case "people-loaded": GalleryPeople(list: .loaded(PeopleFixtures.rows))
         case "signIn-signedOut": GallerySignIn(state: .signedOut)
         case "signIn-busy": GallerySignIn(state: .exchanging)
         case "signIn-failed": GallerySignIn(state: .signInFailed(.provider))
@@ -42,18 +46,27 @@ private struct GalleryYou: View {
     }
 }
 
-private struct GallerySignIn: View {
-    let state: SignInFlow.State
+private struct GalleryPeople: View {
+    let list: LoadState<[PeopleScreen.Row]>
     @State private var lastEvent = ""
 
     var body: some View {
-        SignInScreen(state: state) { event in lastEvent = "\(event)" }
+        PeopleScreen(list: list) { event in lastEvent = "\(event)" }
             .overlay(alignment: .bottom) {
                 Text(lastEvent)
                     .accessibilityIdentifier("gallery.lastEvent")
                     .accessibilityHidden(lastEvent.isEmpty)
             }
     }
+}
+
+/// Rows shaped like `GET /home`, most urgent first: a folded card, words started, nothing open.
+enum PeopleFixtures {
+    static let rows: [PeopleScreen.Row] = [
+        PeopleScreen.Row(id: "p-jan", name: "Jan", line: .unread(when: "this morning"), time: "9:12", isNew: true),
+        PeopleScreen.Row(id: "p-ben", name: "Ben", line: .draft, time: "Tuesday", isNew: false),
+        PeopleScreen.Row(id: "p-ana", name: "Ana", line: .nothing, time: nil, isNew: false),
+    ]
 }
 
 /// A list shaped like `GET /comm/items`: groups in the You order, newest first inside a kind.
@@ -70,5 +83,19 @@ enum YouFixtures {
             YouFlow.Item(id: "b4", kind: "lands_hard", wording: "Being told I'm overreacting."),
         ]),
     ]
+}
+
+private struct GallerySignIn: View {
+    let state: SignInFlow.State
+    @State private var lastEvent = ""
+
+    var body: some View {
+        SignInScreen(state: state) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
 }
 #endif
