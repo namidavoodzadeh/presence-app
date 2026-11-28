@@ -10,7 +10,7 @@ import { REQUIRED_VERSION } from "../api/lib/ai_consent.ts";
 type Row = Record<string, unknown>;
 
 /** A tiny in-memory table store with the chained filters these routes use. */
-function memDb(tables: Record<string, Row[]>) {
+function memDb(tables: Record<string, Row[]>, snapshotReads = false) {
   const builder = (name: string) => {
     const rows = (tables[name] ??= []);
     const filters: Array<(r: Row) => boolean> = [];
@@ -23,7 +23,8 @@ function memDb(tables: Record<string, Row[]>) {
       const hit = rows.filter((r) => filters.every((f) => f(r)));
       if (op === "delete") { for (const r of hit) rows.splice(rows.indexOf(r), 1); return { data: null, error: null }; }
       if (op === "update") { for (const r of hit) Object.assign(r, patch); return { data: single ? hit[0] ?? null : hit, error: null }; }
-      return { data: single ? hit[0] ?? null : hit, error: null };
+      const out = snapshotReads ? hit.map((r) => ({ ...r })) : hit;
+      return { data: single ? out[0] ?? null : out, error: null };
     };
     const q: Record<string, unknown> = {
       select: () => q,
@@ -119,4 +120,13 @@ Deno.test("a held Mirror moment is read later only if its contributor's consent 
   assertEquals(await heldMayBeRead(consent([]), held), false);                                   // withdrawn since
   assertEquals(await heldMayBeRead(consent([{ owner: "friend", version: "2026-01", providers: ["anthropic"], at: now, withdrawn_at: null }]), held), false); // older version
   assertEquals(await heldMayBeRead(consent([]), { id: "m2" }), false);                          // no contributor kept: not read
+});
+
+Deno.test("of two concurrent retries, the one that settled the kept answer first is not overwritten", async () => {
+  const messages: Row[] = [{ id: "h", owner: "me", conversation_id: "c1", role: "me", turn: 1, text: "kept", pending_consent: true }];
+  const ctx = { caller: { id: "me", db: memDb({ messages }, true) } } as never;
+  await Promise.all([settleConsentPending(ctx, "c1", "first retry"), settleConsentPending(ctx, "c1", "second retry")]);
+  assertEquals(messages.length, 1);
+  assertEquals(messages[0].text, "first retry");
+  assertEquals(messages[0].pending_consent, false);
 });

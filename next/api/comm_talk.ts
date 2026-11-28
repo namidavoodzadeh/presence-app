@@ -105,7 +105,8 @@ export async function settleConsentPending(ctx: Ctx, cid: string, raw: string): 
   const rows = await answerRows(ctx, cid);
   const held = rows.find((m) => m.role === "me" && m.pending_consent === true);
   if (!held) return;
-  const { error } = await ctx.caller!.db.from("messages").update({ text: raw, pending_consent: false }).eq("id", held.id).eq("owner", ctx.caller!.id);
+  // Only while it is still pending: a concurrent retry that settled it first is not overwritten.
+  const { error } = await ctx.caller!.db.from("messages").update({ text: raw, pending_consent: false }).eq("id", held.id).eq("owner", ctx.caller!.id).eq("pending_consent", true);
   if (error) dbError(error, "messages.update.pending_consent");
 }
 
@@ -145,7 +146,11 @@ route("POST", "/comm/talk/turn", async (ctx) => {
   const name = typeof b.name === "string" ? b.name.replace(/[\u0000-\u001f\u007f]+/g, " ").replace(/\s+/g, " ").trim().slice(0, MAX_NAME) || undefined : undefined;
 
   // Law 8 first: a risky answer stops here, with nothing stored and no call. (Mapping stays off for this conversation: no item is ever drafted.)
-  if (raw && commTurnPrecheck(raw).stop) return json({ conversation: null, message: null, reply: { state: "safety", reflection: "", question: "", comm: null, item: null, resources: RESOURCES }, latency_ms: 0 });
+  if (raw && commTurnPrecheck(raw).stop) {
+    // A retry of an answer kept while consent was missing: that kept answer goes too (nothing is stored on a stop).
+    await dropConsentPending(ctx, b.conversation_id);
+    return json({ conversation: null, message: null, reply: { state: "safety", reflection: "", question: "", comm: null, item: null, resources: RESOURCES }, latency_ms: 0 });
+  }
 
   // CONTRACT §7 AI consent: without it no model is called (the safety reading included). The answer is kept, as Talk keeps it
   // (flows/talk.md "the words were kept"), so the same words are answered once consent exists. The kept row is only a pending
