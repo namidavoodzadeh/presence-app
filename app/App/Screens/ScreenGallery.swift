@@ -32,6 +32,12 @@ enum ScreenGallery {
         case "aiConsent-saving": GalleryAIConsent(flow: AIConsentFixtures.saving)
         case "aiConsent-notSaved": GalleryAIConsent(flow: AIConsentFixtures.notSaved)
         case "safety-shown": GallerySafety(safety: SafetyFixtures.safety)
+        case "settings-loading": GallerySettings(state: .open, ai: .loading, lastKnownAI: true)
+        case "settings-failed": GallerySettings(state: .open, ai: .failed(LoadFailure(kind: .offline)))
+        case "settings-loaded": GallerySettings(state: .open, ai: .loaded(true))
+        case "settings-off": GallerySettings(state: .open, ai: .loaded(false))
+        case "settings-confirming": GallerySettings(state: .confirming, ai: .loaded(true))
+        case "settings-exporting": GallerySettings(state: .exporting, ai: .loaded(true))
         case "reading-loading": GalleryReading(state: .loading)
         case "reading-empty": GalleryReading(state: .empty)
         case "reading-failed": GalleryReading(state: .failed(LoadFailure(kind: .offline)))
@@ -145,6 +151,24 @@ enum SafetyFixtures {
         TalkFlow.Resource(label: "988 Suicide & Crisis Lifeline", url: "https://988lifeline.org"),
         TalkFlow.Resource(label: "Crisis Text Line", url: "https://www.crisistextline.org"),
     ])
+}
+
+private struct GallerySettings: View {
+    let state: SettingsFlow.State
+    let ai: LoadState<Bool>
+    var lastKnownAI: Bool?
+    @State private var lastEvent = ""
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        SettingsScreen(state: state, ai: ai, lastKnownAI: lastKnownAI) { event in lastEvent = "\(event)" }
+            .background(Tokens.Colour.base.color(for: scheme).ignoresSafeArea())
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
 }
 
 private struct GalleryReading: View {
