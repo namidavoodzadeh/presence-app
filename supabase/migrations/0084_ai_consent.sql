@@ -4,6 +4,7 @@
 -- The API reads and writes with the caller's own session (RLS below). DELETE /account removes the rows with the profile (cascade).
 -- Rollback: drop table if exists public.ai_consent; drop function if exists public.ai_consent_only_withdraw();
 --           alter table public.messages drop column if exists pending_consent;
+--           alter table public.mirror_contributions drop column if exists contributor_id;
 
 create table if not exists public.ai_consent (
   id uuid primary key default gen_random_uuid(),
@@ -66,4 +67,9 @@ create trigger ai_consent_only_withdraw before update on public.ai_consent for e
 -- Review round 4: an answer kept while consent was missing is marked, so the API replaces or removes only these rows (never a regular
 -- Talk answer) and the turn does not move past words no model has checked.
 alter table public.messages add column if not exists pending_consent boolean not null default false;
-create index if not exists messages_pending_consent_idx on public.messages(conversation_id) where pending_consent;
+-- Round 5: at most one per conversation, enforced here, so two concurrent requests cannot both keep one.
+create unique index if not exists messages_one_pending_consent on public.messages(conversation_id) where pending_consent;
+
+-- A Mirror moment held for the owner's approval keeps its contributor's id until it is read, so consent is checked again
+-- when it is released. Service role only (the table has RLS and no policies): the owner never sees it. Cleared once read.
+alter table public.mirror_contributions add column if not exists contributor_id uuid references public.profiles(id) on delete set null;

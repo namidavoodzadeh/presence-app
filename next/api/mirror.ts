@@ -13,7 +13,7 @@ import { keywordRisk, RESOURCES, stops } from "../engine/safety.ts";
 import type { EntryResult } from "../engine/safety_entry.ts";
 import { MIRROR_UNREAD_LINE, unreadBody } from "./lib/safety_gate.ts";
 import { requireSafetyPass } from "./_shared/safety/gate.ts";
-import { aiConsentRefusal, personHasAiConsent, requireAiConsent } from "./lib/ai_consent.ts";
+import { aiConsentRefusal, aiConsentRequired, personHasAiConsent, requireAiConsent } from "./lib/ai_consent.ts";
 import { decide } from "../engine/mirror/gate.ts";
 import {
   OBSERVE_MAX_CHARS,
@@ -374,8 +374,23 @@ async function releaseWaiting(ctx: Ctx, link: Row, key: string | null) {
   ).order("created_at");
   if (key) q = q.eq("contributor_key", key);
   const { data } = await q;
-  for (const c of data ?? []) await processContribution(ctx, link, c);
-  if (data?.length) await runGate(ctx, link, false);
+  let released = 0;
+  for (const c of data ?? []) {
+    // Read later, with nobody there to ask: the contributor's consent is checked again now (review round 5, #8). Without it
+    // the moment stays held, unread.
+    if (!(await heldMayBeRead(ctx, c))) continue;
+    await processContribution(ctx, link, c);
+    await ctx.service.from("mirror_contributions").update({ contributor_id: null }).eq("id", c.id);
+    released += 1;
+  }
+  if (released) await runGate(ctx, link, false);
+}
+
+/** A held moment may reach a model only if its contributor's consent is current now (withdrawn or an older version: not). */
+export async function heldMayBeRead(ctx: Ctx, c: Row): Promise<boolean> {
+  if (!aiConsentRequired(ctx)) return true;
+  const person = typeof c.contributor_id === "string" ? c.contributor_id : null;
+  return person !== null && await personHasAiConsent(ctx, ctx.service, person);
 }
 
 // ------------------------------------------------------------------ the contributor page (web)
@@ -611,6 +626,8 @@ route("POST", "/m/:slug/contributions", async (ctx) => {
         how_long: howLong,
         moment,
         ...attested,
+        // Kept only while held, so consent can be checked again when the owner releases it; cleared once read.
+        contributor_id: who.id,
         status: "pending_approval",
       }).select("id").single();
       return json({

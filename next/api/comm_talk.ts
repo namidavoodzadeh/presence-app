@@ -73,13 +73,22 @@ async function keepAnswer(ctx: Ctx, cid: string, rows: Row[], raw: string): Prom
 export async function keepConsentPending(ctx: Ctx, cid: string, raw: string): Promise<Row> {
   const db = ctx.caller!.db, owner = ctx.caller!.id;
   const rows = await answerRows(ctx, cid);
-  const held = rows.filter((m) => m.role === "me" && m.pending_consent === true);
-  const same = held.find((m) => String(m.text ?? "").trim() === raw);
-  if (same) return same;
-  await dropConsentPending(ctx, cid);
-  const turn = rows.filter((m) => m.role === "me" && m.pending_consent !== true).length + 1;
+  const held = rows.find((m) => m.role === "me" && m.pending_consent === true);
+  if (held) return String(held.text ?? "").trim() === raw ? held : await rewordConsentPending(ctx, held, raw);
+  const turn = rows.filter((m) => m.role === "me").length + 1;
   const { data, error } = await db.from("messages").insert({ owner, conversation_id: cid, role: "me", turn, text: raw, answer_kind: "told", pending_consent: true }).select("*").single();
-  if (error) dbError(error, "messages.insert.pending_consent");
+  if (!error) return data as Row;
+  // A concurrent request kept one first (the database allows one per conversation): this one becomes those words.
+  if ((error as { code?: string }).code !== "23505") dbError(error, "messages.insert.pending_consent");
+  const again = (await answerRows(ctx, cid)).find((m) => m.role === "me" && m.pending_consent === true);
+  if (!again) dbError(error, "messages.insert.pending_consent");
+  return String(again!.text ?? "").trim() === raw ? again! : await rewordConsentPending(ctx, again!, raw);
+}
+
+/** New words for the kept answer, in place: one write, so the answer that was confirmed saved is never without a row. */
+async function rewordConsentPending(ctx: Ctx, held: Row, raw: string): Promise<Row> {
+  const { data, error } = await ctx.caller!.db.from("messages").update({ text: raw }).eq("id", held.id).eq("owner", ctx.caller!.id).eq("pending_consent", true).select("*").single();
+  if (error) dbError(error, "messages.update.pending_consent");
   return data as Row;
 }
 
@@ -90,19 +99,14 @@ export async function dropConsentPending(ctx: Ctx, cid: unknown): Promise<void> 
   if (error) dbError(error, "messages.delete.pending_consent");
 }
 
-/** On a consented turn whose words passed the safety reading: the same kept words become the answer; different ones replace them. */
+/** On a consented turn whose words passed the safety reading: the kept answer becomes these words and an ordinary answer,
+ * in place, so the turn neither moves past it nor loses it. */
 export async function settleConsentPending(ctx: Ctx, cid: string, raw: string): Promise<void> {
   const rows = await answerRows(ctx, cid);
-  const held = rows.filter((m) => m.role === "me" && m.pending_consent === true);
-  if (!held.length) return;
-  const same = held.find((m) => String(m.text ?? "").trim() === raw);
-  if (same) {
-    const { error } = await ctx.caller!.db.from("messages").update({ pending_consent: false }).eq("id", same.id).eq("owner", ctx.caller!.id);
-    if (error) dbError(error, "messages.update.pending_consent");
-    if (held.length === 1) return;
-  }
-  const { error } = await ctx.caller!.db.from("messages").delete().eq("owner", ctx.caller!.id).eq("conversation_id", cid).eq("pending_consent", true);
-  if (error) dbError(error, "messages.delete.pending_consent");
+  const held = rows.find((m) => m.role === "me" && m.pending_consent === true);
+  if (!held) return;
+  const { error } = await ctx.caller!.db.from("messages").update({ text: raw, pending_consent: false }).eq("id", held.id).eq("owner", ctx.caller!.id);
+  if (error) dbError(error, "messages.update.pending_consent");
 }
 
 async function answerRows(ctx: Ctx, cid: string): Promise<Row[]> {

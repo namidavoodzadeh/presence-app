@@ -2,7 +2,7 @@
 // Comm Talk replaces or removes only answers it kept while consent was missing.
 import { assert, assertEquals, assertRejects } from "jsr:@std/assert@1";
 import { aiConsentGateOn } from "../api/lib/env.ts";
-import { contributorConsentOrFloor } from "../api/mirror.ts";
+import { contributorConsentOrFloor, heldMayBeRead } from "../api/mirror.ts";
 import { dropConsentPending, keepConsentPending, settleConsentPending } from "../api/comm_talk.ts";
 import { ApiError } from "../api/lib/errors.ts";
 import { REQUIRED_VERSION } from "../api/lib/ai_consent.ts";
@@ -22,7 +22,7 @@ function memDb(tables: Record<string, Row[]>) {
       if (op === "insert") return { data: inserted, error: null };
       const hit = rows.filter((r) => filters.every((f) => f(r)));
       if (op === "delete") { for (const r of hit) rows.splice(rows.indexOf(r), 1); return { data: null, error: null }; }
-      if (op === "update") { for (const r of hit) Object.assign(r, patch); return { data: null, error: null }; }
+      if (op === "update") { for (const r of hit) Object.assign(r, patch); return { data: single ? hit[0] ?? null : hit, error: null }; }
       return { data: single ? hit[0] ?? null : hit, error: null };
     };
     const q: Record<string, unknown> = {
@@ -98,13 +98,25 @@ Deno.test("new words without consent replace the kept answer instead of adding a
   assertEquals(messages[0].turn, 1);
 });
 
-Deno.test("a consented turn keeps the same words as the answer and drops different kept words", async () => {
+Deno.test("a consented turn makes the kept answer an ordinary one, with the words now given", async () => {
   const same: Row[] = [{ id: "h", owner: "me", conversation_id: "c1", role: "me", turn: 1, text: "my words", pending_consent: true }];
   await settleConsentPending(talkCtx(same), "c1", "my words");
   assertEquals(same.length, 1);
   assertEquals(same[0].pending_consent, false);
 
+  // Round 5: different words take the kept row's place in one write, so the confirmed answer is never without a row.
   const other: Row[] = [{ id: "h", owner: "me", conversation_id: "c1", role: "me", turn: 1, text: "old unchecked words", pending_consent: true }];
   await settleConsentPending(talkCtx(other), "c1", "new words");
-  assertEquals(other.length, 0);
+  assertEquals(other.length, 1);
+  assertEquals(other[0].text, "new words");
+  assertEquals(other[0].pending_consent, false);
+});
+
+Deno.test("a held Mirror moment is read later only if its contributor's consent is current then", async () => {
+  const consent = (rows: Row[]) => ({ env, service: memDb({ ai_consent: rows }) } as never);
+  const held = { id: "m1", contributor_id: "friend" };
+  assertEquals(await heldMayBeRead(consent([{ owner: "friend", version: REQUIRED_VERSION, providers: ["anthropic"], at: now, withdrawn_at: null }]), held), true);
+  assertEquals(await heldMayBeRead(consent([]), held), false);                                   // withdrawn since
+  assertEquals(await heldMayBeRead(consent([{ owner: "friend", version: "2026-01", providers: ["anthropic"], at: now, withdrawn_at: null }]), held), false); // older version
+  assertEquals(await heldMayBeRead(consent([]), { id: "m2" }), false);                          // no contributor kept: not read
 });
