@@ -1,7 +1,7 @@
 #if DEBUG
-import DesignKit
 import Flows
 import SwiftUI
+import DesignKit
 
 /// Debug builds only: UI tests open one screen in a fixed state with `-screen <name>-<state>`.
 /// The last event the screen sent shows in `gallery.lastEvent`, so a test can see a control was reached.
@@ -28,6 +28,9 @@ enum ScreenGallery {
         case "signIn-busy": GallerySignIn(state: .exchanging)
         case "signIn-failed": GallerySignIn(state: .signInFailed(.provider))
         case "signIn-underAge": GallerySignIn(state: .underAge)
+        case "aiConsent-showing": GalleryAIConsent(flow: AIConsentFixtures.showing)
+        case "aiConsent-saving": GalleryAIConsent(flow: AIConsentFixtures.saving)
+        case "aiConsent-notSaved": GalleryAIConsent(flow: AIConsentFixtures.notSaved)
         case "settings-loading": GallerySettings(state: .open, ai: .loading, lastKnownAI: true)
         case "settings-failed": GallerySettings(state: .open, ai: .failed(LoadFailure(kind: .offline)))
         case "settings-loaded": GallerySettings(state: .open, ai: .loaded(true))
@@ -98,6 +101,20 @@ private struct GallerySignIn: View {
 
     var body: some View {
         SignInScreen(state: state) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
+}
+
+private struct GalleryAIConsent: View {
+    let flow: AIConsentFlow
+    @State private var lastEvent = ""
+
+    var body: some View {
+        AIConsentScreen(flow: flow) { event in lastEvent = "\(event)" }
             .overlay(alignment: .bottom) {
                 Text(lastEvent)
                     .accessibilityIdentifier("gallery.lastEvent")
