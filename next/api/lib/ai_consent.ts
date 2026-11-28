@@ -96,6 +96,15 @@ export async function hasAiConsent(ctx: Ctx): Promise<boolean> {
   return !!ctx.caller && givenOf(await currentRow(ctx.caller.db, ctx.caller.id)) !== null;
 }
 
+/**
+ * The same test for a person who is not the caller: a Mirror contributor, whose words a model reads on the owner's link. True when the
+ * gate is off on this deployment. `db` is the service client (the contributor's row is not under the caller's own session).
+ */
+export async function personHasAiConsent(ctx: Pick<Ctx, "env">, db: SupabaseClient, person: string): Promise<boolean> {
+  if (!aiConsentRequired(ctx)) return true;
+  return givenOf(await currentRow(db, person)) !== null;
+}
+
 /** The refusal requireAiConsent throws, for a route that checked hasAiConsent itself. */
 export function aiConsentRefusal(extra: Record<string, unknown> = {}): ApiError {
   return new ApiError("forbidden", "", { reason: "ai_consent_required", required_version: REQUIRED_VERSION, ...extra });

@@ -13,7 +13,7 @@ import { keywordRisk, RESOURCES, stops } from "../engine/safety.ts";
 import type { EntryResult } from "../engine/safety_entry.ts";
 import { MIRROR_UNREAD_LINE, unreadBody } from "./lib/safety_gate.ts";
 import { requireSafetyPass } from "./_shared/safety/gate.ts";
-import { requireAiConsent } from "./lib/ai_consent.ts";
+import { aiConsentRefusal, personHasAiConsent, requireAiConsent } from "./lib/ai_consent.ts";
 import { decide } from "../engine/mirror/gate.ts";
 import {
   OBSERVE_MAX_CHARS,
@@ -539,6 +539,15 @@ async function recentCount(
   return count ?? 0;
 }
 
+/** Null when the contributor may be read by a model; otherwise the floor's resources for a risky moment, or the consent refusal. */
+export async function contributorConsentOrFloor(ctx: Ctx, contributorId: string, moment: string): Promise<Response | null> {
+  if (await personHasAiConsent(ctx, ctx.service, contributorId)) return null;
+  if (stops(keywordRisk(moment))) {
+    return json({ accepted: false, state: "concern", line: RESOURCES.message, resources: RESOURCES, ref: null, contribution_id: null });
+  }
+  throw aiConsentRefusal();
+}
+
 route("POST", "/m/:slug/contributions", async (ctx) => {
   const { service, params } = ctx;
   const link = await linkBySlug(service, params.slug);
@@ -570,6 +579,12 @@ route("POST", "/m/:slug/contributions", async (ctx) => {
     ? { adult_attested_at: new Date().toISOString(), attestation_version: ATTESTATION_VERSION }
     : {};
   const line = CONTRIBUTOR_LINE.replaceAll("{name}", name);
+  // CONTRACT §7 AI consent, for the contributor (review round 4, #8): a model reads these words (the safety reading, the listener,
+  // later the writer), so the person who wrote them must have agreed. Checked before anything is stored, a held approval included,
+  // because a moment released later is read with nobody there to ask. Law 8 first: the local floor, which calls no model, still
+  // answers a risky moment with resources.
+  const held = await contributorConsentOrFloor(ctx, who.id, moment);
+  if (held) return held;
   if (link.who === "approved") {
     const { data: a } = await service.from("mirror_approvals").select("status").eq("link_id", link.id).eq(
       "contributor_key",

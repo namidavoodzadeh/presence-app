@@ -3,6 +3,7 @@
 -- version) adds a row, so the record of what was agreed and when stays whole. The per-area Talk `consent` table is not reused.
 -- The API reads and writes with the caller's own session (RLS below). DELETE /account removes the rows with the profile (cascade).
 -- Rollback: drop table if exists public.ai_consent; drop function if exists public.ai_consent_only_withdraw();
+--           alter table public.messages drop column if exists pending_consent;
 
 create table if not exists public.ai_consent (
   id uuid primary key default gen_random_uuid(),
@@ -61,3 +62,8 @@ end;
 $$;
 drop trigger if exists ai_consent_only_withdraw on public.ai_consent;
 create trigger ai_consent_only_withdraw before update on public.ai_consent for each row execute function public.ai_consent_only_withdraw();
+
+-- Review round 4: an answer kept while consent was missing is marked, so the API replaces or removes only these rows (never a regular
+-- Talk answer) and the turn does not move past words no model has checked.
+alter table public.messages add column if not exists pending_consent boolean not null default false;
+create index if not exists messages_pending_consent_idx on public.messages(conversation_id) where pending_consent;

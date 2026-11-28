@@ -65,14 +65,44 @@ async function keepAnswer(ctx: Ctx, cid: string, rows: Row[], raw: string): Prom
   return { me: data as Row, turn };
 }
 
-/** Remove a pending answer with exactly these words (kept while consent was missing) from the caller's named conversation. */
-async function dropPendingAnswer(ctx: Ctx, b: Row, raw: string): Promise<void> {
-  if (typeof b.conversation_id !== "string") return;
-  const rows = await answerRows(ctx, b.conversation_id);
-  const pending = pendingAnswer(rows);
-  if (!pending || String(pending.text ?? "").trim() !== raw) return;
-  const { error } = await ctx.caller!.db.from("messages").delete().eq("id", pending.id).eq("owner", ctx.caller!.id);
-  if (error) dbError(error, "messages.delete.pending");
+/**
+ * An answer kept while consent was missing (review round 4, #8). It carries `pending_consent`, so only these rows are ever replaced or
+ * removed here: a regular Talk answer in the same table is never touched. One per conversation: new words replace the old ones, which
+ * no model has read, so the turn does not move on past words that were never checked.
+ */
+export async function keepConsentPending(ctx: Ctx, cid: string, raw: string): Promise<Row> {
+  const db = ctx.caller!.db, owner = ctx.caller!.id;
+  const rows = await answerRows(ctx, cid);
+  const held = rows.filter((m) => m.role === "me" && m.pending_consent === true);
+  const same = held.find((m) => String(m.text ?? "").trim() === raw);
+  if (same) return same;
+  await dropConsentPending(ctx, cid);
+  const turn = rows.filter((m) => m.role === "me" && m.pending_consent !== true).length + 1;
+  const { data, error } = await db.from("messages").insert({ owner, conversation_id: cid, role: "me", turn, text: raw, answer_kind: "told", pending_consent: true }).select("*").single();
+  if (error) dbError(error, "messages.insert.pending_consent");
+  return data as Row;
+}
+
+/** Remove the caller's consent-pending answers in this conversation (a held or stopped reading, or new words replacing them). */
+export async function dropConsentPending(ctx: Ctx, cid: unknown): Promise<void> {
+  if (typeof cid !== "string" || !cid) return;
+  const { error } = await ctx.caller!.db.from("messages").delete().eq("owner", ctx.caller!.id).eq("conversation_id", cid).eq("pending_consent", true);
+  if (error) dbError(error, "messages.delete.pending_consent");
+}
+
+/** On a consented turn whose words passed the safety reading: the same kept words become the answer; different ones replace them. */
+export async function settleConsentPending(ctx: Ctx, cid: string, raw: string): Promise<void> {
+  const rows = await answerRows(ctx, cid);
+  const held = rows.filter((m) => m.role === "me" && m.pending_consent === true);
+  if (!held.length) return;
+  const same = held.find((m) => String(m.text ?? "").trim() === raw);
+  if (same) {
+    const { error } = await ctx.caller!.db.from("messages").update({ pending_consent: false }).eq("id", same.id).eq("owner", ctx.caller!.id);
+    if (error) dbError(error, "messages.update.pending_consent");
+    if (held.length === 1) return;
+  }
+  const { error } = await ctx.caller!.db.from("messages").delete().eq("owner", ctx.caller!.id).eq("conversation_id", cid).eq("pending_consent", true);
+  if (error) dbError(error, "messages.delete.pending_consent");
 }
 
 async function answerRows(ctx: Ctx, cid: string): Promise<Row[]> {
@@ -118,7 +148,7 @@ route("POST", "/comm/talk/turn", async (ctx) => {
   // answer: nothing reads it until the safety gate below has passed on the consented retry, and a stop there deletes it.
   if (raw && !(await hasAiConsent(ctx))) {
     const conversation = await conversationFor(ctx, b);
-    const { me } = await keepAnswer(ctx, conversation.id as string, await answerRows(ctx, conversation.id as string), raw);
+    const me = await keepConsentPending(ctx, conversation.id as string, raw);
     throw aiConsentRefusal({ saved: true, message_id: me.id, conversation_id: conversation.id });
   }
 
@@ -126,13 +156,14 @@ route("POST", "/comm/talk/turn", async (ctx) => {
   if (raw) {
     const g = await requireSafetyPass(ctx, raw, "comm_talk");
     // An answer kept while consent was missing has not been read yet: a held or stopped reading removes it (stores nothing).
-    if (g.routed === "unavailable" || g.stop) await dropPendingAnswer(ctx, b, raw);
+    if (g.routed === "unavailable" || g.stop) await dropConsentPending(ctx, b.conversation_id);
     if (g.routed === "unavailable") return json({ conversation: null, message: null, reply: { ...unreadBody(), reflection: "", question: "", comm: null, item: null }, latency_ms: 0 });
     if (g.stop) return json({ conversation: null, message: null, reply: { state: "safety", reflection: "", question: "", comm: null, item: null, resources: RESOURCES }, latency_ms: 0 });
   }
 
   const conversation = await conversationFor(ctx, b);
   const cid = conversation.id as string;
+  if (raw) await settleConsentPending(ctx, cid, raw);
   const rows = await answerRows(ctx, cid);
   const presence = rows.filter((m) => m.role === "presence");
   const marks = presence.map(markOf).filter((m): m is CommMark => !!m);

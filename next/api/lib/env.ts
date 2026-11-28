@@ -148,9 +148,9 @@ export async function loadEnv(): Promise<ApiEnv> {
   const commItems = enabledSwitch(get("PRESENCE_COMM_ITEMS"));
   const commOwnerIds = (get("PRESENCE_COMM_OWNER_IDS") || "").split(",").map((x) => x.trim()).filter(Boolean);
   const talkGuide = enabledSwitch(get("PRESENCE_TALK_GUIDE"));
-  // Fail closed: a release deployment gates model calls unless the switch is explicitly "false"; elsewhere it is off unless "true".
-  const consentSetting = get("PRESENCE_REQUIRE_AI_CONSENT");
-  const requireAiConsent = consentSetting === "false" ? false : consentSetting === "true" || releaseBuild;
+  // A release deployment always gates model calls: no switch turns consent off there (review round 4, #8). Elsewhere the gate is
+  // off unless PRESENCE_REQUIRE_AI_CONSENT is "true".
+  const requireAiConsent = aiConsentGateOn(releaseBuild, get("PRESENCE_REQUIRE_AI_CONSENT"));
   if (!url || !anon || !service || !preview || !anthropic || !workspace) {
     const home = get("HOME");
     const root = get("PRESENCE_HOME_ROOT") || `${home}/Library/Application Support/PresenceHome`;
@@ -204,4 +204,9 @@ export async function loadEnv(): Promise<ApiEnv> {
     releaseBuild,
   };
   return cached;
+}
+
+/** The AI consent gate: always on for a release deployment; elsewhere only when the switch is exactly "true". */
+export function aiConsentGateOn(releaseBuild: boolean, setting: string | undefined | null): boolean {
+  return releaseBuild || setting === "true";
 }
