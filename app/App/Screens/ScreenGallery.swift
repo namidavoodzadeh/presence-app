@@ -1,4 +1,5 @@
 #if DEBUG
+import DesignKit
 import Flows
 import SwiftUI
 
@@ -19,6 +20,12 @@ enum ScreenGallery {
         case "you-empty": GalleryYou(list: .empty)
         case "you-failed": GalleryYou(list: .failed(LoadFailure(kind: .offline)))
         case "you-loaded": GalleryYou(list: .loaded(YouFixtures.groups))
+        case "settings-loading": GallerySettings(state: .open, ai: .loading, lastKnownAI: true)
+        case "settings-failed": GallerySettings(state: .open, ai: .failed(LoadFailure(kind: .offline)))
+        case "settings-loaded": GallerySettings(state: .open, ai: .loaded(true))
+        case "settings-off": GallerySettings(state: .open, ai: .loaded(false))
+        case "settings-confirming": GallerySettings(state: .confirming, ai: .loaded(true))
+        case "settings-exporting": GallerySettings(state: .exporting, ai: .loaded(true))
         default: Text(name)
         }
     }
@@ -30,6 +37,24 @@ private struct GalleryYou: View {
 
     var body: some View {
         YouScreen(list: list) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
+}
+
+private struct GallerySettings: View {
+    let state: SettingsFlow.State
+    let ai: LoadState<Bool>
+    var lastKnownAI: Bool?
+    @State private var lastEvent = ""
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        SettingsScreen(state: state, ai: ai, lastKnownAI: lastKnownAI) { event in lastEvent = "\(event)" }
+            .background(Tokens.Colour.base.color(for: scheme).ignoresSafeArea())
             .overlay(alignment: .bottom) {
                 Text(lastEvent)
                     .accessibilityIdentifier("gallery.lastEvent")
