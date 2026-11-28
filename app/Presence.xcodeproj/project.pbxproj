@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1CBF34F8D37F2F720EE1B527 /* SettingsScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F1E3F02143E7B8DCCB3845 /* SettingsScreenTests.swift */; };
 		04ADB744C81D233043607493 /* SignInScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FA4AFD2B784C555D0BA4E /* SignInScreenTests.swift */; };
 		1D1989AB6B3713B954D57D0F /* Flows in Frameworks */ = {isa = PBXBuildFile; productRef = 908DEB75B7E5DE86471A400D /* Flows */; };
 		2B0178017432EE967C758EC4 /* YouScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FFC5ABC4E9FE11E0B388F /* YouScreenTests.swift */; };
@@ -33,6 +34,7 @@
 		B705C7DB8EE23F191212412B /* TesterReportBuildTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAF636C9286B99CA761A759 /* TesterReportBuildTests.swift */; };
 		B781D1D4E7A56F6575E8FA91 /* APIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6D311932B52A1258DF55CC /* APIClientTests.swift */; };
 		CBECA54B77095F695D5D82CF /* JourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2610D308C70B5646D744326 /* JourneyTests.swift */; };
+		E019681952F31F06B820B702 /* SettingsScreenSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E94E9AFEA786C575A5C0E3 /* SettingsScreenSnapshotTests.swift */; };
 		F2DC66D017018F2BE6669BAA /* SignInScreenSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DCE4A9218D682720CCF251 /* SignInScreenSnapshotTests.swift */; };
 		EF66B745C5B8839B1FC33492 /* PauseScreenSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56368A11A8C9F5D3D5604745 /* PauseScreenSnapshotTests.swift */; };
 		FD23A9D338313A2832D299FE /* Contract in Frameworks */ = {isa = PBXBuildFile; productRef = 15AB711FBCC608A29098674F /* Contract */; };
@@ -68,6 +70,7 @@
 		5B6D311932B52A1258DF55CC /* APIClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientTests.swift; sourceTree = "<group>"; };
 		5D56D0C491509F3A8A8137C0 /* AIConsentScreenSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIConsentScreenSnapshotTests.swift; sourceTree = "<group>"; };
 		645C1C6C1D82BB612E8A606C /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
+		70E94E9AFEA786C575A5C0E3 /* SettingsScreenSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenSnapshotTests.swift; sourceTree = "<group>"; };
 		71CAF04434E6B48231150EAD /* Presence.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Presence.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2610D308C70B5646D744326 /* JourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyTests.swift; sourceTree = "<group>"; };
 		B7CD5187CAAEE36AE40E4B50 /* Contract */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Contract; path = Packages/Contract; sourceTree = SOURCE_ROOT; };
@@ -75,6 +78,7 @@
 		C09FA4AFD2B784C555D0BA4E /* SignInScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInScreenTests.swift; sourceTree = "<group>"; };
 		CBF864393A92F7985B868289 /* PauseScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseScreenTests.swift; sourceTree = "<group>"; };
 		CA5FFC5ABC4E9FE11E0B388F /* YouScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouScreenTests.swift; sourceTree = "<group>"; };
+		D2F1E3F02143E7B8DCCB3845 /* SettingsScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenTests.swift; sourceTree = "<group>"; };
 		D4DCE4A9218D682720CCF251 /* SignInScreenSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInScreenSnapshotTests.swift; sourceTree = "<group>"; };
 		D587EFD2262F16AC122C36B8 /* PresenceTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PresenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B239BD3BE96D75C0C31CE6 /* PeopleScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleScreenTests.swift; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				5B6D311932B52A1258DF55CC /* APIClientTests.swift */,
+				70E94E9AFEA786C575A5C0E3 /* SettingsScreenSnapshotTests.swift */,
 				FEDEB97F89DD3AAF81C89DCD /* SafetyScreenSnapshotTests.swift */,
 				5D56D0C491509F3A8A8137C0 /* AIConsentScreenSnapshotTests.swift */,
 				D4DCE4A9218D682720CCF251 /* SignInScreenSnapshotTests.swift */,
@@ -172,6 +177,7 @@
 			children = (
 				0264CF994275528876B40B5C /* AIConsentScreenTests.swift */,
 				B2610D308C70B5646D744326 /* JourneyTests.swift */,
+				D2F1E3F02143E7B8DCCB3845 /* SettingsScreenTests.swift */,
 				F9C1517FAC39F14EE7C316B5 /* SafetyScreenTests.swift */,
 				C09FA4AFD2B784C555D0BA4E /* SignInScreenTests.swift */,
 				E4B239BD3BE96D75C0C31CE6 /* PeopleScreenTests.swift */,
@@ -333,6 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B781D1D4E7A56F6575E8FA91 /* APIClientTests.swift in Sources */,
+				E019681952F31F06B820B702 /* SettingsScreenSnapshotTests.swift in Sources */,
 				4571D40A97CB3EEC4CF14E5E /* SafetyScreenSnapshotTests.swift in Sources */,
 				52F45C59BE0F27172315A937 /* AIConsentScreenSnapshotTests.swift in Sources */,
 				F2DC66D017018F2BE6669BAA /* SignInScreenSnapshotTests.swift in Sources */,
@@ -359,6 +366,7 @@
 			files = (
 				8EA2DEB0A3F4976E40E92407 /* AIConsentScreenTests.swift in Sources */,
 				CBECA54B77095F695D5D82CF /* JourneyTests.swift in Sources */,
+				1CBF34F8D37F2F720EE1B527 /* SettingsScreenTests.swift in Sources */,
 				3FF8FAA6FD53F2357114EA46 /* SafetyScreenTests.swift in Sources */,
 				04ADB744C81D233043607493 /* SignInScreenTests.swift in Sources */,
 				4E509692EB5BC60DCA9B1964 /* PeopleScreenTests.swift in Sources */,

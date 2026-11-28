@@ -1,10 +1,12 @@
 name: release
-# A merge to main that touches app/ is archived and uploaded to TestFlight (internal group "Owner").
+# Archived and uploaded to TestFlight (internal group "Owner") when `release/REQUEST` changes on main. A reviewed, merged pull
+# request is the only way that happens, and a push to main runs main's own copy of this file, so no branch can change what
+# runs on the signing runner. No manual dispatch: a dispatch runs the selected branch's copy. Not on every app merge, so the
+# owner never receives a half-assembled build and parallel screen merges do not each queue a release.
 on:
   push:
     branches: [main]
-    paths: ["app/**"]
-  workflow_dispatch:
+    paths: ["release/REQUEST"]
 concurrency:
   group: release
   cancel-in-progress: false
@@ -23,6 +25,12 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Only main is released
+        # Belt and braces: the push trigger is main-only already.
+        run: |
+          [ "$GITHUB_REF" = "refs/heads/main" ] || { echo "::error::release runs on main only (got $GITHUB_REF)."; exit 3; }
       - name: Toolchain (pinned)
         run: tools/ci-preflight.sh
       - name: Clean build output
