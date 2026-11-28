@@ -24,6 +24,14 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tagged commit is on main
+        # Only a commit already merged to main is signed and uploaded: a testflight-* tag on any other commit stops here.
+        run: |
+          git fetch --no-tags origin main
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main \
+            || { echo "::error::$GITHUB_REF_NAME points at a commit that is not on main."; exit 3; }
       - name: Toolchain (pinned)
         run: tools/ci-preflight.sh
       - name: Clean build output
