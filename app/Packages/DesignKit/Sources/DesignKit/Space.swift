@@ -2,6 +2,8 @@ import CoreGraphics
 
 /// Spacing scale on a 4-point grid. Screens use these, never a typed number.
 public enum Space {
+    /// No gap: pieces that sit edge to edge.
+    public static let none: CGFloat = 0
     public static let xxs: CGFloat = 2
     public static let xs: CGFloat = 4
     public static let s: CGFloat = 8
