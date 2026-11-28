@@ -92,22 +92,26 @@ async function rewordConsentPending(ctx: Ctx, held: Row, raw: string): Promise<R
   return data as Row;
 }
 
-/** Remove the caller's consent-pending answers in this conversation (a held or stopped reading, or new words replacing them). */
-export async function dropConsentPending(ctx: Ctx, cid: unknown): Promise<void> {
+/** Remove the caller's consent-pending answer in this conversation when it holds exactly these words (a held or stopped
+ * reading of them). A different kept answer stays: it was confirmed saved and has not been read. */
+export async function dropConsentPending(ctx: Ctx, cid: unknown, raw: string): Promise<void> {
   if (typeof cid !== "string" || !cid) return;
-  const { error } = await ctx.caller!.db.from("messages").delete().eq("owner", ctx.caller!.id).eq("conversation_id", cid).eq("pending_consent", true);
+  const { error } = await ctx.caller!.db.from("messages").delete().eq("owner", ctx.caller!.id).eq("conversation_id", cid).eq("pending_consent", true).eq("text", raw);
   if (error) dbError(error, "messages.delete.pending_consent");
 }
 
-/** On a consented turn whose words passed the safety reading: the kept answer becomes these words and an ordinary answer,
- * in place, so the turn neither moves past it nor loses it. */
+/**
+ * On a consented turn whose words passed the safety reading: the kept answer becomes these words and an ordinary answer, in
+ * place. Only one request can do this (the update matches while the row is still pending); a concurrent retry that loses
+ * answers `409 conflict`, so the kept answer is answered once.
+ */
 export async function settleConsentPending(ctx: Ctx, cid: string, raw: string): Promise<void> {
   const rows = await answerRows(ctx, cid);
   const held = rows.find((m) => m.role === "me" && m.pending_consent === true);
   if (!held) return;
-  // Only while it is still pending: a concurrent retry that settled it first is not overwritten.
-  const { error } = await ctx.caller!.db.from("messages").update({ text: raw, pending_consent: false }).eq("id", held.id).eq("owner", ctx.caller!.id).eq("pending_consent", true);
+  const { data, error } = await ctx.caller!.db.from("messages").update({ text: raw, pending_consent: false }).eq("id", held.id).eq("owner", ctx.caller!.id).eq("pending_consent", true).select("id");
   if (error) dbError(error, "messages.update.pending_consent");
+  if (!data || (data as Row[]).length === 0) throw new ApiError("conflict", "", { reason: "already_answering", conversation_id: cid });
 }
 
 async function answerRows(ctx: Ctx, cid: string): Promise<Row[]> {
@@ -148,7 +152,7 @@ route("POST", "/comm/talk/turn", async (ctx) => {
   // Law 8 first: a risky answer stops here, with nothing stored and no call. (Mapping stays off for this conversation: no item is ever drafted.)
   if (raw && commTurnPrecheck(raw).stop) {
     // A retry of an answer kept while consent was missing: that kept answer goes too (nothing is stored on a stop).
-    await dropConsentPending(ctx, b.conversation_id);
+    await dropConsentPending(ctx, b.conversation_id, raw);
     return json({ conversation: null, message: null, reply: { state: "safety", reflection: "", question: "", comm: null, item: null, resources: RESOURCES }, latency_ms: 0 });
   }
 
@@ -165,7 +169,7 @@ route("POST", "/comm/talk/turn", async (ctx) => {
   if (raw) {
     const g = await requireSafetyPass(ctx, raw, "comm_talk");
     // An answer kept while consent was missing has not been read yet: a held or stopped reading removes it (stores nothing).
-    if (g.routed === "unavailable" || g.stop) await dropConsentPending(ctx, b.conversation_id);
+    if (g.routed === "unavailable" || g.stop) await dropConsentPending(ctx, b.conversation_id, raw);
     if (g.routed === "unavailable") return json({ conversation: null, message: null, reply: { ...unreadBody(), reflection: "", question: "", comm: null, item: null }, latency_ms: 0 });
     if (g.stop) return json({ conversation: null, message: null, reply: { state: "safety", reflection: "", question: "", comm: null, item: null, resources: RESOURCES }, latency_ms: 0 });
   }

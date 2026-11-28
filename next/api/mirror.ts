@@ -366,8 +366,18 @@ route("POST", "/mirror/approvals/:id", async (ctx) => {
   return json({ mirror: await mirrorObject(service, caller!.id) });
 });
 
+/**
+ * Mirror is package 04. Until its consent flow is built (the contributor page's disclosure and consent, the link owner's
+ * consent for processing; review round 7, #8), a release deployment reads no Mirror moment with a model: the contributor
+ * route answers `feature_off` and held moments stay held. Preview keeps Mirror as it is.
+ */
+export function mirrorReadsWords(ctx: Pick<Ctx, "env">): boolean {
+  return ctx.env.releaseBuild !== true;
+}
+
 /** Contributions that waited for approval are processed now (one key, or every key when the link opens to anyone). */
 async function releaseWaiting(ctx: Ctx, link: Row, key: string | null) {
+  if (!mirrorReadsWords(ctx)) return;
   let q = ctx.service.from("mirror_contributions").select("*").eq("link_id", link.id).eq(
     "status",
     "pending_approval",
@@ -564,6 +574,7 @@ export async function contributorConsentOrFloor(ctx: Ctx, contributorId: string,
 }
 
 route("POST", "/m/:slug/contributions", async (ctx) => {
+  if (!mirrorReadsWords(ctx)) throw new ApiError("forbidden", "This link isn't taking moments right now.", { reason: "feature_off" });
   const { service, params } = ctx;
   const link = await linkBySlug(service, params.slug);
   if (!link) throw new ApiError("not_found", "", { where: "mirror" });

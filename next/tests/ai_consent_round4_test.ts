@@ -2,7 +2,7 @@
 // Comm Talk replaces or removes only answers it kept while consent was missing.
 import { assert, assertEquals, assertRejects } from "jsr:@std/assert@1";
 import { aiConsentGateOn } from "../api/lib/env.ts";
-import { contributorConsentOrFloor, heldMayBeRead } from "../api/mirror.ts";
+import { contributorConsentOrFloor, heldMayBeRead, mirrorReadsWords } from "../api/mirror.ts";
 import { dropConsentPending, keepConsentPending, settleConsentPending } from "../api/comm_talk.ts";
 import { ApiError } from "../api/lib/errors.ts";
 import { REQUIRED_VERSION } from "../api/lib/ai_consent.ts";
@@ -83,7 +83,7 @@ Deno.test("a stopped reading removes only consent-pending answers, never a regul
     { id: "talk", owner: "me", conversation_id: "c1", role: "me", turn: 1, text: "regular talk answer" },
     { id: "held", owner: "me", conversation_id: "c1", role: "me", turn: 2, text: "kept for consent", pending_consent: true },
   ];
-  await dropConsentPending(talkCtx(messages), "c1");
+  await dropConsentPending(talkCtx(messages), "c1", "kept for consent");
   assertEquals(messages.map((m) => m.id), ["talk"]);
 });
 
@@ -125,8 +125,23 @@ Deno.test("a held Mirror moment is read later only if its contributor's consent 
 Deno.test("of two concurrent retries, the one that settled the kept answer first is not overwritten", async () => {
   const messages: Row[] = [{ id: "h", owner: "me", conversation_id: "c1", role: "me", turn: 1, text: "kept", pending_consent: true }];
   const ctx = { caller: { id: "me", db: memDb({ messages }, true) } } as never;
-  await Promise.all([settleConsentPending(ctx, "c1", "first retry"), settleConsentPending(ctx, "c1", "second retry")]);
+  const results = await Promise.allSettled([settleConsentPending(ctx, "c1", "first retry"), settleConsentPending(ctx, "c1", "second retry")]);
+  // Round 7: the loser is told, so the kept answer is answered once.
+  assertEquals(results[0].status, "fulfilled");
+  assertEquals(results[1].status, "rejected");
+  assertEquals(((results[1] as PromiseRejectedResult).reason as ApiError).code, "conflict");
   assertEquals(messages.length, 1);
   assertEquals(messages[0].text, "first retry");
   assertEquals(messages[0].pending_consent, false);
+});
+
+Deno.test("a stop on different words leaves the kept answer that was confirmed saved", async () => {
+  const messages: Row[] = [{ id: "held", owner: "me", conversation_id: "c1", role: "me", turn: 1, text: "kept words", pending_consent: true }];
+  await dropConsentPending(talkCtx(messages), "c1", "other words that stopped");
+  assertEquals(messages.map((m) => m.id), ["held"]);
+});
+
+Deno.test("a release deployment reads no Mirror moment until package 04's consent flow exists", () => {
+  assertEquals(mirrorReadsWords({ env: { releaseBuild: true } } as never), false);
+  assertEquals(mirrorReadsWords({ env: { releaseBuild: false } } as never), true);
 });
