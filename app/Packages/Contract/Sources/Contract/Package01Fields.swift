@@ -64,6 +64,101 @@ public enum Package01Fields {
         \Operations.exportData.Output.Ok.Body.jsonPayload.me,
         // DELETE /account
         \Operations.deleteAccount.Output.Ok.Body.jsonPayload.deleted,
+        // GET /me
+        \Operations.getMe.Output.Ok.Body.jsonPayload.me,
+        \Operations.getMe.Output.Ok.Body.jsonPayload.plan,
+        // POST /comm/talk/turn
+        \Operations.commTalkTurn.Output.Ok.Body.jsonPayload.conversation,
+        \Operations.commTalkTurn.Output.Ok.Body.jsonPayload.message,
+        \Operations.commTalkTurn.Output.Ok.Body.jsonPayload.reply,
+        \Operations.commTalkTurn.Output.Ok.Body.jsonPayload.latency_ms,
+        // GET /comm/items
+        \Operations.getCommItems.Output.Ok.Body.jsonPayload.this_week,
+        \Operations.getCommItems.Output.Ok.Body.jsonPayload.groups,
+        // POST /comm/items: CommItemReply, below
+        // GET /comm/items/{id}/visibility
+        \Operations.getCommItemVisibility.Output.Ok.Body.jsonPayload.item_id,
+        \Operations.getCommItemVisibility.Output.Ok.Body.jsonPayload.scope,
+        \Operations.getCommItemVisibility.Output.Ok.Body.jsonPayload.people,
+        // Plan
+        \Components.Schemas.Plan.active,
+        \Components.Schemas.Plan.source,
+        \Components.Schemas.Plan.partner_name,
+        // CommScope
+        \Components.Schemas.CommScope._type,
+        \Components.Schemas.CommScope.value,
+        // CommItem
+        \Components.Schemas.CommItem.id,
+        \Components.Schemas.CommItem.kind,
+        \Components.Schemas.CommItem.wording,
+        \Components.Schemas.CommItem.scope,
+        \Components.Schemas.CommItem.when,
+        \Components.Schemas.CommItem.expires_at,
+        \Components.Schemas.CommItem.last_confirmed_at,
+        \Components.Schemas.CommItem.status,
+        \Components.Schemas.CommItem.topic,
+        \Components.Schemas.CommItem.still_true_due,
+        \Components.Schemas.CommItem.source,
+        \Components.Schemas.CommItem.dated_at,
+        // CommItemOrNull
+        \Components.Schemas.CommItemOrNull.id,
+        \Components.Schemas.CommItemOrNull.kind,
+        \Components.Schemas.CommItemOrNull.wording,
+        \Components.Schemas.CommItemOrNull.scope,
+        \Components.Schemas.CommItemOrNull.when,
+        \Components.Schemas.CommItemOrNull.expires_at,
+        \Components.Schemas.CommItemOrNull.last_confirmed_at,
+        \Components.Schemas.CommItemOrNull.status,
+        \Components.Schemas.CommItemOrNull.topic,
+        \Components.Schemas.CommItemOrNull.still_true_due,
+        \Components.Schemas.CommItemOrNull.source,
+        \Components.Schemas.CommItemOrNull.dated_at,
+        // CommGroup
+        \Components.Schemas.CommGroup.kind,
+        \Components.Schemas.CommGroup.heading,
+        \Components.Schemas.CommGroup.starter,
+        \Components.Schemas.CommGroup.items,
+        // CommItemReply
+        \Components.Schemas.CommItemReply.item,
+        \Components.Schemas.CommItemReply.state,
+        \Components.Schemas.CommItemReply.resources,
+        \Components.Schemas.CommItemReply.offer,
+        // CommViewer
+        \Components.Schemas.CommViewer.person_id,
+        \Components.Schemas.CommViewer.name,
+        \Components.Schemas.CommViewer.sees,
+        // CommConversation
+        \Components.Schemas.CommConversation.id,
+        \Components.Schemas.CommConversation.status,
+        \Components.Schemas.CommConversation.session_number,
+        // CommMessage
+        \Components.Schemas.CommMessage.id,
+        \Components.Schemas.CommMessage.conversation_id,
+        \Components.Schemas.CommMessage.role,
+        \Components.Schemas.CommMessage.turn,
+        \Components.Schemas.CommMessage.text,
+        \Components.Schemas.CommMessage.created_at,
+        // CommTalkReply
+        \Components.Schemas.CommTalkReply.message_id,
+        \Components.Schemas.CommTalkReply.turn,
+        \Components.Schemas.CommTalkReply.state,
+        \Components.Schemas.CommTalkReply.reflection,
+        \Components.Schemas.CommTalkReply.question,
+        \Components.Schemas.CommTalkReply.comm,
+        \Components.Schemas.CommTalkReply.item,
+        \Components.Schemas.CommTalkReply.item_state,
+        \Components.Schemas.CommTalkReply.offer,
+        \Components.Schemas.CommTalkReply.reason,
+        \Components.Schemas.CommTalkReply.resources,
+        // CommQuestion
+        \Components.Schemas.CommQuestion.kind,
+        \Components.Schemas.CommQuestion.question_from,
+        // CommOffer
+        \Components.Schemas.CommOffer.kind,
+        \Components.Schemas.CommOffer.wording,
+        // Resources
+        \Components.Schemas.Resources.message,
+        \Components.Schemas.Resources.resources,
         // Person
         \Components.Schemas.Person.id,
         \Components.Schemas.Person.name,

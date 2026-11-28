@@ -65,6 +65,25 @@ const sentBridge = () => ({
   updated_at: AT,
 });
 
+// The communication routes sit behind PRESENCE_COMM_ITEMS and the owner list (#3 turned both on for the test accounts).
+const COMM_ITEM = "00000000-0000-4000-8000-000000000109";
+const COMM_ENV = { commItems: true, commOwnerIds: [ME] };
+const commItem = () => ({
+  ...belief(COMM_ITEM),
+  statement: "When I go quiet I am thinking.",
+  own_wording: "When I go quiet I am thinking.",
+  comm_kind: "how_i_mean",
+  comm_scope_type: "everyone",
+  comm_scope_value: null,
+  comm_when: null,
+  comm_expires_at: null,
+  comm_last_confirmed_at: AT,
+  comm_status: "active",
+  comm_topic: null,
+  comm_source: "typed",
+  comm_native: true,
+});
+
 // POST /auth/apple: Supabase Auth's id_token grant answered without the network, so the real handler runs end to end.
 let realFetch: typeof fetch | null = null;
 function supabaseAuthDouble() {
@@ -266,5 +285,43 @@ export const SCENARIOS: ContractScenario[] = [
   {
     operation: "DELETE /devices/apns/{installation_id}",
     path: `/devices/apns/${INSTALLATION}`,
+  },
+  {
+    operation: "GET /me",
+    path: "/me",
+    tables: { profiles: profiles() },
+  },
+  {
+    // The opener: no text, so no model call; the bank's first question and one presence row.
+    operation: "POST /comm/talk/turn",
+    path: "/comm/talk/turn",
+    env: COMM_ENV,
+    tables: { profiles: profiles(), links: [link()] },
+    body: {},
+  },
+  {
+    operation: "GET /comm/items",
+    path: "/comm/items",
+    env: COMM_ENV,
+    tables: { beliefs: [commItem()] },
+  },
+  {
+    operation: "POST /comm/items",
+    path: "/comm/items",
+    env: COMM_ENV,
+    tables: { beliefs: [], receipts: [] },
+    body: { kind: "how_i_mean", wording: "When I go quiet I am thinking, not upset.", source: "talk_said" },
+  },
+  {
+    operation: "GET /comm/items/{id}/visibility",
+    path: `/comm/items/${COMM_ITEM}/visibility`,
+    env: COMM_ENV,
+    tables: {
+      profiles: profiles(),
+      links: [link()],
+      link_prefs: [{ owner: OTHER, other: ME, relationship: "friend" }],
+      beliefs: [commItem()],
+      share_items: [{ owner: ME, other: OTHER, belief_id: COMM_ITEM, wording: "When I go quiet I am thinking.", shared_at: AT, updated_at: AT }],
+    },
   },
 ];

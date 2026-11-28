@@ -447,6 +447,123 @@ paths:
                 properties:
                   deleted: { type: boolean }
         default: { $ref: "#/components/responses/Error" }
+  /me:
+    get:
+      operationId: getMe
+      summary: Who is signed in, and their plan (ai_consent enters with its engine issue, #8)
+      responses:
+        "200":
+          description: The caller
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [me, plan]
+                properties:
+                  me: { $ref: "#/components/schemas/Me" }
+                  plan: { $ref: "#/components/schemas/Plan" }
+        default: { $ref: "#/components/responses/Error" }
+  /comm/talk/turn:
+    post:
+      operationId: commTalkTurn
+      summary: First question (no text), then each answer (CONTRACT v1.87); the offered item is never stored here
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text: { type: string }
+                conversation_id: { type: string }
+                way_in: { type: string, enum: [invited_by_partner, invited_by_friend, own_download] }
+                name: { type: string }
+      responses:
+        "200":
+          description: The turn; conversation and message are null when nothing was stored (safety)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [conversation, message, reply, latency_ms]
+                properties:
+                  conversation: { $ref: "#/components/schemas/CommConversation" }
+                  message: { $ref: "#/components/schemas/CommMessage" }
+                  reply: { $ref: "#/components/schemas/CommTalkReply" }
+                  latency_ms: { type: integer }
+        default: { $ref: "#/components/responses/Error" }
+  /comm/items:
+    get:
+      operationId: getCommItems
+      summary: The list by kind (This week on top, then the kinds in the You order; empty kinds absent)
+      responses:
+        "200":
+          description: The caller's communication items
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [this_week, groups]
+                properties:
+                  this_week:
+                    type: array
+                    items: { $ref: "#/components/schemas/CommItem" }
+                  groups:
+                    type: array
+                    items: { $ref: "#/components/schemas/CommGroup" }
+        default: { $ref: "#/components/responses/Error" }
+    post:
+      operationId: addCommItem
+      summary: Keep a suggestion (source talk_said) or a typed line (source typed)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [kind, wording]
+              properties:
+                kind: { type: string }
+                wording: { type: string }
+                scope: { $ref: "#/components/schemas/CommScope" }
+                when: { type: [string, "null"] }
+                expires_in_days: { type: integer }
+                topic: { type: [string, "null"] }
+                status: { type: string }
+                source: { type: string, enum: [typed, talk_said] }
+      responses:
+        "201":
+          description: Kept, with one receipt of the person's own words
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommItemReply" }
+        "200":
+          description: Nothing stored (safety, unavailable, or a 4.3 check); item is null
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommItemReply" }
+        default: { $ref: "#/components/responses/Error" }
+  /comm/items/{id}/visibility:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: getCommItemVisibility
+      summary: Seen by (each active link, read live through pair context)
+      responses:
+        "200":
+          description: Who sees this item
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [item_id, scope, people]
+                properties:
+                  item_id: { type: string }
+                  scope: { $ref: "#/components/schemas/CommScope" }
+                  people:
+                    type: array
+                    items: { $ref: "#/components/schemas/CommViewer" }
+        default: { $ref: "#/components/responses/Error" }
 components:
   responses:
     Error:
@@ -580,3 +697,124 @@ components:
       properties:
         item_id: { type: string }
         wording: { type: string }
+    Plan:
+      type: object
+      required: [active, source, partner_name]
+      properties:
+        active: { type: boolean }
+        source: { type: string, enum: [own, partner] }
+        partner_name: { type: [string, "null"] }
+    CommScope:
+      type: object
+      required: [type, value]
+      properties:
+        type: { type: string, enum: [everyone, type, person] }
+        value: { type: [string, "null"] }
+    CommItem:
+      type: object
+      required: &comm-item-required [id, kind, wording, scope, when, expires_at, last_confirmed_at, status, topic, still_true_due, source, dated_at]
+      properties: &comm-item-properties
+        id: { type: string }
+        kind: { type: string }
+        wording: { type: string }
+        scope: { $ref: "#/components/schemas/CommScope" }
+        when: { type: [string, "null"] }
+        expires_at: { type: [string, "null"] }
+        last_confirmed_at: { type: [string, "null"] }
+        status: { type: string }
+        topic: { type: [string, "null"] }
+        still_true_due: { type: boolean }
+        source: { type: [string, "null"] }
+        dated_at: { type: string }
+    CommItemOrNull:
+      description: A CommItem, or null when nothing was stored.
+      type: [object, "null"]
+      required: *comm-item-required
+      properties: *comm-item-properties
+    CommGroup:
+      type: object
+      required: [kind, heading, starter, items]
+      properties:
+        kind: { type: string }
+        heading: { type: string }
+        starter: { type: string }
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/CommItem" }
+    CommItemReply:
+      type: object
+      required: [item, state]
+      properties:
+        item: { $ref: "#/components/schemas/CommItemOrNull" }
+        state: { type: string }
+        resources: { $ref: "#/components/schemas/Resources" }
+        offer: { type: string }
+    CommViewer:
+      type: object
+      required: [person_id, name, sees]
+      properties:
+        person_id: { type: string }
+        name: { type: string }
+        sees: { type: boolean }
+    CommConversation:
+      description: The Talk conversation, or null when nothing was stored.
+      type: [object, "null"]
+      required: [id, status, session_number]
+      properties:
+        id: { type: string }
+        status: { type: string }
+        session_number: { type: integer }
+    CommMessage:
+      description: The person's answer as stored, or null for the opener and when nothing was stored.
+      type: [object, "null"]
+      required: [id, conversation_id, role, turn, text, created_at]
+      properties:
+        id: { type: string }
+        conversation_id: { type: string }
+        role: { type: string }
+        turn: { type: integer }
+        text: { type: string }
+        created_at: { type: string }
+    CommTalkReply:
+      type: object
+      required: [state, reflection, question, comm, item]
+      properties:
+        message_id: { type: string }
+        turn: { type: integer }
+        state: { type: string }
+        reflection: { type: string }
+        question: { type: string }
+        comm: { $ref: "#/components/schemas/CommQuestion" }
+        item: { $ref: "#/components/schemas/CommOffer" }
+        item_state: { type: [string, "null"] }
+        offer: { type: string }
+        reason: { type: string }
+        resources: { $ref: "#/components/schemas/Resources" }
+    CommQuestion:
+      description: The kind the question asks about, or null when nothing is asked.
+      type: [object, "null"]
+      required: [kind, question_from]
+      properties:
+        kind: { type: string }
+        question_from: { type: string, enum: [model, bank] }
+    CommOffer:
+      description: At most one item in the person's own words, offered and never stored here, or null.
+      type: [object, "null"]
+      required: [kind, wording]
+      properties:
+        kind: { type: string }
+        wording: { type: string }
+    Resources:
+      description: Support resources on a safety reply (law 8).
+      type: object
+      required: [message, resources]
+      properties:
+        message: { type: string }
+        resources:
+          type: array
+          items:
+            type: object
+            required: [label, url]
+            properties:
+              label: { type: string }
+              url: { type: string }
