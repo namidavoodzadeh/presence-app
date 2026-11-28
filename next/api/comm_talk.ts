@@ -100,18 +100,29 @@ export async function dropConsentPending(ctx: Ctx, cid: unknown, raw: string): P
   if (error) dbError(error, "messages.delete.pending_consent");
 }
 
+/** How long a claimed kept answer stays claimed if its request never finished (a crash): then a retry may answer it. */
+export const CONSENT_CLAIM_MS = 120_000;
+
 /**
  * On a consented turn whose words passed the safety reading: the kept answer becomes these words and an ordinary answer, in
- * place. Only one request can do this (the update matches while the row is still pending); a concurrent retry that loses
- * answers `409 conflict`, so the kept answer is answered once.
+ * place, and is claimed by this request (`consent_claimed_at`). Only one request can do this (the update matches while the row
+ * is still pending); a concurrent retry that loses answers `409 conflict`. Returns the claimed row's id, or null if none was kept.
  */
-export async function settleConsentPending(ctx: Ctx, cid: string, raw: string): Promise<void> {
+export async function settleConsentPending(ctx: Ctx, cid: string, raw: string): Promise<string | null> {
   const rows = await answerRows(ctx, cid);
   const held = rows.find((m) => m.role === "me" && m.pending_consent === true);
-  if (!held) return;
-  const { data, error } = await ctx.caller!.db.from("messages").update({ text: raw, pending_consent: false }).eq("id", held.id).eq("owner", ctx.caller!.id).eq("pending_consent", true).select("id");
+  if (!held) return null;
+  const { data, error } = await ctx.caller!.db.from("messages").update({ text: raw, pending_consent: false, consent_claimed_at: new Date().toISOString() }).eq("id", held.id).eq("owner", ctx.caller!.id).eq("pending_consent", true).select("id");
   if (error) dbError(error, "messages.update.pending_consent");
   if (!data || (data as Row[]).length === 0) throw new ApiError("conflict", "", { reason: "already_answering", conversation_id: cid });
+  return String(held.id);
+}
+
+/** A kept answer another request claimed and is still answering: this request must not answer it too (review round 8, #8). */
+export function claimedElsewhere(pending: Row | null, claimed: string | null, now = Date.now()): boolean {
+  if (!pending || !pending.consent_claimed_at || String(pending.id) === claimed) return false;
+  const at = Date.parse(String(pending.consent_claimed_at));
+  return Number.isFinite(at) && now - at < CONSENT_CLAIM_MS;
 }
 
 async function answerRows(ctx: Ctx, cid: string): Promise<Row[]> {
@@ -176,13 +187,14 @@ route("POST", "/comm/talk/turn", async (ctx) => {
 
   const conversation = await conversationFor(ctx, b);
   const cid = conversation.id as string;
-  if (raw) await settleConsentPending(ctx, cid, raw);
+  const claimed = raw ? await settleConsentPending(ctx, cid, raw) : null;
   const rows = await answerRows(ctx, cid);
   const presence = rows.filter((m) => m.role === "presence");
   const marks = presence.map(markOf).filter((m): m is CommMark => !!m);
   const answeredKind = marks.at(-1)?.kind ?? null;
   const { input, plan } = await planFor(ctx, conversation, marks, wayIn, name);
   const pending = raw ? pendingAnswer(rows) : null;
+  if (claimedElsewhere(pending, claimed)) throw new ApiError("conflict", "", { reason: "already_answering", conversation_id: cid });
   const kept = pending && String(pending.text ?? "").trim() === raw ? pending : null;
   const turn = kept ? kept.turn as number : rows.filter((m) => m.role === "me").length + 1;
   const convPatch: Row = { last_active_at: new Date().toISOString(), status: "active" };
@@ -223,6 +235,8 @@ route("POST", "/comm/talk/turn", async (ctx) => {
   const turnInput = { plan: askPlan, answeredKind, answer: raw, sessionNumber: input.sessionNumber };
   const scope = scopeFor(ctx, cid);
   const ledger = new PostgresLedger(ctx.service, scope);
+  // Consent again right before the reply call: a withdrawal during the safety reading stops it here (review round 8, #8).
+  if (!(await hasAiConsent(ctx))) throw aiConsentRefusal({ saved: true, message_id: (me as Row).id, conversation_id: cid });
   const exchange = await clientFor(ctx, ledger).complete(buildCommTurnRequest(turnInput, TALK_MODEL));
   await traceExchanges(ctx, scope, ledger, [exchange]);
   if (exchange.error?.startsWith("budget_unavailable")) {

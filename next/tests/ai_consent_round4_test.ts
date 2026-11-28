@@ -3,7 +3,7 @@
 import { assert, assertEquals, assertRejects } from "jsr:@std/assert@1";
 import { aiConsentGateOn } from "../api/lib/env.ts";
 import { contributorConsentOrFloor, heldMayBeRead, mirrorReadsWords } from "../api/mirror.ts";
-import { dropConsentPending, keepConsentPending, settleConsentPending } from "../api/comm_talk.ts";
+import { claimedElsewhere, CONSENT_CLAIM_MS, dropConsentPending, keepConsentPending, settleConsentPending } from "../api/comm_talk.ts";
 import { ApiError } from "../api/lib/errors.ts";
 import { REQUIRED_VERSION } from "../api/lib/ai_consent.ts";
 
@@ -115,8 +115,10 @@ Deno.test("a consented turn makes the kept answer an ordinary one, with the word
 
 Deno.test("a held Mirror moment is read later only if its contributor's consent is current then", async () => {
   const consent = (rows: Row[]) => ({ env, service: memDb({ ai_consent: rows }) } as never);
-  const held = { id: "m1", contributor_id: "friend" };
-  assertEquals(await heldMayBeRead(consent([{ owner: "friend", version: REQUIRED_VERSION, providers: ["anthropic"], at: now, withdrawn_at: null }]), held), true);
+  const held = { id: "m1", contributor_id: "friend", owner: "nami" };
+  const agreed = (who: string) => ({ owner: who, version: REQUIRED_VERSION, providers: ["anthropic"], at: now, withdrawn_at: null });
+  assertEquals(await heldMayBeRead(consent([agreed("friend"), agreed("nami")]), held), true);
+  assertEquals(await heldMayBeRead(consent([agreed("friend")]), held), false);                  // the link owner withdrew
   assertEquals(await heldMayBeRead(consent([]), held), false);                                   // withdrawn since
   assertEquals(await heldMayBeRead(consent([{ owner: "friend", version: "2026-01", providers: ["anthropic"], at: now, withdrawn_at: null }]), held), false); // older version
   assertEquals(await heldMayBeRead(consent([]), { id: "m2" }), false);                          // no contributor kept: not read
@@ -144,4 +146,19 @@ Deno.test("a stop on different words leaves the kept answer that was confirmed s
 Deno.test("a release deployment reads no Mirror moment until package 04's consent flow exists", () => {
   assertEquals(mirrorReadsWords({ env: { releaseBuild: true } } as never), false);
   assertEquals(mirrorReadsWords({ env: { releaseBuild: false } } as never), true);
+});
+
+Deno.test("a kept answer claimed by another request is not answered again until its claim expires", () => {
+  const at = Date.parse("2026-11-28T05:00:00Z");
+  const row = { id: "h", consent_claimed_at: new Date(at).toISOString() };
+  assertEquals(claimedElsewhere(row, null, at + 1_000), true);
+  assertEquals(claimedElsewhere(row, "h", at + 1_000), false);                // the request that claimed it
+  assertEquals(claimedElsewhere(row, null, at + CONSENT_CLAIM_MS + 1), false); // a crashed claim lapses
+  assertEquals(claimedElsewhere({ id: "x" }, null, at), false);               // never claimed: an ordinary retry
+});
+
+Deno.test("without the link owner's consent the link takes no Mirror moment", async () => {
+  const ctx = { env, service: memDb({ ai_consent: [{ owner: "friend", version: REQUIRED_VERSION, providers: ["anthropic"], at: now, withdrawn_at: null }] }) } as never;
+  const e = await assertRejects(() => contributorConsentOrFloor(ctx, "friend", "She went quiet when the plan changed.", "nami"), ApiError);
+  assertEquals((e as ApiError).extra.reason, "closed");
 });

@@ -400,7 +400,9 @@ async function releaseWaiting(ctx: Ctx, link: Row, key: string | null) {
 export async function heldMayBeRead(ctx: Ctx, c: Row): Promise<boolean> {
   if (!aiConsentRequired(ctx)) return true;
   const person = typeof c.contributor_id === "string" ? c.contributor_id : null;
-  return person !== null && await personHasAiConsent(ctx, ctx.service, person);
+  const owner = typeof c.owner === "string" ? c.owner : null;
+  return person !== null && owner !== null && await personHasAiConsent(ctx, ctx.service, person) &&
+    await personHasAiConsent(ctx, ctx.service, owner);
 }
 
 // ------------------------------------------------------------------ the contributor page (web)
@@ -565,7 +567,11 @@ async function recentCount(
 }
 
 /** Null when the contributor may be read by a model; otherwise the floor's resources for a risky moment, or the consent refusal. */
-export async function contributorConsentOrFloor(ctx: Ctx, contributorId: string, moment: string): Promise<Response | null> {
+export async function contributorConsentOrFloor(ctx: Ctx, contributorId: string, moment: string, linkOwner?: string): Promise<Response | null> {
+  // The link owner's consent too (review round 8, #8): without it the link takes no moment (nothing stored, nothing read).
+  if (linkOwner && !(await personHasAiConsent(ctx, ctx.service, linkOwner))) {
+    throw new ApiError("forbidden", "This link isn't taking moments right now.", { reason: "closed" });
+  }
   if (await personHasAiConsent(ctx, ctx.service, contributorId)) return null;
   if (stops(keywordRisk(moment))) {
     return json({ accepted: false, state: "concern", line: RESOURCES.message, resources: RESOURCES, ref: null, contribution_id: null });
@@ -609,7 +615,7 @@ route("POST", "/m/:slug/contributions", async (ctx) => {
   // later the writer), so the person who wrote them must have agreed. Checked before anything is stored, a held approval included,
   // because a moment released later is read with nobody there to ask. Law 8 first: the local floor, which calls no model, still
   // answers a risky moment with resources.
-  const held = await contributorConsentOrFloor(ctx, who.id, moment);
+  const held = await contributorConsentOrFloor(ctx, who.id, moment, link.owner as string);
   if (held) return held;
   if (link.who === "approved") {
     const { data: a } = await service.from("mirror_approvals").select("status").eq("link_id", link.id).eq(
