@@ -8,16 +8,17 @@ struct PresenceApp: App {
 
     var body: some Scene {
         WindowGroup {
-            root
-                .testerReportButton()
+            root.testerReportButton()
         }
     }
 
-    @ViewBuilder private var root: some View {
+    @MainActor @ViewBuilder private var root: some View {
         #if DEBUG
-        // `-screen pause-note` (and the other fixture names) opens one screen in a fixed state, for the UI tests.
+        // `-screen pause-note` (and the other pause fixture names) opens one pause state, for the UI tests.
         if let name = UserDefaults.standard.string(forKey: "screen"), let flow = PauseFixtures.named(name) {
             PauseFixtureHost(flow: flow)
+        } else if let name = ScreenGallery.requested {
+            ScreenGallery.view(name)
         } else {
             TemplateScreen(state: .loading, retry: {})
         }
