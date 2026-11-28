@@ -30,7 +30,8 @@ public enum CallFailure: Error, Equatable, Sendable {
 }
 
 public enum Haptic: Equatable, Sendable {
-    case doubleSoftPulse, firm, softTick
+    /// `lightTap`: listening starts (behaviour.md, Haptics).
+    case doubleSoftPulse, firm, lightTap, softTick
 }
 
 public enum WaitingPhase: Equatable, Sendable {
@@ -51,5 +52,18 @@ public enum Waiting {
 
     public static func mayHideKnot(shownFor: TimeInterval) -> Bool {
         shownFor >= knotMinimum
+    }
+}
+
+extension CallFailure {
+    /// The 403 code, when there is one (`feature_off`, `owner_only`, `ai_consent_required`).
+    public var forbiddenReason: String? {
+        if case let .http(403, _, reason) = self { return reason }
+        return nil
+    }
+
+    /// 403 `feature_off` or `owner_only`: the feature is not open for this account.
+    public var isNotOpen: Bool {
+        forbiddenReason == "feature_off" || forbiddenReason == "owner_only"
     }
 }

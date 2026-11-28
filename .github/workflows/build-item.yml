@@ -70,18 +70,23 @@ jobs:
         id: count
         run: |
           branch="${{ github.event.workflow_run.head_branch }}"
+          # An issue labelled `supervised` is being steered by the supervisor (main or runner trouble can turn CI red
+          # through no fault of the item): no automatic second round and no automatic return.
+          if gh issue view "${branch#item/}" --json labels --jq '.labels[].name' | grep -qx supervised; then
+            echo "n=${branch#item/}" >> "$GITHUB_OUTPUT"; echo "reds=0" >> "$GITHUB_OUTPUT"; echo "supervised=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
           reds=$(gh run list --workflow ci.yml --branch "$branch" --event pull_request --limit 50 --json conclusion \
             --jq '[.[] | select(.conclusion == "failure")] | length')
           echo "n=${branch#item/}" >> "$GITHUB_OUTPUT"; echo "reds=$reds" >> "$GITHUB_OUTPUT"; echo "red CI rounds: $reds"
       - name: Second red, return the issue
-        if: steps.count.outputs.reds >= 2
+        if: steps.count.outputs.reds >= 2 && steps.count.outputs.supervised != 'true'
         run: |
           n=${{ steps.count.outputs.n }}
           gh issue edit "$n" --add-label returned --remove-label ready
           gh issue comment "$n" --body "Returned after two red CI rounds (${{ github.event.workflow_run.html_url }}). Treat as a package defect: say what the package or the item got wrong."
           gh pr close "item/$n" --comment "Stopped: second red CI round. See issue #$n."
       - name: Builder session, round 2
-        if: steps.count.outputs.reds == 1
+        if: steps.count.outputs.reds == 1 && steps.count.outputs.supervised != 'true'
         run: |
           n=${{ steps.count.outputs.n }}
           gh run view ${{ github.event.workflow_run.id }} --log-failed > "$CI_BUILD_ROOT/failed.log" || true
