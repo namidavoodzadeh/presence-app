@@ -43,7 +43,13 @@ struct AppConfiguration: Equatable, Sendable {
             return text
         }
         let base = try value(Self.apiBaseKey)
-        guard let url = URL(string: base), let scheme = url.scheme, scheme == "https" || scheme == "http", url.host != nil else {
+        // Release and TestFlight builds talk over HTTPS only; plain HTTP is for a local server in Debug.
+        #if DEBUG
+        let allowed: Set<String> = ["https", "http"]
+        #else
+        let allowed: Set<String> = ["https"]
+        #endif
+        guard let url = URL(string: base), let scheme = url.scheme, allowed.contains(scheme), url.host != nil else {
             throw Problem.invalidURL(base)
         }
         let version = (info["CFBundleShortVersionString"] as? String) ?? "0"

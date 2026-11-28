@@ -60,6 +60,15 @@ jobs:
         run: |
           [ -n "$PRESENCE_API_BASE" ] && [ -n "$SUPABASE_ANON_KEY" ] \
             || { echo "::error::Set repository variables PRESENCE_API_BASE and SUPABASE_ANON_KEY."; exit 3; }
+          case "$PRESENCE_API_BASE" in https://*) ;; *) echo "::error::PRESENCE_API_BASE must be an https URL."; exit 3;; esac
+          # Only a public client key may ship in the app: never a secret or service-role key (never printed).
+          case "$SUPABASE_ANON_KEY" in sb_secret_*) echo "::error::SUPABASE_ANON_KEY is a secret key; use the anon/publishable key."; exit 3;; esac
+          role=$(printf '%s' "$SUPABASE_ANON_KEY" | python3 -I -c 'import sys,json,base64
+k=sys.stdin.read().strip(); p=k.split(".")
+try:
+    s=p[1]+"="*(-len(p[1])%4); print(json.loads(base64.urlsafe_b64decode(s)).get("role",""))
+except Exception: print("")')
+          [ "$role" = service_role ] && { echo "::error::SUPABASE_ANON_KEY is a service-role key; use the anon key."; exit 3; }
           # Old app reached build 55 under the same bundle id; stay above it.
           build=$(( ${{ github.run_number }} + 100 ))
           xcodebuild archive -project app/Presence.xcodeproj -scheme Presence -configuration Release \

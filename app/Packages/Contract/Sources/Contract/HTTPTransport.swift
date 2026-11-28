@@ -3,6 +3,17 @@
 // the app builds it with `HTTPTransport()` and adds its headers as middleware.
 import Foundation
 
+/// The API never redirects. A redirect could carry the Authorization header, an Apple identity token or a refresh
+/// token in the body to another address, so none is followed: the 3xx response comes back as it is.
+final class NoRedirects: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
+    static let shared = NoRedirects()
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse,
+                    newRequest request: URLRequest) async -> URLRequest? {
+        nil
+    }
+}
+
 public struct HTTPTransport: ClientTransport {
     private let session: URLSession
 
@@ -33,7 +44,7 @@ public struct HTTPTransport: ClientTransport {
             urlRequest.httpBody = try await Data(collecting: body, upTo: .max)
         }
 
-        let (data, response) = try await session.data(for: urlRequest)
+        let (data, response) = try await session.data(for: urlRequest, delegate: NoRedirects.shared)
         guard let http = response as? HTTPURLResponse else { throw TransportError.notHTTP }
         var fields = HTTPFields()
         for (key, value) in http.allHeaderFields {
