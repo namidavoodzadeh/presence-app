@@ -106,6 +106,31 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `DELETE /account`.
     /// - Remark: Generated from `#/paths//account/delete(deleteAccount)`.
     func deleteAccount(_ input: Operations.deleteAccount.Input) async throws -> Operations.deleteAccount.Output
+    /// Who is signed in, and their plan (ai_consent enters with its engine issue,
+    ///
+    /// - Remark: HTTP `GET /me`.
+    /// - Remark: Generated from `#/paths//me/get(getMe)`.
+    func getMe(_ input: Operations.getMe.Input) async throws -> Operations.getMe.Output
+    /// First question (no text), then each answer (CONTRACT v1.87); the offered item is never stored here
+    ///
+    /// - Remark: HTTP `POST /comm/talk/turn`.
+    /// - Remark: Generated from `#/paths//comm/talk/turn/post(commTalkTurn)`.
+    func commTalkTurn(_ input: Operations.commTalkTurn.Input) async throws -> Operations.commTalkTurn.Output
+    /// The list by kind (This week on top, then the kinds in the You order; empty kinds absent)
+    ///
+    /// - Remark: HTTP `GET /comm/items`.
+    /// - Remark: Generated from `#/paths//comm/items/get(getCommItems)`.
+    func getCommItems(_ input: Operations.getCommItems.Input) async throws -> Operations.getCommItems.Output
+    /// Keep a suggestion (source talk_said) or a typed line (source typed)
+    ///
+    /// - Remark: HTTP `POST /comm/items`.
+    /// - Remark: Generated from `#/paths//comm/items/post(addCommItem)`.
+    func addCommItem(_ input: Operations.addCommItem.Input) async throws -> Operations.addCommItem.Output
+    /// Seen by (each active link, read live through pair context)
+    ///
+    /// - Remark: HTTP `GET /comm/items/{id}/visibility`.
+    /// - Remark: Generated from `#/paths//comm/items/{id}/visibility/get(getCommItemVisibility)`.
+    func getCommItemVisibility(_ input: Operations.getCommItemVisibility.Input) async throws -> Operations.getCommItemVisibility.Output
 }
 
 /// Convenience overloads for operation inputs.
@@ -338,6 +363,59 @@ extension APIProtocol {
     /// - Remark: Generated from `#/paths//account/delete(deleteAccount)`.
     public func deleteAccount(headers: Operations.deleteAccount.Input.Headers = .init()) async throws -> Operations.deleteAccount.Output {
         try await deleteAccount(Operations.deleteAccount.Input(headers: headers))
+    }
+    /// Who is signed in, and their plan (ai_consent enters with its engine issue,
+    ///
+    /// - Remark: HTTP `GET /me`.
+    /// - Remark: Generated from `#/paths//me/get(getMe)`.
+    public func getMe(headers: Operations.getMe.Input.Headers = .init()) async throws -> Operations.getMe.Output {
+        try await getMe(Operations.getMe.Input(headers: headers))
+    }
+    /// First question (no text), then each answer (CONTRACT v1.87); the offered item is never stored here
+    ///
+    /// - Remark: HTTP `POST /comm/talk/turn`.
+    /// - Remark: Generated from `#/paths//comm/talk/turn/post(commTalkTurn)`.
+    public func commTalkTurn(
+        headers: Operations.commTalkTurn.Input.Headers = .init(),
+        body: Operations.commTalkTurn.Input.Body
+    ) async throws -> Operations.commTalkTurn.Output {
+        try await commTalkTurn(Operations.commTalkTurn.Input(
+            headers: headers,
+            body: body
+        ))
+    }
+    /// The list by kind (This week on top, then the kinds in the You order; empty kinds absent)
+    ///
+    /// - Remark: HTTP `GET /comm/items`.
+    /// - Remark: Generated from `#/paths//comm/items/get(getCommItems)`.
+    public func getCommItems(headers: Operations.getCommItems.Input.Headers = .init()) async throws -> Operations.getCommItems.Output {
+        try await getCommItems(Operations.getCommItems.Input(headers: headers))
+    }
+    /// Keep a suggestion (source talk_said) or a typed line (source typed)
+    ///
+    /// - Remark: HTTP `POST /comm/items`.
+    /// - Remark: Generated from `#/paths//comm/items/post(addCommItem)`.
+    public func addCommItem(
+        headers: Operations.addCommItem.Input.Headers = .init(),
+        body: Operations.addCommItem.Input.Body
+    ) async throws -> Operations.addCommItem.Output {
+        try await addCommItem(Operations.addCommItem.Input(
+            headers: headers,
+            body: body
+        ))
+    }
+    /// Seen by (each active link, read live through pair context)
+    ///
+    /// - Remark: HTTP `GET /comm/items/{id}/visibility`.
+    /// - Remark: Generated from `#/paths//comm/items/{id}/visibility/get(getCommItemVisibility)`.
+    public func getCommItemVisibility(
+        path: Operations.getCommItemVisibility.Input.Path,
+        headers: Operations.getCommItemVisibility.Input.Headers = .init()
+    ) async throws -> Operations.getCommItemVisibility.Output {
+        try await getCommItemVisibility(Operations.getCommItemVisibility.Input(
+            path: path,
+            headers: headers
+        ))
     }
 }
 
@@ -908,6 +986,572 @@ public enum Components {
             public enum CodingKeys: String, CodingKey {
                 case item_id
                 case wording
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/Plan`.
+        public struct Plan: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/Plan/active`.
+            public var active: Swift.Bool
+            /// - Remark: Generated from `#/components/schemas/Plan/source`.
+            @frozen public enum sourcePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case own = "own"
+                case partner = "partner"
+            }
+            /// - Remark: Generated from `#/components/schemas/Plan/source`.
+            public var source: Components.Schemas.Plan.sourcePayload
+            /// - Remark: Generated from `#/components/schemas/Plan/partner_name`.
+            public var partner_name: Swift.String?
+            /// Creates a new `Plan`.
+            ///
+            /// - Parameters:
+            ///   - active:
+            ///   - source:
+            ///   - partner_name:
+            public init(
+                active: Swift.Bool,
+                source: Components.Schemas.Plan.sourcePayload,
+                partner_name: Swift.String? = nil
+            ) {
+                self.active = active
+                self.source = source
+                self.partner_name = partner_name
+            }
+            public enum CodingKeys: String, CodingKey {
+                case active
+                case source
+                case partner_name
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/CommScope`.
+        public struct CommScope: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommScope/type`.
+            @frozen public enum _typePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case everyone = "everyone"
+                case _type = "type"
+                case person = "person"
+            }
+            /// - Remark: Generated from `#/components/schemas/CommScope/type`.
+            public var _type: Components.Schemas.CommScope._typePayload
+            /// - Remark: Generated from `#/components/schemas/CommScope/value`.
+            public var value: Swift.String?
+            /// Creates a new `CommScope`.
+            ///
+            /// - Parameters:
+            ///   - _type:
+            ///   - value:
+            public init(
+                _type: Components.Schemas.CommScope._typePayload,
+                value: Swift.String? = nil
+            ) {
+                self._type = _type
+                self.value = value
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+                case value
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/CommItem`.
+        public struct CommItem: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommItem/id`.
+            public var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommItem/kind`.
+            public var kind: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommItem/wording`.
+            public var wording: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommItem/scope`.
+            public var scope: Components.Schemas.CommScope
+            /// - Remark: Generated from `#/components/schemas/CommItem/when`.
+            public var when: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItem/expires_at`.
+            public var expires_at: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItem/last_confirmed_at`.
+            public var last_confirmed_at: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItem/status`.
+            public var status: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommItem/topic`.
+            public var topic: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItem/still_true_due`.
+            public var still_true_due: Swift.Bool
+            /// - Remark: Generated from `#/components/schemas/CommItem/source`.
+            public var source: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItem/dated_at`.
+            public var dated_at: Swift.String
+            /// Creates a new `CommItem`.
+            ///
+            /// - Parameters:
+            ///   - id:
+            ///   - kind:
+            ///   - wording:
+            ///   - scope:
+            ///   - when:
+            ///   - expires_at:
+            ///   - last_confirmed_at:
+            ///   - status:
+            ///   - topic:
+            ///   - still_true_due:
+            ///   - source:
+            ///   - dated_at:
+            public init(
+                id: Swift.String,
+                kind: Swift.String,
+                wording: Swift.String,
+                scope: Components.Schemas.CommScope,
+                when: Swift.String? = nil,
+                expires_at: Swift.String? = nil,
+                last_confirmed_at: Swift.String? = nil,
+                status: Swift.String,
+                topic: Swift.String? = nil,
+                still_true_due: Swift.Bool,
+                source: Swift.String? = nil,
+                dated_at: Swift.String
+            ) {
+                self.id = id
+                self.kind = kind
+                self.wording = wording
+                self.scope = scope
+                self.when = when
+                self.expires_at = expires_at
+                self.last_confirmed_at = last_confirmed_at
+                self.status = status
+                self.topic = topic
+                self.still_true_due = still_true_due
+                self.source = source
+                self.dated_at = dated_at
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case kind
+                case wording
+                case scope
+                case when
+                case expires_at
+                case last_confirmed_at
+                case status
+                case topic
+                case still_true_due
+                case source
+                case dated_at
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/CommGroup`.
+        public struct CommGroup: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommGroup/kind`.
+            public var kind: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommGroup/heading`.
+            public var heading: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommGroup/starter`.
+            public var starter: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommGroup/items`.
+            public var items: [Components.Schemas.CommItem]
+            /// Creates a new `CommGroup`.
+            ///
+            /// - Parameters:
+            ///   - kind:
+            ///   - heading:
+            ///   - starter:
+            ///   - items:
+            public init(
+                kind: Swift.String,
+                heading: Swift.String,
+                starter: Swift.String,
+                items: [Components.Schemas.CommItem]
+            ) {
+                self.kind = kind
+                self.heading = heading
+                self.starter = starter
+                self.items = items
+            }
+            public enum CodingKeys: String, CodingKey {
+                case kind
+                case heading
+                case starter
+                case items
+            }
+        }
+        /// The item as stored (201); never null.
+        ///
+        /// - Remark: Generated from `#/components/schemas/CommItemCreated`.
+        public struct CommItemCreated: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommItemCreated/item`.
+            public var item: Components.Schemas.CommItem
+            /// - Remark: Generated from `#/components/schemas/CommItemCreated/state`.
+            @frozen public enum statePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case created = "created"
+            }
+            /// - Remark: Generated from `#/components/schemas/CommItemCreated/state`.
+            public var state: Components.Schemas.CommItemCreated.statePayload
+            /// Creates a new `CommItemCreated`.
+            ///
+            /// - Parameters:
+            ///   - item:
+            ///   - state:
+            public init(
+                item: Components.Schemas.CommItem,
+                state: Components.Schemas.CommItemCreated.statePayload
+            ) {
+                self.item = item
+                self.state = state
+            }
+            public enum CodingKeys: String, CodingKey {
+                case item
+                case state
+            }
+        }
+        /// Nothing was stored (200): a safety stop (resources, law 8), an unreadable safety read (unavailable: line, action, help and resources), or a 4.3 check (offer_request with an offer, offer_i_statement, not_kept).
+        ///
+        /// - Remark: Generated from `#/components/schemas/CommItemNotKept`.
+        public struct CommItemNotKept: Codable, Hashable, Sendable {
+            /// Always null: nothing was stored.
+            ///
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/item`.
+            public var item: OpenAPIRuntime.OpenAPIObjectContainer?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/state`.
+            @frozen public enum statePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case safety = "safety"
+                case unavailable = "unavailable"
+                case offer_request = "offer_request"
+                case offer_i_statement = "offer_i_statement"
+                case not_kept = "not_kept"
+            }
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/state`.
+            public var state: Components.Schemas.CommItemNotKept.statePayload
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/resources`.
+            public var resources: Components.Schemas.Resources?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/offer`.
+            public var offer: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/line`.
+            public var line: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/action`.
+            public var action: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommItemNotKept/help`.
+            public var help: Swift.String?
+            /// Creates a new `CommItemNotKept`.
+            ///
+            /// - Parameters:
+            ///   - item: Always null: nothing was stored.
+            ///   - state:
+            ///   - resources:
+            ///   - offer:
+            ///   - line:
+            ///   - action:
+            ///   - help:
+            public init(
+                item: OpenAPIRuntime.OpenAPIObjectContainer? = nil,
+                state: Components.Schemas.CommItemNotKept.statePayload,
+                resources: Components.Schemas.Resources? = nil,
+                offer: Swift.String? = nil,
+                line: Swift.String? = nil,
+                action: Swift.String? = nil,
+                help: Swift.String? = nil
+            ) {
+                self.item = item
+                self.state = state
+                self.resources = resources
+                self.offer = offer
+                self.line = line
+                self.action = action
+                self.help = help
+            }
+            public enum CodingKeys: String, CodingKey {
+                case item
+                case state
+                case resources
+                case offer
+                case line
+                case action
+                case help
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/CommViewer`.
+        public struct CommViewer: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommViewer/person_id`.
+            public var person_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommViewer/name`.
+            public var name: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommViewer/sees`.
+            public var sees: Swift.Bool
+            /// Creates a new `CommViewer`.
+            ///
+            /// - Parameters:
+            ///   - person_id:
+            ///   - name:
+            ///   - sees:
+            public init(
+                person_id: Swift.String,
+                name: Swift.String,
+                sees: Swift.Bool
+            ) {
+                self.person_id = person_id
+                self.name = name
+                self.sees = sees
+            }
+            public enum CodingKeys: String, CodingKey {
+                case person_id
+                case name
+                case sees
+            }
+        }
+        /// The Talk conversation, or null when nothing was stored.
+        ///
+        /// - Remark: Generated from `#/components/schemas/CommConversation`.
+        public struct CommConversation: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommConversation/id`.
+            public var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommConversation/status`.
+            public var status: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommConversation/session_number`.
+            public var session_number: Swift.Int
+            /// Creates a new `CommConversation`.
+            ///
+            /// - Parameters:
+            ///   - id:
+            ///   - status:
+            ///   - session_number:
+            public init(
+                id: Swift.String,
+                status: Swift.String,
+                session_number: Swift.Int
+            ) {
+                self.id = id
+                self.status = status
+                self.session_number = session_number
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case status
+                case session_number
+            }
+        }
+        /// The person's answer as stored, or null for the opener and when nothing was stored.
+        ///
+        /// - Remark: Generated from `#/components/schemas/CommMessage`.
+        public struct CommMessage: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommMessage/id`.
+            public var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommMessage/conversation_id`.
+            public var conversation_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommMessage/role`.
+            public var role: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommMessage/turn`.
+            public var turn: Swift.Int
+            /// - Remark: Generated from `#/components/schemas/CommMessage/text`.
+            public var text: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommMessage/created_at`.
+            public var created_at: Swift.String
+            /// Creates a new `CommMessage`.
+            ///
+            /// - Parameters:
+            ///   - id:
+            ///   - conversation_id:
+            ///   - role:
+            ///   - turn:
+            ///   - text:
+            ///   - created_at:
+            public init(
+                id: Swift.String,
+                conversation_id: Swift.String,
+                role: Swift.String,
+                turn: Swift.Int,
+                text: Swift.String,
+                created_at: Swift.String
+            ) {
+                self.id = id
+                self.conversation_id = conversation_id
+                self.role = role
+                self.turn = turn
+                self.text = text
+                self.created_at = created_at
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case conversation_id
+                case role
+                case turn
+                case text
+                case created_at
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/CommTalkReply`.
+        public struct CommTalkReply: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/message_id`.
+            public var message_id: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/turn`.
+            public var turn: Swift.Int?
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/state`.
+            public var state: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/reflection`.
+            public var reflection: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/question`.
+            public var question: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/comm`.
+            public var comm: Components.Schemas.CommQuestion?
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/item`.
+            public var item: Components.Schemas.CommOffer?
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/item_state`.
+            public var item_state: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/offer`.
+            public var offer: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/reason`.
+            public var reason: Swift.String?
+            /// - Remark: Generated from `#/components/schemas/CommTalkReply/resources`.
+            public var resources: Components.Schemas.Resources?
+            /// Creates a new `CommTalkReply`.
+            ///
+            /// - Parameters:
+            ///   - message_id:
+            ///   - turn:
+            ///   - state:
+            ///   - reflection:
+            ///   - question:
+            ///   - comm:
+            ///   - item:
+            ///   - item_state:
+            ///   - offer:
+            ///   - reason:
+            ///   - resources:
+            public init(
+                message_id: Swift.String? = nil,
+                turn: Swift.Int? = nil,
+                state: Swift.String,
+                reflection: Swift.String,
+                question: Swift.String,
+                comm: Components.Schemas.CommQuestion? = nil,
+                item: Components.Schemas.CommOffer? = nil,
+                item_state: Swift.String? = nil,
+                offer: Swift.String? = nil,
+                reason: Swift.String? = nil,
+                resources: Components.Schemas.Resources? = nil
+            ) {
+                self.message_id = message_id
+                self.turn = turn
+                self.state = state
+                self.reflection = reflection
+                self.question = question
+                self.comm = comm
+                self.item = item
+                self.item_state = item_state
+                self.offer = offer
+                self.reason = reason
+                self.resources = resources
+            }
+            public enum CodingKeys: String, CodingKey {
+                case message_id
+                case turn
+                case state
+                case reflection
+                case question
+                case comm
+                case item
+                case item_state
+                case offer
+                case reason
+                case resources
+            }
+        }
+        /// The kind the question asks about, or null when nothing is asked.
+        ///
+        /// - Remark: Generated from `#/components/schemas/CommQuestion`.
+        public struct CommQuestion: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommQuestion/kind`.
+            public var kind: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommQuestion/question_from`.
+            @frozen public enum question_fromPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                case model = "model"
+                case bank = "bank"
+            }
+            /// - Remark: Generated from `#/components/schemas/CommQuestion/question_from`.
+            public var question_from: Components.Schemas.CommQuestion.question_fromPayload
+            /// Creates a new `CommQuestion`.
+            ///
+            /// - Parameters:
+            ///   - kind:
+            ///   - question_from:
+            public init(
+                kind: Swift.String,
+                question_from: Components.Schemas.CommQuestion.question_fromPayload
+            ) {
+                self.kind = kind
+                self.question_from = question_from
+            }
+            public enum CodingKeys: String, CodingKey {
+                case kind
+                case question_from
+            }
+        }
+        /// At most one item in the person's own words, offered and never stored here, or null.
+        ///
+        /// - Remark: Generated from `#/components/schemas/CommOffer`.
+        public struct CommOffer: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/CommOffer/kind`.
+            public var kind: Swift.String
+            /// - Remark: Generated from `#/components/schemas/CommOffer/wording`.
+            public var wording: Swift.String
+            /// Creates a new `CommOffer`.
+            ///
+            /// - Parameters:
+            ///   - kind:
+            ///   - wording:
+            public init(
+                kind: Swift.String,
+                wording: Swift.String
+            ) {
+                self.kind = kind
+                self.wording = wording
+            }
+            public enum CodingKeys: String, CodingKey {
+                case kind
+                case wording
+            }
+        }
+        /// Support resources on a safety reply (law 8).
+        ///
+        /// - Remark: Generated from `#/components/schemas/Resources`.
+        public struct Resources: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/Resources/message`.
+            public var message: Swift.String
+            /// - Remark: Generated from `#/components/schemas/Resources/resourcesPayload`.
+            public struct resourcesPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/Resources/resourcesPayload/label`.
+                public var label: Swift.String
+                /// - Remark: Generated from `#/components/schemas/Resources/resourcesPayload/url`.
+                public var url: Swift.String
+                /// Creates a new `resourcesPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - label:
+                ///   - url:
+                public init(
+                    label: Swift.String,
+                    url: Swift.String
+                ) {
+                    self.label = label
+                    self.url = url
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case label
+                    case url
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/Resources/resources`.
+            public typealias resourcesPayload = [Components.Schemas.Resources.resourcesPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/Resources/resources`.
+            public var resources: Components.Schemas.Resources.resourcesPayload
+            /// Creates a new `Resources`.
+            ///
+            /// - Parameters:
+            ///   - message:
+            ///   - resources:
+            public init(
+                message: Swift.String,
+                resources: Components.Schemas.Resources.resourcesPayload
+            ) {
+                self.message = message
+                self.resources = resources
+            }
+            public enum CodingKeys: String, CodingKey {
+                case message
+                case resources
             }
         }
     }
@@ -4403,6 +5047,957 @@ public enum Operations {
             /// Every error (CONTRACT section 0)
             ///
             /// - Remark: Generated from `#/paths//account/delete(deleteAccount)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Who is signed in, and their plan (ai_consent enters with its engine issue,
+    ///
+    /// - Remark: HTTP `GET /me`.
+    /// - Remark: Generated from `#/paths//me/get(getMe)`.
+    public enum getMe {
+        public static let id: Swift.String = "getMe"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/me/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getMe.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getMe.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.getMe.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            public init(headers: Operations.getMe.Input.Headers = .init()) {
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/me/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/me/GET/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/paths/me/GET/responses/200/content/json/me`.
+                        public var me: Components.Schemas.Me
+                        /// - Remark: Generated from `#/paths/me/GET/responses/200/content/json/plan`.
+                        public var plan: Components.Schemas.Plan
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - me:
+                        ///   - plan:
+                        public init(
+                            me: Components.Schemas.Me,
+                            plan: Components.Schemas.Plan
+                        ) {
+                            self.me = me
+                            self.plan = plan
+                        }
+                        public enum CodingKeys: String, CodingKey {
+                            case me
+                            case plan
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/me/GET/responses/200/content/application\/json`.
+                    case json(Operations.getMe.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.getMe.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.getMe.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.getMe.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// The caller
+            ///
+            /// - Remark: Generated from `#/paths//me/get(getMe)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.getMe.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.getMe.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Every error (CONTRACT section 0)
+            ///
+            /// - Remark: Generated from `#/paths//me/get(getMe)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// First question (no text), then each answer (CONTRACT v1.87); the offered item is never stored here
+    ///
+    /// - Remark: HTTP `POST /comm/talk/turn`.
+    /// - Remark: Generated from `#/paths//comm/talk/turn/post(commTalkTurn)`.
+    public enum commTalkTurn {
+        public static let id: Swift.String = "commTalkTurn"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/comm/talk/turn/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.commTalkTurn.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.commTalkTurn.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.commTalkTurn.Input.Headers
+            /// - Remark: Generated from `#/paths/comm/talk/turn/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/comm/talk/turn/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/paths/comm/talk/turn/POST/requestBody/json/text`.
+                    public var text: Swift.String?
+                    /// - Remark: Generated from `#/paths/comm/talk/turn/POST/requestBody/json/conversation_id`.
+                    public var conversation_id: Swift.String?
+                    /// - Remark: Generated from `#/paths/comm/talk/turn/POST/requestBody/json/way_in`.
+                    @frozen public enum way_inPayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case invited_by_partner = "invited_by_partner"
+                        case invited_by_friend = "invited_by_friend"
+                        case own_download = "own_download"
+                    }
+                    /// - Remark: Generated from `#/paths/comm/talk/turn/POST/requestBody/json/way_in`.
+                    public var way_in: Operations.commTalkTurn.Input.Body.jsonPayload.way_inPayload?
+                    /// - Remark: Generated from `#/paths/comm/talk/turn/POST/requestBody/json/name`.
+                    public var name: Swift.String?
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - text:
+                    ///   - conversation_id:
+                    ///   - way_in:
+                    ///   - name:
+                    public init(
+                        text: Swift.String? = nil,
+                        conversation_id: Swift.String? = nil,
+                        way_in: Operations.commTalkTurn.Input.Body.jsonPayload.way_inPayload? = nil,
+                        name: Swift.String? = nil
+                    ) {
+                        self.text = text
+                        self.conversation_id = conversation_id
+                        self.way_in = way_in
+                        self.name = name
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case text
+                        case conversation_id
+                        case way_in
+                        case name
+                    }
+                }
+                /// - Remark: Generated from `#/paths/comm/talk/turn/POST/requestBody/content/application\/json`.
+                case json(Operations.commTalkTurn.Input.Body.jsonPayload)
+            }
+            public var body: Operations.commTalkTurn.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            public init(
+                headers: Operations.commTalkTurn.Input.Headers = .init(),
+                body: Operations.commTalkTurn.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/comm/talk/turn/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/comm/talk/turn/POST/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/paths/comm/talk/turn/POST/responses/200/content/json/conversation`.
+                        public var conversation: Components.Schemas.CommConversation?
+                        /// - Remark: Generated from `#/paths/comm/talk/turn/POST/responses/200/content/json/message`.
+                        public var message: Components.Schemas.CommMessage?
+                        /// - Remark: Generated from `#/paths/comm/talk/turn/POST/responses/200/content/json/reply`.
+                        public var reply: Components.Schemas.CommTalkReply
+                        /// - Remark: Generated from `#/paths/comm/talk/turn/POST/responses/200/content/json/latency_ms`.
+                        public var latency_ms: Swift.Int
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - conversation:
+                        ///   - message:
+                        ///   - reply:
+                        ///   - latency_ms:
+                        public init(
+                            conversation: Components.Schemas.CommConversation? = nil,
+                            message: Components.Schemas.CommMessage? = nil,
+                            reply: Components.Schemas.CommTalkReply,
+                            latency_ms: Swift.Int
+                        ) {
+                            self.conversation = conversation
+                            self.message = message
+                            self.reply = reply
+                            self.latency_ms = latency_ms
+                        }
+                        public enum CodingKeys: String, CodingKey {
+                            case conversation
+                            case message
+                            case reply
+                            case latency_ms
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/comm/talk/turn/POST/responses/200/content/application\/json`.
+                    case json(Operations.commTalkTurn.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.commTalkTurn.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.commTalkTurn.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.commTalkTurn.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// The turn; conversation and message are null when nothing was stored (safety)
+            ///
+            /// - Remark: Generated from `#/paths//comm/talk/turn/post(commTalkTurn)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.commTalkTurn.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.commTalkTurn.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Every error (CONTRACT section 0)
+            ///
+            /// - Remark: Generated from `#/paths//comm/talk/turn/post(commTalkTurn)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// The list by kind (This week on top, then the kinds in the You order; empty kinds absent)
+    ///
+    /// - Remark: HTTP `GET /comm/items`.
+    /// - Remark: Generated from `#/paths//comm/items/get(getCommItems)`.
+    public enum getCommItems {
+        public static let id: Swift.String = "getCommItems"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/comm/items/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getCommItems.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getCommItems.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.getCommItems.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            public init(headers: Operations.getCommItems.Input.Headers = .init()) {
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/comm/items/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/comm/items/GET/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/paths/comm/items/GET/responses/200/content/json/this_week`.
+                        public var this_week: [Components.Schemas.CommItem]
+                        /// - Remark: Generated from `#/paths/comm/items/GET/responses/200/content/json/groups`.
+                        public var groups: [Components.Schemas.CommGroup]
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - this_week:
+                        ///   - groups:
+                        public init(
+                            this_week: [Components.Schemas.CommItem],
+                            groups: [Components.Schemas.CommGroup]
+                        ) {
+                            self.this_week = this_week
+                            self.groups = groups
+                        }
+                        public enum CodingKeys: String, CodingKey {
+                            case this_week
+                            case groups
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/comm/items/GET/responses/200/content/application\/json`.
+                    case json(Operations.getCommItems.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.getCommItems.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.getCommItems.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.getCommItems.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// The caller's communication items
+            ///
+            /// - Remark: Generated from `#/paths//comm/items/get(getCommItems)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.getCommItems.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.getCommItems.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Every error (CONTRACT section 0)
+            ///
+            /// - Remark: Generated from `#/paths//comm/items/get(getCommItems)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Keep a suggestion (source talk_said) or a typed line (source typed)
+    ///
+    /// - Remark: HTTP `POST /comm/items`.
+    /// - Remark: Generated from `#/paths//comm/items/post(addCommItem)`.
+    public enum addCommItem {
+        public static let id: Swift.String = "addCommItem"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/comm/items/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.addCommItem.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.addCommItem.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.addCommItem.Input.Headers
+            /// - Remark: Generated from `#/paths/comm/items/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json/kind`.
+                    public var kind: Swift.String
+                    /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json/wording`.
+                    public var wording: Swift.String
+                    /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json/scope`.
+                    public var scope: Components.Schemas.CommScope?
+                    /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json/when`.
+                    public var when: Swift.String?
+                    /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json/expires_in_days`.
+                    public var expires_in_days: Swift.Int?
+                    /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json/topic`.
+                    public var topic: Swift.String?
+                    /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json/status`.
+                    public var status: Swift.String?
+                    /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json/source`.
+                    @frozen public enum sourcePayload: String, Codable, Hashable, Sendable, CaseIterable {
+                        case typed = "typed"
+                        case talk_said = "talk_said"
+                    }
+                    /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/json/source`.
+                    public var source: Operations.addCommItem.Input.Body.jsonPayload.sourcePayload?
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - kind:
+                    ///   - wording:
+                    ///   - scope:
+                    ///   - when:
+                    ///   - expires_in_days:
+                    ///   - topic:
+                    ///   - status:
+                    ///   - source:
+                    public init(
+                        kind: Swift.String,
+                        wording: Swift.String,
+                        scope: Components.Schemas.CommScope? = nil,
+                        when: Swift.String? = nil,
+                        expires_in_days: Swift.Int? = nil,
+                        topic: Swift.String? = nil,
+                        status: Swift.String? = nil,
+                        source: Operations.addCommItem.Input.Body.jsonPayload.sourcePayload? = nil
+                    ) {
+                        self.kind = kind
+                        self.wording = wording
+                        self.scope = scope
+                        self.when = when
+                        self.expires_in_days = expires_in_days
+                        self.topic = topic
+                        self.status = status
+                        self.source = source
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case kind
+                        case wording
+                        case scope
+                        case when
+                        case expires_in_days
+                        case topic
+                        case status
+                        case source
+                    }
+                }
+                /// - Remark: Generated from `#/paths/comm/items/POST/requestBody/content/application\/json`.
+                case json(Operations.addCommItem.Input.Body.jsonPayload)
+            }
+            public var body: Operations.addCommItem.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            public init(
+                headers: Operations.addCommItem.Input.Headers = .init(),
+                body: Operations.addCommItem.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Created: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/comm/items/POST/responses/201/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/comm/items/POST/responses/201/content/application\/json`.
+                    case json(Components.Schemas.CommItemCreated)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.CommItemCreated {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.addCommItem.Output.Created.Body
+                /// Creates a new `Created`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.addCommItem.Output.Created.Body) {
+                    self.body = body
+                }
+            }
+            /// Kept, with one receipt of the person's own words
+            ///
+            /// - Remark: Generated from `#/paths//comm/items/post(addCommItem)/responses/201`.
+            ///
+            /// HTTP response code: `201 created`.
+            case created(Operations.addCommItem.Output.Created)
+            /// The associated value of the enum case if `self` is `.created`.
+            ///
+            /// - Throws: An error if `self` is not `.created`.
+            /// - SeeAlso: `.created`.
+            public var created: Operations.addCommItem.Output.Created {
+                get throws {
+                    switch self {
+                    case let .created(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "created",
+                            response: self
+                        )
+                    }
+                }
+            }
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/comm/items/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/comm/items/POST/responses/200/content/application\/json`.
+                    case json(Components.Schemas.CommItemNotKept)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.CommItemNotKept {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.addCommItem.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.addCommItem.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Nothing stored (safety, unavailable, or a 4.3 check); item is always null
+            ///
+            /// - Remark: Generated from `#/paths//comm/items/post(addCommItem)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.addCommItem.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.addCommItem.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Every error (CONTRACT section 0)
+            ///
+            /// - Remark: Generated from `#/paths//comm/items/post(addCommItem)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Seen by (each active link, read live through pair context)
+    ///
+    /// - Remark: HTTP `GET /comm/items/{id}/visibility`.
+    /// - Remark: Generated from `#/paths//comm/items/{id}/visibility/get(getCommItemVisibility)`.
+    public enum getCommItemVisibility {
+        public static let id: Swift.String = "getCommItemVisibility"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/comm/items/{id}/visibility/GET/path`.
+            public struct Path: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/comm/items/{id}/visibility/GET/path/id`.
+                public var id: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - id:
+                public init(id: Swift.String) {
+                    self.id = id
+                }
+            }
+            public var path: Operations.getCommItemVisibility.Input.Path
+            /// - Remark: Generated from `#/paths/comm/items/{id}/visibility/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getCommItemVisibility.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getCommItemVisibility.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.getCommItemVisibility.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            public init(
+                path: Operations.getCommItemVisibility.Input.Path,
+                headers: Operations.getCommItemVisibility.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/comm/items/{id}/visibility/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/comm/items/{id}/visibility/GET/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/paths/comm/items/{id}/visibility/GET/responses/200/content/json/item_id`.
+                        public var item_id: Swift.String
+                        /// - Remark: Generated from `#/paths/comm/items/{id}/visibility/GET/responses/200/content/json/scope`.
+                        public var scope: Components.Schemas.CommScope
+                        /// - Remark: Generated from `#/paths/comm/items/{id}/visibility/GET/responses/200/content/json/people`.
+                        public var people: [Components.Schemas.CommViewer]
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - item_id:
+                        ///   - scope:
+                        ///   - people:
+                        public init(
+                            item_id: Swift.String,
+                            scope: Components.Schemas.CommScope,
+                            people: [Components.Schemas.CommViewer]
+                        ) {
+                            self.item_id = item_id
+                            self.scope = scope
+                            self.people = people
+                        }
+                        public enum CodingKeys: String, CodingKey {
+                            case item_id
+                            case scope
+                            case people
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/comm/items/{id}/visibility/GET/responses/200/content/application\/json`.
+                    case json(Operations.getCommItemVisibility.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.getCommItemVisibility.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.getCommItemVisibility.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.getCommItemVisibility.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Who sees this item
+            ///
+            /// - Remark: Generated from `#/paths//comm/items/{id}/visibility/get(getCommItemVisibility)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.getCommItemVisibility.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.getCommItemVisibility.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Every error (CONTRACT section 0)
+            ///
+            /// - Remark: Generated from `#/paths//comm/items/{id}/visibility/get(getCommItemVisibility)/responses/default`.
             ///
             /// HTTP response code: `default`.
             case `default`(statusCode: Swift.Int, Components.Responses._Error)

@@ -65,6 +65,36 @@ const sentBridge = () => ({
   updated_at: AT,
 });
 
+// The communication routes sit behind PRESENCE_COMM_ITEMS and the owner list (#3 turned both on for the test accounts).
+const COMM_ITEM = "00000000-0000-4000-8000-000000000109";
+const COMM_ENV = { commItems: true, commOwnerIds: [ME] };
+const commItem = () => ({
+  ...belief(COMM_ITEM),
+  statement: "When I go quiet I am thinking.",
+  own_wording: "When I go quiet I am thinking.",
+  comm_kind: "how_i_mean",
+  comm_scope_type: "everyone",
+  comm_scope_value: null,
+  comm_when: null,
+  comm_expires_at: null,
+  comm_last_confirmed_at: AT,
+  comm_status: "active",
+  comm_topic: null,
+  comm_source: "typed",
+  comm_native: true,
+});
+
+// Law 8 on the first loop: a risky wording answers 200 with resources and stores nothing. The tables are kept so the
+// teardown can see that the handler wrote no row (a failed check here fails the contract test that ran the scenario).
+const RISKY_TALK: Record<string, Record<string, unknown>[]> = { profiles: profiles(), links: [link()] };
+const RISKY_ITEM: Record<string, Record<string, unknown>[]> = { beliefs: [], receipts: [] };
+function storedNothing(where: string, tables: Record<string, Record<string, unknown>[]>, watched: string[]) {
+  return () => {
+    const written = watched.filter((t) => (tables[t] ?? []).length > 0);
+    if (written.length) throw new Error(`${where}: a risky wording stored rows in ${written.join(", ")} (law 8)`);
+  };
+}
+
 // POST /auth/apple: Supabase Auth's id_token grant answered without the network, so the real handler runs end to end.
 let realFetch: typeof fetch | null = null;
 function supabaseAuthDouble() {
@@ -266,5 +296,61 @@ export const SCENARIOS: ContractScenario[] = [
   {
     operation: "DELETE /devices/apns/{installation_id}",
     path: `/devices/apns/${INSTALLATION}`,
+  },
+  {
+    operation: "GET /me",
+    path: "/me",
+    tables: { profiles: profiles() },
+  },
+  {
+    // The opener: no text, so no model call; the bank's first question and one presence row.
+    operation: "POST /comm/talk/turn",
+    path: "/comm/talk/turn",
+    env: COMM_ENV,
+    tables: { profiles: profiles(), links: [link()] },
+    body: {},
+  },
+  {
+    // Law 8: a risky answer stops before any model call; 200, reply.resources, no conversation or message stored.
+    operation: "POST /comm/talk/turn",
+    path: "/comm/talk/turn",
+    env: COMM_ENV,
+    tables: RISKY_TALK,
+    body: { text: "I want to end it all." },
+    teardown: storedNothing("POST /comm/talk/turn", RISKY_TALK, ["conversations", "messages"]),
+  },
+  {
+    operation: "GET /comm/items",
+    path: "/comm/items",
+    env: COMM_ENV,
+    tables: { beliefs: [commItem()] },
+  },
+  {
+    operation: "POST /comm/items",
+    path: "/comm/items",
+    env: COMM_ENV,
+    tables: { beliefs: [], receipts: [] },
+    body: { kind: "how_i_mean", wording: "When I go quiet I am thinking, not upset.", source: "talk_said" },
+  },
+  {
+    // Law 8: a risky wording is kept out; 200 with item null and resources, no item or receipt stored.
+    operation: "POST /comm/items",
+    path: "/comm/items",
+    env: COMM_ENV,
+    tables: RISKY_ITEM,
+    body: { kind: "other", wording: "I don't want to be alive anymore.", source: "typed" },
+    teardown: storedNothing("POST /comm/items", RISKY_ITEM, ["beliefs", "receipts"]),
+  },
+  {
+    operation: "GET /comm/items/{id}/visibility",
+    path: `/comm/items/${COMM_ITEM}/visibility`,
+    env: COMM_ENV,
+    tables: {
+      profiles: profiles(),
+      links: [link()],
+      link_prefs: [{ owner: OTHER, other: ME, relationship: "friend" }],
+      beliefs: [commItem()],
+      share_items: [{ owner: ME, other: OTHER, belief_id: COMM_ITEM, wording: "When I go quiet I am thinking.", shared_at: AT, updated_at: AT }],
+    },
   },
 ];

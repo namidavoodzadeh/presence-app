@@ -168,7 +168,8 @@ async function learnZone(db: SupabaseClient, id: string, headerTz: string, known
 route("GET", "/me", async ({ caller, service, env, tz }) => {
   const learned = await learnZone(caller!.db, caller!.id, tz, caller!.profile.tz as string | null);
   if (learned && !caller!.profile.tz) caller!.profile.tz = learned;
-  return json({ me: meObjectFromRow(caller!.profile), plan: await loadPlan(service, caller!.id, env.partnerEntitlements === true) });
+  // The id is the verified caller's, never only whatever the profile read carried (#131).
+  return json({ me: meObjectFromRow({ ...caller!.profile, id: caller!.id }), plan: await loadPlan(service, caller!.id, env.partnerEntitlements === true) });
 });
 
 route("PATCH", "/me", async ({ caller, body }) => {
