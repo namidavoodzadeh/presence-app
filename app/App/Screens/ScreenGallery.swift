@@ -47,6 +47,10 @@ enum ScreenGallery {
         case "settings-off": GallerySettings(state: .open, ai: .loaded(false))
         case "settings-confirming": GallerySettings(state: .confirming, ai: .loaded(true))
         case "settings-exporting": GallerySettings(state: .exporting, ai: .loaded(true))
+        case "reading-loading": GalleryReading(state: .loading)
+        case "reading-empty": GalleryReading(state: .empty)
+        case "reading-failed": GalleryReading(state: .failed(LoadFailure(kind: .offline)))
+        case "reading-loaded": GalleryReading(state: .loaded(ReadingFixtures.reading))
         default: Text(name)
         }
     }
@@ -183,6 +187,20 @@ private struct GallerySettings: View {
     var body: some View {
         SettingsScreen(state: state, ai: ai, lastKnownAI: lastKnownAI) { event in lastEvent = "\(event)" }
             .background(Tokens.Colour.base.color(for: scheme).ignoresSafeArea())
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
+}
+
+private struct GalleryReading: View {
+    let state: LoadState<ReadingScreen.Reading>
+    @State private var lastEvent = ""
+
+    var body: some View {
+        ReadingScreen(state: state) { event in lastEvent = "\(event)" }
             .overlay(alignment: .bottom) {
                 Text(lastEvent)
                     .accessibilityIdentifier("gallery.lastEvent")
