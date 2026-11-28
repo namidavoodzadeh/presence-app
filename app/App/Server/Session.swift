@@ -108,6 +108,7 @@ actor SessionKeeper {
     private var session: Session?
     private var onEnded: (@Sendable () -> Void)?
     private var generation = 0
+    private var signInTicket = 0
     private var renewal: (refreshToken: String, task: Renewal)?
     /// The session in memory could not be written to storage yet; it is written again before the next call.
     private var unsaved = false
@@ -121,16 +122,18 @@ actor SessionKeeper {
 
     var current: Session? { session }
 
-    /// Moves on with each sign-in and each ending; a caller that waited across one can tell.
-    var generationNow: Int { generation }
-
-    /// A sign-in attempt begins: it takes the newest ticket, so an older attempt that finishes later can never take effect
-    /// over it, and anything still running for the session before it no longer counts.
+    /// A sign-in attempt begins and takes the newest ticket: only the newest attempt's reply is kept, and a log out
+    /// voids every attempt still on its way. Beginning changes nothing else: the current session and any refresh in
+    /// flight carry on, so a sign-in that fails leaves the person as they were (review round 5, #108).
     func beginSignIn() -> Int {
-        // The refresh in flight, if any, keeps its entry: a call made meanwhile shares it instead of spending the same
-        // refresh token a second time. Its answer is not applied (the generation moved on).
-        generation += 1
-        return generation
+        signInTicket += 1
+        return signInTicket
+    }
+
+    /// Log out (the person's choice): the session ends and any sign-in still on its way is not kept.
+    func logOut() {
+        signInTicket += 1
+        end()
     }
 
     /// Called when the session ends, so the root can show `signIn` (keeping any words in the bar).
@@ -143,10 +146,10 @@ actor SessionKeeper {
         keep(session)
     }
 
-    /// `exchanging 200` for a sign-in that began at `expected`: kept only if no sign-in or log out happened since, so a
-    /// late reply can neither bring back a logged-out session nor replace a newer one.
-    func start(_ session: Session, ifGeneration expected: Int) -> Bool {
-        guard generation == expected else { return false }
+    /// `exchanging 200` for the attempt holding `ticket`: kept only if it is still the newest attempt and no log out came
+    /// after it. A 401 or a refused refresh of the previous session does not void it.
+    func start(_ session: Session, ifSignIn ticket: Int) -> Bool {
+        guard ticket == signInTicket else { return false }
         start(session)
         return true
     }

@@ -64,7 +64,7 @@ struct APIClient: Sendable {
                 guard let expiry = reply.expires_at.flatMap(Self.parseDate) else { return .failure(.http(status: 500)) }
                 let kept = await session.start(
                     Session(accessToken: reply.access_token, refreshToken: reply.refresh_token, expiresAt: expiry),
-                    ifGeneration: started
+                    ifSignIn: started
                 )
                 // Logged out or signed in again while this reply was on its way: it is not kept.
                 guard kept else { return .failure(Self.superseded) }

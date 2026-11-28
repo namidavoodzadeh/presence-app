@@ -280,9 +280,9 @@ final class APIClientTests: XCTestCase {
 
     func testALateSignInReplyIsNotKeptAfterLogOut() async {
         let keeper = SessionKeeper(storage: MemoryStorage(), refresh: { _ throws(RefreshFailure) in throw .unavailable })
-        let started = await keeper.generationNow
-        await keeper.end()
-        let kept = await keeper.start(Session(accessToken: "a", refreshToken: "r", expiresAt: .distantFuture), ifGeneration: started)
+        let started = await keeper.beginSignIn()
+        await keeper.logOut()
+        let kept = await keeper.start(Session(accessToken: "a", refreshToken: "r", expiresAt: .distantFuture), ifSignIn: started)
         XCTAssertFalse(kept)
         let current = await keeper.current
         XCTAssertNil(current)
@@ -314,12 +314,46 @@ final class APIClientTests: XCTestCase {
         XCTAssertEqual(calls, 1)
     }
 
+    func testA401FromThePreviousAccountDoesNotVoidASignIn() async {
+        let keeper = SessionKeeper(
+            storage: MemoryStorage(Session(accessToken: "old", refreshToken: "r", expiresAt: .distantFuture)),
+            refresh: { _ throws(RefreshFailure) in throw .unavailable }
+        )
+        let ticket = await keeper.beginSignIn()
+        await keeper.end(ifAccessToken: "old")
+        let kept = await keeper.start(Session(accessToken: "new", refreshToken: "s", expiresAt: .distantFuture), ifSignIn: ticket)
+        XCTAssertTrue(kept)
+        let current = await keeper.current
+        XCTAssertEqual(current?.accessToken, "new")
+    }
+
+    func testAFailedSignInLeavesTheRefreshedSessionInPlace() async {
+        let gate = RefreshGate()
+        let now = Date()
+        let keeper = SessionKeeper(
+            storage: MemoryStorage(Session(accessToken: "a-1", refreshToken: "r-1", expiresAt: now.addingTimeInterval(5))),
+            refresh: { _ throws(RefreshFailure) in
+                await gate.wait()
+                return Session(accessToken: "a-2", refreshToken: "r-2", expiresAt: now.addingTimeInterval(3600))
+            },
+            now: { now }
+        )
+        let pending = Task { await keeper.accessToken() }
+        await gate.waitUntilStarted()
+        _ = await keeper.beginSignIn()   // the sign-in then fails: nothing is started
+        await gate.open()
+        let token = await pending.value
+        XCTAssertEqual(token, "a-2")
+        let current = await keeper.current
+        XCTAssertEqual(current?.refreshToken, "r-2")
+    }
+
     func testOfOverlappingSignInsTheNewerOneStands() async {
         let keeper = SessionKeeper(storage: MemoryStorage(), refresh: { _ throws(RefreshFailure) in throw .unavailable })
         let older = await keeper.beginSignIn()
         let newer = await keeper.beginSignIn()
-        let olderKept = await keeper.start(Session(accessToken: "old", refreshToken: "r", expiresAt: .distantFuture), ifGeneration: older)
-        let newerKept = await keeper.start(Session(accessToken: "new", refreshToken: "s", expiresAt: .distantFuture), ifGeneration: newer)
+        let olderKept = await keeper.start(Session(accessToken: "old", refreshToken: "r", expiresAt: .distantFuture), ifSignIn: older)
+        let newerKept = await keeper.start(Session(accessToken: "new", refreshToken: "s", expiresAt: .distantFuture), ifSignIn: newer)
         XCTAssertFalse(olderKept)
         XCTAssertTrue(newerKept)
         let current = await keeper.current
