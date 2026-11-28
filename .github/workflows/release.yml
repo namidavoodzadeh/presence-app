@@ -1,13 +1,12 @@
 name: release
-# Archived and uploaded to TestFlight (internal group "Owner") when `release/REQUEST` changes on main (a reviewed, merged pull
-# request is the only way that happens, and the workflow then runs from main's own copy), or when dispatched on main. Not on
-# every app merge, so the owner never receives a half-assembled build and parallel screen merges do not each queue a release
-# on the signing runner.
+# Archived and uploaded to TestFlight (internal group "Owner") when `release/REQUEST` changes on main. A reviewed, merged pull
+# request is the only way that happens, and a push to main runs main's own copy of this file, so no branch can change what
+# runs on the signing runner. No manual dispatch: a dispatch runs the selected branch's copy. Not on every app merge, so the
+# owner never receives a half-assembled build and parallel screen merges do not each queue a release.
 on:
   push:
     branches: [main]
     paths: ["release/REQUEST"]
-  workflow_dispatch:
 concurrency:
   group: release
   cancel-in-progress: false
@@ -29,7 +28,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Only main is released
-        # A dispatch on any other branch stops here; the push trigger is main-only already.
+        # Belt and braces: the push trigger is main-only already.
         run: |
           [ "$GITHUB_REF" = "refs/heads/main" ] || { echo "::error::release runs on main only (got $GITHUB_REF)."; exit 3; }
       - name: Toolchain (pinned)
