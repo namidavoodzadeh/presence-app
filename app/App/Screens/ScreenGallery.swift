@@ -31,6 +31,7 @@ enum ScreenGallery {
         case "aiConsent-showing": GalleryAIConsent(flow: AIConsentFixtures.showing)
         case "aiConsent-saving": GalleryAIConsent(flow: AIConsentFixtures.saving)
         case "aiConsent-notSaved": GalleryAIConsent(flow: AIConsentFixtures.notSaved)
+        case "safety-shown": GallerySafety(safety: SafetyFixtures.safety)
         case "settings-loading": GallerySettings(state: .open, ai: .loading, lastKnownAI: true)
         case "settings-failed": GallerySettings(state: .open, ai: .failed(LoadFailure(kind: .offline)))
         case "settings-loaded": GallerySettings(state: .open, ai: .loaded(true))
@@ -121,6 +122,31 @@ private struct GalleryAIConsent: View {
                     .accessibilityHidden(lastEvent.isEmpty)
             }
     }
+}
+
+private struct GallerySafety: View {
+    let safety: TalkFlow.Safety
+    @State private var lastEvent = ""
+
+    var body: some View {
+        ZStack {
+            Greenhouse()
+            SafetyScreen(safety: safety) { event in lastEvent = "\(event)" }
+        }
+        .overlay(alignment: .bottom) {
+            Text(lastEvent)
+                .accessibilityIdentifier("gallery.lastEvent")
+                .accessibilityHidden(lastEvent.isEmpty)
+        }
+    }
+}
+
+/// What a safety reply carries (`safety.message` and `resources`), with two resources.
+enum SafetyFixtures {
+    static let safety = TalkFlow.Safety(message: "You don't have to carry this alone. People are ready to listen, right now.", resources: [
+        TalkFlow.Resource(label: "988 Suicide & Crisis Lifeline", url: "https://988lifeline.org"),
+        TalkFlow.Resource(label: "Crisis Text Line", url: "https://www.crisistextline.org"),
+    ])
 }
 
 private struct GallerySettings: View {
