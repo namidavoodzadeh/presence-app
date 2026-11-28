@@ -30,7 +30,8 @@ public enum CallFailure: Error, Equatable, Sendable {
 }
 
 public enum Haptic: Equatable, Sendable {
-    case doubleSoftPulse, firm, softTick
+    /// `lightTap`: listening starts (behaviour.md, Haptics).
+    case doubleSoftPulse, firm, lightTap, softTick
 }
 
 public enum WaitingPhase: Equatable, Sendable {
