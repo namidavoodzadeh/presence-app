@@ -8,8 +8,19 @@ struct PresenceApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TemplateScreen(state: .loading, retry: {})
-                .testerReportButton()
+            root.testerReportButton()
         }
+    }
+
+    @MainActor @ViewBuilder private var root: some View {
+        #if DEBUG
+        if let name = ScreenGallery.requested {
+            ScreenGallery.view(name)
+        } else {
+            TemplateScreen(state: .loading, retry: {})
+        }
+        #else
+        TemplateScreen(state: .loading, retry: {})
+        #endif
     }
 }
