@@ -27,6 +27,9 @@ enum ScreenGallery {
         case "signIn-busy": GallerySignIn(state: .exchanging)
         case "signIn-failed": GallerySignIn(state: .signInFailed(.provider))
         case "signIn-underAge": GallerySignIn(state: .underAge)
+        case "aiConsent-showing": GalleryAIConsent(flow: AIConsentFixtures.showing)
+        case "aiConsent-saving": GalleryAIConsent(flow: AIConsentFixtures.saving)
+        case "aiConsent-notSaved": GalleryAIConsent(flow: AIConsentFixtures.notSaved)
         case "reading-loading": GalleryReading(state: .loading)
         case "reading-empty": GalleryReading(state: .empty)
         case "reading-failed": GalleryReading(state: .failed(LoadFailure(kind: .offline)))
@@ -95,6 +98,20 @@ private struct GallerySignIn: View {
 
     var body: some View {
         SignInScreen(state: state) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
+}
+
+private struct GalleryAIConsent: View {
+    let flow: AIConsentFlow
+    @State private var lastEvent = ""
+
+    var body: some View {
+        AIConsentScreen(flow: flow) { event in lastEvent = "\(event)" }
             .overlay(alignment: .bottom) {
                 Text(lastEvent)
                     .accessibilityIdentifier("gallery.lastEvent")
