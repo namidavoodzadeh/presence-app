@@ -30,8 +30,8 @@ begin
   if new.version <> '2027-01' then
     raise exception 'invalid: unknown ai_consent version';
   end if;
-  if not (new.providers @> array['anthropic']::text[]) then
-    raise exception 'invalid: an ai_consent row must name every provider that receives words (anthropic)';
+  if new.providers is distinct from array['anthropic']::text[] then
+    raise exception 'invalid: an ai_consent row names exactly the providers that receive words today (anthropic)';
   end if;
   return new;
 end;

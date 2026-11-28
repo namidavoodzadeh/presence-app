@@ -19,7 +19,8 @@ import { dbError } from "./lib/db.ts";
 import type { Row } from "./lib/objects.ts";
 import { RESOURCES } from "../engine/safety.ts";
 import { requireSafetyPass } from "./_shared/safety/gate.ts";
-import { requireAiConsent } from "./lib/ai_consent.ts";
+import { commTurnPrecheck } from "../engine/talk/comm_turn.ts";
+import { hasAiConsent, requireAiConsent } from "./lib/ai_consent.ts";
 import { unreadBody } from "./lib/safety_gate.ts";
 import {
   COMM_KIND_COPY,
@@ -250,7 +251,11 @@ route("POST", "/comm/items", async (ctx) => {
   if (source !== "typed" && source !== "talk_said") throw new ApiError("invalid", "", { field: "source" });
   const wording = asWording(b.wording);
   // The safety read is a model call only with the semantic switch on; then it waits for AI consent (package 01 routes.md, Not ready 6).
-  if (ctx.env.safetySemantic === true) await requireAiConsent(ctx);
+  // The local floor runs first either way, so risk shows resources even without consent (law 8).
+  if (ctx.env.safetySemantic === true && !(await hasAiConsent(ctx))) {
+    if (commTurnPrecheck(wording).stop) return json({ state: "safety", item: null, resources: RESOURCES });
+    await requireAiConsent(ctx);
+  }
   const held = await commWordsGate(ctx, wording); // K-0002: the one safety gate, before anything is checked or stored
   if (held) return held;
   const scope = asScope(b.scope), when = asWhen(b.when);
