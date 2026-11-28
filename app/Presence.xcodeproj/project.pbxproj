@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		04ADB744C81D233043607493 /* SignInScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FA4AFD2B784C555D0BA4E /* SignInScreenTests.swift */; };
 		1D1989AB6B3713B954D57D0F /* Flows in Frameworks */ = {isa = PBXBuildFile; productRef = 908DEB75B7E5DE86471A400D /* Flows */; };
+		2B0178017432EE967C758EC4 /* YouScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FFC5ABC4E9FE11E0B388F /* YouScreenTests.swift */; };
+		3FF8FAA6FD53F2357114EA46 /* SafetyScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C1517FAC39F14EE7C316B5 /* SafetyScreenTests.swift */; };
+		440F02E15A04596ED04DA17B /* SurfaceJourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AC218102AA75DFC10DFFFC /* SurfaceJourneyTests.swift */; };
+		4484CC4290D24A8E6E98E701 /* YouScreenSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE72436AFC45A375AC08697 /* YouScreenSnapshotTests.swift */; };
+		4571D40A97CB3EEC4CF14E5E /* SafetyScreenSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDEB97F89DD3AAF81C89DCD /* SafetyScreenSnapshotTests.swift */; };
 		43F9E5FE13A7A03FD06AF555 /* PauseScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF864393A92F7985B868289 /* PauseScreenTests.swift */; };
 		440F02E15A04596ED04DA17B /* SurfaceJourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AC218102AA75DFC10DFFFC /* SurfaceJourneyTests.swift */; };
 		2B0178017432EE967C758EC4 /* YouScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FFC5ABC4E9FE11E0B388F /* YouScreenTests.swift */; };
@@ -71,6 +76,8 @@
 		E4B239BD3BE96D75C0C31CE6 /* PeopleScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleScreenTests.swift; sourceTree = "<group>"; };
 		E8AC218102AA75DFC10DFFFC /* SurfaceJourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurfaceJourneyTests.swift; sourceTree = "<group>"; };
 		F276A1FEDCCB7528E79465C9 /* SurfaceSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurfaceSnapshotTests.swift; sourceTree = "<group>"; };
+		F9C1517FAC39F14EE7C316B5 /* SafetyScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyScreenTests.swift; sourceTree = "<group>"; };
+		FEDEB97F89DD3AAF81C89DCD /* SafetyScreenSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyScreenSnapshotTests.swift; sourceTree = "<group>"; };
 		FF8C30499F9979D15313614A /* DesignKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignKit; path = Packages/DesignKit; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -121,6 +128,7 @@
 		2C1FCA24C0225AC969D7B166 /* Snapshots */ = {
 			isa = PBXGroup;
 			children = (
+				FEDEB97F89DD3AAF81C89DCD /* SafetyScreenSnapshotTests.swift */,
 				5D56D0C491509F3A8A8137C0 /* AIConsentScreenSnapshotTests.swift */,
 				D4DCE4A9218D682720CCF251 /* SignInScreenSnapshotTests.swift */,
 				301FA0E42469D8EA7F6E684D /* PeopleScreenSnapshotTests.swift */,
@@ -149,6 +157,7 @@
 			children = (
 				0264CF994275528876B40B5C /* AIConsentScreenTests.swift */,
 				B2610D308C70B5646D744326 /* JourneyTests.swift */,
+				F9C1517FAC39F14EE7C316B5 /* SafetyScreenTests.swift */,
 				C09FA4AFD2B784C555D0BA4E /* SignInScreenTests.swift */,
 				E4B239BD3BE96D75C0C31CE6 /* PeopleScreenTests.swift */,
 				CBF864393A92F7985B868289 /* PauseScreenTests.swift */,
@@ -308,6 +317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4571D40A97CB3EEC4CF14E5E /* SafetyScreenSnapshotTests.swift in Sources */,
 				52F45C59BE0F27172315A937 /* AIConsentScreenSnapshotTests.swift in Sources */,
 				F2DC66D017018F2BE6669BAA /* SignInScreenSnapshotTests.swift in Sources */,
 				2E829F0B59E985C60E24209A /* PeopleScreenSnapshotTests.swift in Sources */,
@@ -333,6 +343,7 @@
 			files = (
 				8EA2DEB0A3F4976E40E92407 /* AIConsentScreenTests.swift in Sources */,
 				CBECA54B77095F695D5D82CF /* JourneyTests.swift in Sources */,
+				3FF8FAA6FD53F2357114EA46 /* SafetyScreenTests.swift in Sources */,
 				04ADB744C81D233043607493 /* SignInScreenTests.swift in Sources */,
 				4E509692EB5BC60DCA9B1964 /* PeopleScreenTests.swift in Sources */,
 				43F9E5FE13A7A03FD06AF555 /* PauseScreenTests.swift in Sources */,
