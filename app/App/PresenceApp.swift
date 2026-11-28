@@ -30,7 +30,10 @@ struct PresenceApp: App {
             SurfaceRoot()
         } else {
             #if DEBUG
-            if let name = ScreenGallery.requested {
+            // `-screen pause-note` (and the other pause fixture names) opens one pause state, for the UI tests.
+            if let name = UserDefaults.standard.string(forKey: "screen"), let flow = PauseFixtures.named(name) {
+                PauseFixtureHost(flow: flow)
+            } else if let name = ScreenGallery.requested {
                 ScreenGallery.view(name)
             } else {
                 TemplateScreen(state: api == nil ? .failed(LoadFailure(kind: .server, canRetry: false)) : .loading, retry: {})
