@@ -22,7 +22,8 @@ final class SurfaceModel {
         }
     }
 
-    private static func play(_ haptic: Haptic) {
+    /// Also plays the haptics other flows ask for (the hosts, #128).
+    static func play(_ haptic: Haptic) {
         switch haptic {
         case .lightTap: UIImpactFeedbackGenerator(style: .light).impactOccurred()
         case .softTick: UIImpactFeedbackGenerator(style: .soft).impactOccurred()
