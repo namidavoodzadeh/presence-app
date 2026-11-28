@@ -268,6 +268,9 @@ public enum Tokens {
     }
 
     public static let minTarget: Double = 44
+    /// A dimmed control (behaviour.md "Dimmed"). tokens.md names no value; 0.75 is the lowest that keeps ink on the
+    /// base at 4.5:1, so a dimmed control still reads.
+    public static let dimmedOpacity: Double = 0.75
 
     // MARK: Type (Manrope only; Dynamic Type up to AX5)
 
