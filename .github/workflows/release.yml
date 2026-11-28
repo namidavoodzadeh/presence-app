@@ -62,15 +62,32 @@ jobs:
           ASC_KEY_PATH: ${{ vars.ASC_KEY_PATH }}
           ASC_KEY_ID: ${{ vars.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ vars.ASC_ISSUER_ID }}
+          # The server the build talks to (#108); app/Config/Release.xcconfig leaves both empty on purpose.
+          PRESENCE_API_BASE: ${{ vars.PRESENCE_API_BASE }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
         run: |
+          [ -n "$PRESENCE_API_BASE" ] && [ -n "$SUPABASE_ANON_KEY" ] \
+            || { echo "::error::Set repository variables PRESENCE_API_BASE and SUPABASE_ANON_KEY."; exit 3; }
+          # The one server a release talks to: the hosted Supabase project, exactly (no trailing slash: routes are appended
+          # to it as they are). A variable pointing anywhere else stops the release, so credentials never go to another host.
+          project=hqtbaphcfwoaxeikytck
+          [ "$PRESENCE_API_BASE" = "https://$project.supabase.co/functions/v1/api" ] \
+            || { echo "::error::PRESENCE_API_BASE must be https://$project.supabase.co/functions/v1/api."; exit 3; }
+          # Only that project's public client key may ship: a publishable key or its anon JWT, never a secret or service-role key.
+          printf '%s' "$SUPABASE_ANON_KEY" | python3 -I tools/check-anon-key.py "$project" \
+            || { echo "::error::SUPABASE_ANON_KEY must be the publishable key or anon JWT of project $project."; exit 3; }
+          # And the project itself must accept it (the signature cannot be checked offline). The key goes in a header only.
+          curl -fsS -o /dev/null --max-time 20 -H "apikey: $SUPABASE_ANON_KEY" "https://$project.supabase.co/auth/v1/settings" \
+            || { echo "::error::Project $project did not accept SUPABASE_ANON_KEY."; exit 3; }
+          # TestFlight configuration: the Release build with the tester Report button (#61), as the scheme's archive uses.
           # Old app reached build 55 under the same bundle id; stay above it.
           build=$(( ${{ github.run_number }} + 100 ))
-          xcodebuild archive -project app/Presence.xcodeproj -scheme Presence -configuration Release \
+          xcodebuild archive -project app/Presence.xcodeproj -scheme Presence -configuration TestFlight \
             -destination 'generic/platform=iOS' -archivePath "$CI_BUILD_ROOT/Presence.xcarchive" \
             -derivedDataPath "$CI_BUILD_ROOT/dd" -allowProvisioningUpdates \
             -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             OTHER_CODE_SIGN_FLAGS="--keychain=$HOME/Library/Keychains/ci-signing.keychain-db" \
-            CURRENT_PROJECT_VERSION="$build"
+            CURRENT_PROJECT_VERSION="$build" PRESENCE_API_BASE="$PRESENCE_API_BASE" SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
       - name: App Store provisioning profile
         id: profile
         env:

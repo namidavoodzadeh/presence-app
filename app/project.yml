@@ -36,9 +36,16 @@ targets:
       - package: Flows
       - package: Contract
       - package: DesignKit
+    # The API base and anon key (#108): Debug carries a fixture; TestFlight and Release carry the hosted base, and
+    # release.yml passes the anon key.
+    configFiles:
+      Debug: Config/Debug.xcconfig
+      TestFlight: Config/Release.xcconfig
+      Release: Config/Release.xcconfig
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.namidavoodzadeh.presence
+        INFOPLIST_FILE: Config/Info.plist
         PRODUCT_NAME: Presence
         INFOPLIST_KEY_CFBundleDisplayName: Kenember
         GENERATE_INFOPLIST_FILE: YES

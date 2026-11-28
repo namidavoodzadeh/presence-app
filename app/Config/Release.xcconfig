@@ -1,0 +1,6 @@
+// TestFlight and Release (#108). The API base is the hosted project (issue #3), the one host release.yml allows, so an
+// archive made with either configuration reaches the server. The anon key is not kept in the repository: release.yml
+// passes SUPABASE_ANON_KEY from the repository variable and fails when it is unset; without it the app shows the
+// server error state instead of calling.
+PRESENCE_API_BASE = https:/$()/hqtbaphcfwoaxeikytck.supabase.co/functions/v1/api
+SUPABASE_ANON_KEY =

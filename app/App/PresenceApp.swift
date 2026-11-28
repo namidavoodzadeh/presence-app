@@ -4,7 +4,14 @@ import SwiftUI
 
 @main
 struct PresenceApp: App {
-    init() { Fonts.register() }
+    /// The real client the flows' calls run on (#108). Nil only when the build carries no API base or anon key,
+    /// which release.yml refuses to archive.
+    private let api: APIClient?
+
+    init() {
+        Fonts.register()
+        api = (try? AppConfiguration.fromBundle()).map { APIClient(configuration: $0) }
+    }
 
     /// `-surface YES` on launch opens the surface (#21). Without it the app still opens on the template screen
     /// that the launch journey checks, until the routing issue (sign-in, AI consent, Talk) makes Talk the home.
@@ -16,6 +23,8 @@ struct PresenceApp: App {
         }
     }
 
+    // The sign-in, Talk, You, Thread and Settings flows are injected with `api` as their screens land
+    // (#13, #14, #15, #16, #18 on the surface of #21); until then the template stands.
     @MainActor @ViewBuilder private var root: some View {
         if Self.opensSurface {
             SurfaceRoot()
@@ -27,10 +36,10 @@ struct PresenceApp: App {
             } else if let name = ScreenGallery.requested {
                 ScreenGallery.view(name)
             } else {
-                TemplateScreen(state: .loading, retry: {})
+                TemplateScreen(state: api == nil ? .failed(LoadFailure(kind: .server, canRetry: false)) : .loading, retry: {})
             }
             #else
-            TemplateScreen(state: .loading, retry: {})
+            TemplateScreen(state: api == nil ? .failed(LoadFailure(kind: .server, canRetry: false)) : .loading, retry: {})
             #endif
         }
     }
