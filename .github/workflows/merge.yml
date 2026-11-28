@@ -78,14 +78,16 @@ jobs:
         run: git diff refs/gate/main...refs/gate/pr | tools/review-other-family.py
       - name: File the review's follow-ups as one issue
         if: success() && steps.review.outcome == 'success'
+        continue-on-error: true            # filing never blocks an approved change
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           f="$RUNNER_TEMP/review-followups.md"
           [ -s "$f" ] || exit 0
-          { echo "Follow-ups from the other-family review of #$PR (not blocking; the change merged)."; echo; cat "$f"; } > "$RUNNER_TEMP/body.md"
-          gh issue create -R "$GITHUB_REPOSITORY" --title "[review follow-up] #$PR" --body-file "$RUNNER_TEMP/body.md" --label review-follow-up || \
-            gh issue create -R "$GITHUB_REPOSITORY" --title "[review follow-up] #$PR" --body-file "$RUNNER_TEMP/body.md"
+          n="$(tr -cd '0-9' < "$f")"
+          run_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          gh issue create -R "$GITHUB_REPOSITORY" --title "[review follow-up] #$PR" \
+            --body "The other-family review of #$PR approved it with $n follow-up point(s). They are in the job summary of $run_url (not copied here)."
       - name: Report risk-review on the pull request's head commit
         if: always() && steps.pr.outputs.head != ''
         env:

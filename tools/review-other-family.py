@@ -123,6 +123,8 @@ with tempfile.TemporaryDirectory(prefix="review-", dir="/private/tmp") as work: 
     try:
         answer = json.load(open(out_path))
         decision = answer["decision"]
+        if "findings" not in answer:
+            raise KeyError("findings")
         findings = [(str(x["severity"]), str(x["text"])) for x in answer.get("findings", [])]
         if any(sev not in ("blocking", "owner_only", "follow_up") for sev, _ in findings):
             raise ValueError("severity")
@@ -134,6 +136,10 @@ with tempfile.TemporaryDirectory(prefix="review-", dir="/private/tmp") as work: 
 # REQUEST_CHANGES with only follow-ups is treated as approved with follow-ups (and the other way round fails closed).
 holding = [t for sev, t in findings if sev in ("blocking", "owner_only")]
 follow = [t for sev, t in findings if sev == "follow_up"]
+# Fail closed on an answer that contradicts itself: REQUEST_CHANGES with nothing blocking, or APPROVE with a blocker.
+if (decision == "REQUEST_CHANGES") != bool(holding):
+    print("review: Codex's decision and its findings disagree; the change waits.\n" + json.dumps(answer)[:2000])
+    sys.exit(1)
 passed = not holding
 verdict = "APPROVE" if passed else "REQUEST_CHANGES"
 text = verdict + "".join(f"\n- [{sev}] {t}" for sev, t in findings)
@@ -141,6 +147,7 @@ print(text)
 with open(os.environ.get("GITHUB_STEP_SUMMARY", os.devnull), "a") as f:
     f.write(f"## Review by Codex (a different model family)\n\n{text}\n")
 if passed and follow and os.environ.get("REVIEW_FOLLOWUPS"):
+    # Only a count goes out of the job; the findings themselves stay in the job summary (never copied into an issue).
     with open(os.environ["REVIEW_FOLLOWUPS"], "w") as f:
-        f.write("".join(f"- {t}\n" for t in follow))
+        f.write(str(len(follow)))
 sys.exit(0 if passed else 1)
