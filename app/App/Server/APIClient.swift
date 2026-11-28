@@ -35,6 +35,9 @@ struct APIClient: Sendable {
     /// The reply when the person has not confirmed they are 18 or over: nothing is sent (flows/sign-in.md).
     static let adultConfirmationMissing = CallFailure.http(status: 403, error: "forbidden", reason: "adult_confirmation_required")
 
+    /// The reply when a log out or a newer sign-in happened while this sign-in was on its way.
+    static let superseded = CallFailure.http(status: 409, error: "conflict", reason: "superseded")
+
     /// `appleSheet` credential → `exchanging` (flows/sign-in.md): `POST /auth/apple`, then keep the session.
     /// `adultConfirmed` comes from the age check: true only when the age range says 18 or over, or the range is not
     /// available and the person continued past the 18+ statement. Without it the call is not made.
@@ -46,6 +49,7 @@ struct APIClient: Sendable {
         adultConfirmed: Bool
     ) async -> Result<Operations.signInWithApple.Output.Ok.Body.jsonPayload, CallFailure> {
         guard adultConfirmed else { return .failure(Self.adultConfirmationMissing) }
+        let started = await session.generationNow
         let input = Operations.signInWithApple.Input(body: .json(.init(
             identity_token: identityToken,
             nonce: nonce,
@@ -58,7 +62,12 @@ struct APIClient: Sendable {
             case let .ok(ok):
                 let reply = try ok.body.json
                 guard let expiry = reply.expires_at.flatMap(Self.parseDate) else { return .failure(.http(status: 500)) }
-                await session.start(Session(accessToken: reply.access_token, refreshToken: reply.refresh_token, expiresAt: expiry))
+                let kept = await session.start(
+                    Session(accessToken: reply.access_token, refreshToken: reply.refresh_token, expiresAt: expiry),
+                    ifGeneration: started
+                )
+                // Logged out or signed in again while this reply was on its way: it is not kept.
+                guard kept else { return .failure(Self.superseded) }
                 return .success(reply)
             case let .default(status, reply):
                 return .failure(Self.failure(status: status, reply: reply))

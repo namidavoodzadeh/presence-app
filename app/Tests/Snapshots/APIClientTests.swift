@@ -259,6 +259,45 @@ final class APIClientTests: XCTestCase {
         XCTAssertEqual(current, newer)
     }
 
+    func testACallWaitingOnARefreshDoesNotCarryTheNextPersonsToken() async {
+        let gate = RefreshGate()
+        let now = Date()
+        let keeper = SessionKeeper(
+            storage: MemoryStorage(Session(accessToken: "a-1", refreshToken: "r-1", expiresAt: now.addingTimeInterval(5))),
+            refresh: { _ throws(RefreshFailure) in
+                await gate.wait()
+                return Session(accessToken: "a-2", refreshToken: "r-2", expiresAt: now.addingTimeInterval(3600))
+            },
+            now: { now }
+        )
+        let pending = Task { await keeper.accessToken() }
+        await gate.waitUntilStarted()
+        await keeper.start(Session(accessToken: "b-1", refreshToken: "s-1", expiresAt: now.addingTimeInterval(3600)))
+        await gate.open()
+        let token = await pending.value
+        XCTAssertNil(token)
+    }
+
+    func testALateSignInReplyIsNotKeptAfterLogOut() async {
+        let keeper = SessionKeeper(storage: MemoryStorage(), refresh: { _ throws(RefreshFailure) in throw .unavailable })
+        let started = await keeper.generationNow
+        await keeper.end()
+        let kept = await keeper.start(Session(accessToken: "a", refreshToken: "r", expiresAt: .distantFuture), ifGeneration: started)
+        XCTAssertFalse(kept)
+        let current = await keeper.current
+        XCTAssertNil(current)
+    }
+
+    func testAnUnsavedSessionIsWrittenBeforeTheNextCall() async {
+        let storage = FlakyStorage()
+        let keeper = SessionKeeper(storage: storage, refresh: { _ throws(RefreshFailure) in throw .unavailable })
+        storage.failNextSave = true
+        await keeper.start(Session(accessToken: "a", refreshToken: "r", expiresAt: .distantFuture))
+        XCTAssertNil(storage.load())
+        _ = await keeper.accessToken()
+        XCTAssertEqual(storage.load()?.accessToken, "a")
+    }
+
     func testA401FromAnOlderTokenLeavesTheNewerSessionAlone() async {
         let keeper = SessionKeeper(
             storage: MemoryStorage(Session(accessToken: "b-1", refreshToken: "s-1", expiresAt: .distantFuture)),
@@ -276,8 +315,8 @@ final class APIClientTests: XCTestCase {
         let keychain = KeychainSessionStorage(service: "com.namidavoodzadeh.presence.tests", account: UUID().uuidString)
         let first = Session(accessToken: "a", refreshToken: "r", expiresAt: Date(timeIntervalSince1970: 1_893_456_000))
         let second = Session(accessToken: "b", refreshToken: "s", expiresAt: Date(timeIntervalSince1970: 1_893_459_600))
-        keychain.save(first)
-        keychain.save(second)
+        XCTAssertTrue(keychain.save(first))
+        XCTAssertTrue(keychain.save(second))
         XCTAssertEqual(keychain.load(), second)
         keychain.clear()
         XCTAssertNil(keychain.load())
@@ -332,13 +371,28 @@ private actor RefreshGate {
     }
 }
 
+private final class FlakyStorage: SessionStorage, @unchecked Sendable {
+    private let lock = NSLock()
+    private var session: Session?
+    var failNextSave = false
+    func load() -> Session? { lock.withLock { session } }
+    func save(_ session: Session) -> Bool {
+        lock.withLock {
+            if failNextSave { failNextSave = false; return false }
+            self.session = session
+            return true
+        }
+    }
+    func clear() -> Bool { lock.withLock { session = nil }; return true }
+}
+
 private final class MemoryStorage: SessionStorage, @unchecked Sendable {
     private let lock = NSLock()
     private var session: Session?
     init(_ session: Session? = nil) { self.session = session }
     func load() -> Session? { lock.withLock { session } }
-    func save(_ session: Session) { lock.withLock { self.session = session } }
-    func clear() { lock.withLock { session = nil } }
+    func save(_ session: Session) -> Bool { lock.withLock { self.session = session }; return true }
+    func clear() -> Bool { lock.withLock { session = nil }; return true }
 }
 
 /// A server inside URLSession: records each request and its body, and answers from the test's handler.

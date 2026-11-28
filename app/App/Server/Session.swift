@@ -12,8 +12,10 @@ struct Session: Codable, Equatable, Sendable {
 /// Where the session is kept between launches. The app keeps it in the Keychain; tests use memory.
 protocol SessionStorage: Sendable {
     func load() -> Session?
-    func save(_ session: Session)
-    func clear()
+    /// False when the session could not be written; the keeper keeps it in memory and writes again before the next call.
+    @discardableResult func save(_ session: Session) -> Bool
+    /// False when the record could not be removed; a logged-out mark still keeps it from being read back.
+    @discardableResult func clear() -> Bool
 }
 
 /// The session in the Keychain, this device only, readable after the first unlock (pushes and refresh in the background).
@@ -27,7 +29,15 @@ struct KeychainSessionStorage: SessionStorage {
          kSecAttrAccount as String: account]
     }
 
+    /// Set by log out before the record is removed, cleared by the next successful save: a record whose delete failed
+    /// is never read back as a session after relaunch.
+    private var loggedOutKey: String { "\(service).\(account).loggedOut" }
+
     func load() -> Session? {
+        if UserDefaults.standard.bool(forKey: loggedOutKey) {
+            SecItemDelete(query as CFDictionary)
+            return nil
+        }
         var query = query
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
@@ -37,25 +47,32 @@ struct KeychainSessionStorage: SessionStorage {
     }
 
     /// Replaces the record in place, so a failed write leaves the previous one rather than none; adds it only when absent.
-    func save(_ session: Session) {
-        guard let data = try? JSONEncoder().encode(session) else { return }
+    @discardableResult func save(_ session: Session) -> Bool {
+        guard let data = try? JSONEncoder().encode(session) else { return false }
         let update: [String: Any] = [kSecValueData as String: data,
                                      kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly]
-        let status = SecItemUpdate(query as CFDictionary, update as CFDictionary)
-        guard status == errSecItemNotFound else { return }
-        var add = query
-        add[kSecValueData as String] = data
-        add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        SecItemAdd(add as CFDictionary, nil)
+        var status = SecItemUpdate(query as CFDictionary, update as CFDictionary)
+        if status == errSecItemNotFound {
+            var add = query
+            add[kSecValueData as String] = data
+            add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+            status = SecItemAdd(add as CFDictionary, nil)
+        }
+        guard status == errSecSuccess else { return false }
+        UserDefaults.standard.removeObject(forKey: loggedOutKey)
+        return true
     }
 
-    /// Log out: the record goes. If the delete fails, its contents are overwritten with nothing first, so no credential
-    /// stays readable, and the delete is tried again.
-    func clear() {
-        let status = SecItemDelete(query as CFDictionary)
-        guard status != errSecSuccess, status != errSecItemNotFound else { return }
-        SecItemUpdate(query as CFDictionary, [kSecValueData as String: Data()] as CFDictionary)
-        SecItemDelete(query as CFDictionary)
+    /// Log out: marked first, then the record goes. If the delete fails, its contents are overwritten with nothing and
+    /// the delete is tried again; the mark keeps whatever is left from being read as a session.
+    @discardableResult func clear() -> Bool {
+        UserDefaults.standard.set(true, forKey: loggedOutKey)
+        var status = SecItemDelete(query as CFDictionary)
+        if status != errSecSuccess, status != errSecItemNotFound {
+            SecItemUpdate(query as CFDictionary, [kSecValueData as String: Data()] as CFDictionary)
+            status = SecItemDelete(query as CFDictionary)
+        }
+        return status == errSecSuccess || status == errSecItemNotFound
     }
 }
 
@@ -92,6 +109,8 @@ actor SessionKeeper {
     private var onEnded: (@Sendable () -> Void)?
     private var generation = 0
     private var renewal: (refreshToken: String, task: Renewal)?
+    /// The session in memory could not be written to storage yet; it is written again before the next call.
+    private var unsaved = false
 
     init(storage: any SessionStorage, refresh: @escaping Refresh, now: @escaping @Sendable () -> Date = { Date() }) {
         self.storage = storage
@@ -102,6 +121,9 @@ actor SessionKeeper {
 
     var current: Session? { session }
 
+    /// Moves on with each sign-in and each ending; a caller that waited across one can tell.
+    var generationNow: Int { generation }
+
     /// Called when the session ends, so the root can show `signIn` (keeping any words in the bar).
     func whenEnded(_ action: @escaping @Sendable () -> Void) { onEnded = action }
 
@@ -110,6 +132,14 @@ actor SessionKeeper {
         generation += 1
         renewal = nil
         keep(session)
+    }
+
+    /// `exchanging 200` for a sign-in that began at `expected`: kept only if no sign-in or log out happened since, so a
+    /// late reply can neither bring back a logged-out session nor replace a newer one.
+    func start(_ session: Session, ifGeneration expected: Int) -> Bool {
+        guard generation == expected else { return false }
+        start(session)
+        return true
     }
 
     /// A refused refresh, or log out: clear the stored session.
@@ -145,18 +175,23 @@ actor SessionKeeper {
     /// The bearer for the next call, refreshed first when it is about to expire. Nil when signed out.
     func accessToken() async -> String? {
         guard let stored = session else { return nil }
+        if unsaved { unsaved = !storage.save(stored) }
         if stored.expiresAt.timeIntervalSince(now()) > Self.refreshMargin { return stored.accessToken }
+        let started = generation
         do throws(RefreshFailure) {
             try await renew(stored)
         } catch {
             // Offline: the stored token stands; refused: the session has ended.
         }
+        // Signed out or signed in as someone else while waiting: this call belongs to the session that is gone, so it
+        // goes without a bearer rather than with the new person's.
+        guard generation == started else { return nil }
         return session?.accessToken
     }
 
     private func keep(_ session: Session) {
         self.session = session
-        storage.save(session)
+        unsaved = !storage.save(session)
     }
 
     private func renew(_ stored: Session) async throws(RefreshFailure) {

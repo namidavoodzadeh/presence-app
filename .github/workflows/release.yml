@@ -60,10 +60,10 @@ jobs:
         run: |
           [ -n "$PRESENCE_API_BASE" ] && [ -n "$SUPABASE_ANON_KEY" ] \
             || { echo "::error::Set repository variables PRESENCE_API_BASE and SUPABASE_ANON_KEY."; exit 3; }
-          # The one server a release talks to: the hosted Supabase project. A variable pointing anywhere else stops the
-          # release, so Apple credentials and session tokens never go to another host.
+          # The one server a release talks to: the hosted Supabase project, exactly (no trailing slash: routes are appended
+          # to it as they are). A variable pointing anywhere else stops the release, so credentials never go to another host.
           project=hqtbaphcfwoaxeikytck
-          [ "${PRESENCE_API_BASE%/}" = "https://$project.supabase.co/functions/v1/api" ] \
+          [ "$PRESENCE_API_BASE" = "https://$project.supabase.co/functions/v1/api" ] \
             || { echo "::error::PRESENCE_API_BASE must be https://$project.supabase.co/functions/v1/api."; exit 3; }
           # Only that project's public client key may ship: a publishable key or its anon JWT, never a secret or service-role key.
           printf '%s' "$SUPABASE_ANON_KEY" | python3 -I tools/check-anon-key.py "$project" \
