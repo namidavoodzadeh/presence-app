@@ -114,6 +114,8 @@ public struct SignInFlow: Sendable {
         case exchangeSucceeded(Session)
         case exchangeFailed(CallFailure)
         case retryTapped
+        /// `signIn.privacy` (behaviour.md): opens kenember.com/privacy, except while a sheet is open or exchanging.
+        case privacyTapped
         /// `given` is `ai_consent.given.version` (nil when none).
         case meLoaded(given: String?, requiredVersion: String)
         case meFailed(CallFailure)
@@ -132,6 +134,7 @@ public struct SignInFlow: Sendable {
         case keepPendingInvite(String)
         /// Forget the stored session.
         case endSession
+        case openInSafari(URL)
     }
 
     public enum Call: Equatable, Sendable {
@@ -235,6 +238,9 @@ public struct SignInFlow: Sendable {
         case let (.exchanging, .exchangeFailed(failure)):
             state = .signInFailed(Self.line(for: failure))
             return []
+
+        case (.signedOut, .privacyTapped), (.signInFailed, .privacyTapped), (.underAge, .privacyTapped):
+            return [.openInSafari(privacyPolicyURL)]
 
         case (.signInFailed, .retryTapped):
             state = .signedOut

@@ -23,6 +23,10 @@ enum ScreenGallery {
         case "people-empty": GalleryPeople(list: .empty)
         case "people-failed": GalleryPeople(list: .failed(LoadFailure(kind: .offline)))
         case "people-loaded": GalleryPeople(list: .loaded(PeopleFixtures.rows))
+        case "signIn-signedOut": GallerySignIn(state: .signedOut)
+        case "signIn-busy": GallerySignIn(state: .exchanging)
+        case "signIn-failed": GallerySignIn(state: .signInFailed(.provider))
+        case "signIn-underAge": GallerySignIn(state: .underAge)
         case "settings-loading": GallerySettings(state: .open, ai: .loading, lastKnownAI: true)
         case "settings-failed": GallerySettings(state: .open, ai: .failed(LoadFailure(kind: .offline)))
         case "settings-loaded": GallerySettings(state: .open, ai: .loaded(true))
@@ -85,6 +89,20 @@ enum YouFixtures {
             YouFlow.Item(id: "b4", kind: "lands_hard", wording: "Being told I'm overreacting."),
         ]),
     ]
+}
+
+private struct GallerySignIn: View {
+    let state: SignInFlow.State
+    @State private var lastEvent = ""
+
+    var body: some View {
+        SignInScreen(state: state) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
 }
 
 private struct GallerySettings: View {
