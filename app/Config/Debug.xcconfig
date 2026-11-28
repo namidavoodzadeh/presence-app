@@ -1,0 +1,4 @@
+// Debug and CI builds (#108): a fixture server, never production. Tests answer through a fake URLProtocol.
+// `/$()/` keeps xcconfig from reading `//` as a comment.
+PRESENCE_API_BASE = http:/$()/127.0.0.1:8821
+SUPABASE_ANON_KEY = fixture-anon-key

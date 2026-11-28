@@ -8,11 +8,16 @@ let package = Package(
     products: [.library(name: "Contract", targets: ["Contract"])],
     dependencies: [
         .package(url: "https://github.com/apple/swift-openapi-runtime", exact: "1.9.0"),
+        // The generated client and HTTPTransport use HTTPTypes directly (#108); the version swift-openapi-runtime pins.
+        .package(url: "https://github.com/apple/swift-http-types", exact: "1.8.0"),
     ],
     targets: [
         .target(
             name: "Contract",
-            dependencies: [.product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")]
+            dependencies: [
+                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
+            ]
         ),
     ]
 )

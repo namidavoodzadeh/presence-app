@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Merged with the generated Info.plist. The values come from app/Config/*.xcconfig, or from release.yml (#108). -->
+<plist version="1.0">
+<dict>
+	<key>PresenceAPIBase</key>
+	<string>$(PRESENCE_API_BASE)</string>
+	<key>SupabaseAnonKey</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
+</dict>
+</plist>
