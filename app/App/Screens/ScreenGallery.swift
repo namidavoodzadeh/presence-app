@@ -19,6 +19,9 @@ enum ScreenGallery {
         case "you-empty": GalleryYou(list: .empty)
         case "you-failed": GalleryYou(list: .failed(LoadFailure(kind: .offline)))
         case "you-loaded": GalleryYou(list: .loaded(YouFixtures.groups))
+        case "aiConsent-showing": GalleryAIConsent(flow: AIConsentFixtures.showing)
+        case "aiConsent-saving": GalleryAIConsent(flow: AIConsentFixtures.saving)
+        case "aiConsent-notSaved": GalleryAIConsent(flow: AIConsentFixtures.notSaved)
         default: Text(name)
         }
     }
@@ -30,6 +33,20 @@ private struct GalleryYou: View {
 
     var body: some View {
         YouScreen(list: list) { event in lastEvent = "\(event)" }
+            .overlay(alignment: .bottom) {
+                Text(lastEvent)
+                    .accessibilityIdentifier("gallery.lastEvent")
+                    .accessibilityHidden(lastEvent.isEmpty)
+            }
+    }
+}
+
+private struct GalleryAIConsent: View {
+    let flow: AIConsentFlow
+    @State private var lastEvent = ""
+
+    var body: some View {
+        AIConsentScreen(flow: flow) { event in lastEvent = "\(event)" }
             .overlay(alignment: .bottom) {
                 Text(lastEvent)
                     .accessibilityIdentifier("gallery.lastEvent")
