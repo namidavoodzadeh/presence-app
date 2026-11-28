@@ -57,10 +57,13 @@ public struct WriteSendFlow: Sendable {
         public let original: String
         public let suggested: String
         public let frictionKind: String?
-        public init(original: String, suggested: String, frictionKind: String?) {
+        /// The server's `why_line` (copy `pause.noteWhy`).
+        public let whyLine: String
+        public init(original: String, suggested: String, frictionKind: String?, whyLine: String = "") {
             self.original = original
             self.suggested = suggested
             self.frictionKind = frictionKind
+            self.whyLine = whyLine
         }
     }
 
@@ -70,11 +73,14 @@ public struct WriteSendFlow: Sendable {
         public let original: String
         public let suggested: String
         public let frictionKind: String
-        public init(id: Int, original: String, suggested: String, frictionKind: String) {
+        /// The server's `why_line`, shown on the note card (copy `pause.noteWhy`).
+        public let whyLine: String
+        public init(id: Int, original: String, suggested: String, frictionKind: String, whyLine: String = "") {
             self.id = id
             self.original = original
             self.suggested = suggested
             self.frictionKind = frictionKind
+            self.whyLine = whyLine
         }
         /// A note whose suggestion equals the phrase (vague_ask) has no TRY and only "Keep mine".
         public var hasTry: Bool { suggested != original }
@@ -459,7 +465,7 @@ public struct WriteSendFlow: Sendable {
             // Owner's answer on #18 (a): a highlight whose suggestion equals the phrase (vague_ask) is a note too.
             notes = highlights.enumerated().compactMap { index, h in
                 guard let kind = h.frictionKind else { return nil }
-                return Note(id: index, original: h.original, suggested: h.suggested, frictionKind: kind)
+                return Note(id: index, original: h.original, suggested: h.suggested, frictionKind: kind, whyLine: h.whyLine)
             }
             answered = []
             if let item, !fromMeSkip.contains(item.id) { fromMe = item } else { fromMe = nil }
