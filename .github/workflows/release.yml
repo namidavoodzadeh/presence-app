@@ -1,8 +1,10 @@
 name: release
-# Archived and uploaded to TestFlight (internal group "Owner") when dispatched: the lead starts it once the pieces a test
-# needs are on main. Not on every merge, so the owner never receives a half-assembled build and parallel screen merges do
-# not queue a release each on the signing runner.
+# Archived and uploaded to TestFlight (internal group "Owner") when a `testflight-*` tag is pushed on a main commit, or
+# when dispatched: the lead tags main once the pieces a test needs are there. Not on every merge, so the owner never
+# receives a half-assembled build and parallel screen merges do not queue a release each on the signing runner.
 on:
+  push:
+    tags: ["testflight-*"]
   workflow_dispatch:
 concurrency:
   group: release
