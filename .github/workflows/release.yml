@@ -60,10 +60,17 @@ jobs:
         run: |
           [ -n "$PRESENCE_API_BASE" ] && [ -n "$SUPABASE_ANON_KEY" ] \
             || { echo "::error::Set repository variables PRESENCE_API_BASE and SUPABASE_ANON_KEY."; exit 3; }
-          case "$PRESENCE_API_BASE" in https://*) ;; *) echo "::error::PRESENCE_API_BASE must be an https URL."; exit 3;; esac
-          # Only a public client key may ship: a publishable key or the anon JWT; anything else stops the release.
-          printf '%s' "$SUPABASE_ANON_KEY" | python3 -I tools/check-anon-key.py \
-            || { echo "::error::SUPABASE_ANON_KEY must be a publishable key or the anon JWT (never a secret or service-role key)."; exit 3; }
+          # The one server a release talks to: the hosted Supabase project. A variable pointing anywhere else stops the
+          # release, so Apple credentials and session tokens never go to another host.
+          project=hqtbaphcfwoaxeikytck
+          [ "${PRESENCE_API_BASE%/}" = "https://$project.supabase.co/functions/v1/api" ] \
+            || { echo "::error::PRESENCE_API_BASE must be https://$project.supabase.co/functions/v1/api."; exit 3; }
+          # Only that project's public client key may ship: a publishable key or its anon JWT, never a secret or service-role key.
+          printf '%s' "$SUPABASE_ANON_KEY" | python3 -I tools/check-anon-key.py "$project" \
+            || { echo "::error::SUPABASE_ANON_KEY must be the publishable key or anon JWT of project $project."; exit 3; }
+          # And the project itself must accept it (the signature cannot be checked offline). The key goes in a header only.
+          curl -fsS -o /dev/null --max-time 20 -H "apikey: $SUPABASE_ANON_KEY" "https://$project.supabase.co/auth/v1/settings" \
+            || { echo "::error::Project $project did not accept SUPABASE_ANON_KEY."; exit 3; }
           # Old app reached build 55 under the same bundle id; stay above it.
           build=$(( ${{ github.run_number }} + 100 ))
           xcodebuild archive -project app/Presence.xcodeproj -scheme Presence -configuration Release \

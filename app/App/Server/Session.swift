@@ -36,16 +36,25 @@ struct KeychainSessionStorage: SessionStorage {
         return try? JSONDecoder().decode(Session.self, from: data)
     }
 
+    /// Replaces the record in place, so a failed write leaves the previous one rather than none; adds it only when absent.
     func save(_ session: Session) {
         guard let data = try? JSONEncoder().encode(session) else { return }
-        SecItemDelete(query as CFDictionary)
+        let update: [String: Any] = [kSecValueData as String: data,
+                                     kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly]
+        let status = SecItemUpdate(query as CFDictionary, update as CFDictionary)
+        guard status == errSecItemNotFound else { return }
         var add = query
         add[kSecValueData as String] = data
         add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
         SecItemAdd(add as CFDictionary, nil)
     }
 
+    /// Log out: the record goes. If the delete fails, its contents are overwritten with nothing first, so no credential
+    /// stays readable, and the delete is tried again.
     func clear() {
+        let status = SecItemDelete(query as CFDictionary)
+        guard status != errSecSuccess, status != errSecItemNotFound else { return }
+        SecItemUpdate(query as CFDictionary, [kSecValueData as String: Data()] as CFDictionary)
         SecItemDelete(query as CFDictionary)
     }
 }
@@ -65,8 +74,13 @@ enum LaunchSession: Equatable {
 }
 
 /// Holds the session: hands out a fresh access token, refreshes it near expiry, and ends it on a 401.
+///
+/// One refresh runs at a time for a refresh token; every caller waiting on it shares its answer. Each sign-in and each
+/// ending moves `generation` on, so a refresh that started before either can neither bring back a logged-out session,
+/// overwrite a newer sign-in, nor end the session that replaced it.
 actor SessionKeeper {
     typealias Refresh = @Sendable (_ refreshToken: String) async throws(RefreshFailure) -> Session
+    private typealias Renewal = Task<Result<Session, RefreshFailure>, Never>
 
     /// A token this close to its expiry is refreshed before a call.
     static let refreshMargin: TimeInterval = 60
@@ -76,6 +90,8 @@ actor SessionKeeper {
     private let now: @Sendable () -> Date
     private var session: Session?
     private var onEnded: (@Sendable () -> Void)?
+    private var generation = 0
+    private var renewal: (refreshToken: String, task: Renewal)?
 
     init(storage: any SessionStorage, refresh: @escaping Refresh, now: @escaping @Sendable () -> Date = { Date() }) {
         self.storage = storage
@@ -89,38 +105,48 @@ actor SessionKeeper {
     /// Called when the session ends, so the root can show `signIn` (keeping any words in the bar).
     func whenEnded(_ action: @escaping @Sendable () -> Void) { onEnded = action }
 
-    /// `exchanging 200`: keep the session.
+    /// `exchanging 200`: keep the session. Any refresh still running belongs to the session before it.
     func start(_ session: Session) {
-        self.session = session
-        storage.save(session)
+        generation += 1
+        renewal = nil
+        keep(session)
     }
 
-    /// A 401, a refused refresh, or log out: clear the stored session.
+    /// A refused refresh, or log out: clear the stored session.
     func end() {
+        generation += 1
+        renewal = nil
         let hadSession = session != nil
         session = nil
         storage.clear()
         if hadSession { onEnded?() }
     }
 
+    /// A 401: ends the session only if it is still the one whose token the call carried. A late 401 from a call made
+    /// before a refresh or a new sign-in leaves the newer session alone.
+    func end(ifAccessToken token: String?) {
+        guard let token, session?.accessToken == token else { return }
+        end()
+    }
+
     /// The `launching` rows: refresh the stored session, or find none.
     func launch() async -> LaunchSession {
         guard let stored = session else { return .signedOut }
-        do {
+        do throws(RefreshFailure) {
             try await renew(stored)
-            return .signedIn
         } catch .refused {
             return .signedOut
         } catch {
-            return .signedIn
+            // Offline or a server fault: the stored token stands until the first 401.
         }
+        return session == nil ? .signedOut : .signedIn
     }
 
     /// The bearer for the next call, refreshed first when it is about to expire. Nil when signed out.
     func accessToken() async -> String? {
         guard let stored = session else { return nil }
         if stored.expiresAt.timeIntervalSince(now()) > Self.refreshMargin { return stored.accessToken }
-        do {
+        do throws(RefreshFailure) {
             try await renew(stored)
         } catch {
             // Offline: the stored token stands; refused: the session has ended.
@@ -128,13 +154,41 @@ actor SessionKeeper {
         return session?.accessToken
     }
 
+    private func keep(_ session: Session) {
+        self.session = session
+        storage.save(session)
+    }
+
     private func renew(_ stored: Session) async throws(RefreshFailure) {
-        do {
-            start(try await refresh(stored.refreshToken))
-        } catch .refused {
+        let started = generation
+        let token = stored.refreshToken
+        let task: Renewal
+        if let running = renewal, running.refreshToken == token {
+            task = running.task
+        } else {
+            let refresh = self.refresh
+            task = Renewal {
+                do throws(RefreshFailure) {
+                    return .success(try await refresh(token))
+                } catch {
+                    return .failure(error)
+                }
+            }
+            renewal = (token, task)
+        }
+        let result = await task.value
+        if renewal?.refreshToken == token { renewal = nil }
+        // Signed in again or ended while this ran: the answer belongs to a session that is gone.
+        guard generation == started else { return }
+        // Another caller sharing this refresh has already applied it.
+        guard session?.refreshToken == token else { return }
+        switch result {
+        case let .success(renewed):
+            keep(renewed)
+        case .failure(.refused):
             end()
             throw .refused
-        } catch {
+        case .failure(.unavailable):
             throw .unavailable
         }
     }

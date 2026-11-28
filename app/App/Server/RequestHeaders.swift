@@ -53,7 +53,8 @@ struct SessionMiddleware: ClientMiddleware {
         headers.apply(to: &request, accessToken: token, timeZone: timeZone())
         let (response, responseBody) = try await next(request, body, baseURL)
         if response.status.code == 401, !signsIn {
-            await session.end()
+            // Only the session this call's token came from ends; a newer one stays.
+            await session.end(ifAccessToken: token)
         }
         return (response, responseBody)
     }

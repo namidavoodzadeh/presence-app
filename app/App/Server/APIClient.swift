@@ -32,18 +32,25 @@ struct APIClient: Sendable {
         )
     }
 
+    /// The reply when the person has not confirmed they are 18 or over: nothing is sent (flows/sign-in.md).
+    static let adultConfirmationMissing = CallFailure.http(status: 403, error: "forbidden", reason: "adult_confirmation_required")
+
     /// `appleSheet` credential → `exchanging` (flows/sign-in.md): `POST /auth/apple`, then keep the session.
+    /// `adultConfirmed` comes from the age check: true only when the age range says 18 or over, or the range is not
+    /// available and the person continued past the 18+ statement. Without it the call is not made.
     func signInWithApple(
         identityToken: String,
         nonce: String,
         name: String?,
-        authorizationCode: String?
+        authorizationCode: String?,
+        adultConfirmed: Bool
     ) async -> Result<Operations.signInWithApple.Output.Ok.Body.jsonPayload, CallFailure> {
+        guard adultConfirmed else { return .failure(Self.adultConfirmationMissing) }
         let input = Operations.signInWithApple.Input(body: .json(.init(
             identity_token: identityToken,
             nonce: nonce,
             name: name,
-            adult_confirmed: true,
+            adult_confirmed: adultConfirmed,
             authorization_code: authorizationCode
         )))
         do {

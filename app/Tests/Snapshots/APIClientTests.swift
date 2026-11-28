@@ -101,7 +101,7 @@ final class APIClientTests: XCTestCase {
         let storage = MemoryStorage()
         let api = makeClient(storage: storage)
 
-        let signedIn = await api.signInWithApple(identityToken: "id-token", nonce: "nonce", name: "Ava", authorizationCode: nil)
+        let signedIn = await api.signInWithApple(identityToken: "id-token", nonce: "nonce", name: "Ava", authorizationCode: nil, adultConfirmed: true)
         XCTAssertEqual(try signedIn.get().me.person.id, "p1")
         XCTAssertEqual(storage.load()?.accessToken, "jwt-1")
 
@@ -139,7 +139,7 @@ final class APIClientTests: XCTestCase {
     func testARefusedSignInDoesNotCountAsASessionEnding() async {
         FakeServer.answer { _ in (401, #"{"error":"unauthorized","ref":"7F3K","message":"Apple couldn't verify this sign-in."}"#) }
         let api = makeClient(storage: MemoryStorage())
-        let result = await api.signInWithApple(identityToken: "bad", nonce: "n", name: nil, authorizationCode: nil)
+        let result = await api.signInWithApple(identityToken: "bad", nonce: "n", name: nil, authorizationCode: nil, adultConfirmed: true)
         XCTAssertEqual(result.failure, .http(status: 401, error: "unauthorized"))
     }
 
@@ -185,6 +185,104 @@ final class APIClientTests: XCTestCase {
         XCTAssertEqual(APIClient.failure(for: URLError(.timedOut)), .timeout)
     }
 
+    // MARK: Review round 1 of PR #110
+
+    func testWithoutTheAdultConfirmationNothingIsSent() async {
+        FakeServer.answer { _ in (200, "{}") }
+        let api = makeClient(storage: MemoryStorage())
+        let result = await api.signInWithApple(identityToken: "id", nonce: "n", name: nil, authorizationCode: nil, adultConfirmed: false)
+        XCTAssertEqual(result.failure, APIClient.adultConfirmationMissing)
+        XCTAssertTrue(FakeServer.requests.isEmpty)
+    }
+
+    func testConcurrentCallsShareOneRefresh() async {
+        let counter = RefreshCounter()
+        let now = Date()
+        let keeper = SessionKeeper(
+            storage: MemoryStorage(Session(accessToken: "a-1", refreshToken: "r-1", expiresAt: now.addingTimeInterval(5))),
+            refresh: { _ throws(RefreshFailure) in
+                await counter.tick()
+                try? await Task.sleep(nanoseconds: 50_000_000)
+                return Session(accessToken: "a-2", refreshToken: "r-2", expiresAt: now.addingTimeInterval(3600))
+            },
+            now: { now }
+        )
+        async let first = keeper.accessToken()
+        async let second = keeper.accessToken()
+        let one = await first
+        let two = await second
+        XCTAssertEqual(one, "a-2")
+        XCTAssertEqual(two, "a-2")
+        let calls = await counter.count
+        XCTAssertEqual(calls, 1)
+    }
+
+    func testALateRefreshDoesNotBringBackALoggedOutSession() async {
+        let gate = RefreshGate()
+        let now = Date()
+        let storage = MemoryStorage(Session(accessToken: "a-1", refreshToken: "r-1", expiresAt: now.addingTimeInterval(5)))
+        let keeper = SessionKeeper(
+            storage: storage,
+            refresh: { _ throws(RefreshFailure) in
+                await gate.wait()
+                return Session(accessToken: "a-2", refreshToken: "r-2", expiresAt: now.addingTimeInterval(3600))
+            },
+            now: { now }
+        )
+        let pending = Task { await keeper.accessToken() }
+        await gate.waitUntilStarted()
+        await keeper.end()
+        await gate.open()
+        let token = await pending.value
+        XCTAssertNil(token)
+        XCTAssertNil(storage.load())
+    }
+
+    func testALateRefreshDoesNotOverwriteANewerSignIn() async {
+        let gate = RefreshGate()
+        let now = Date()
+        let keeper = SessionKeeper(
+            storage: MemoryStorage(Session(accessToken: "a-1", refreshToken: "r-1", expiresAt: now.addingTimeInterval(5))),
+            refresh: { _ throws(RefreshFailure) in
+                await gate.wait()
+                throw .refused
+            },
+            now: { now }
+        )
+        let pending = Task { await keeper.accessToken() }
+        await gate.waitUntilStarted()
+        let newer = Session(accessToken: "b-1", refreshToken: "s-1", expiresAt: now.addingTimeInterval(3600))
+        await keeper.start(newer)
+        await gate.open()
+        _ = await pending.value
+        let current = await keeper.current
+        XCTAssertEqual(current, newer)
+    }
+
+    func testA401FromAnOlderTokenLeavesTheNewerSessionAlone() async {
+        let keeper = SessionKeeper(
+            storage: MemoryStorage(Session(accessToken: "b-1", refreshToken: "s-1", expiresAt: .distantFuture)),
+            refresh: { _ throws(RefreshFailure) in throw .unavailable }
+        )
+        await keeper.end(ifAccessToken: "a-1")
+        let kept = await keeper.current
+        XCTAssertEqual(kept?.accessToken, "b-1")
+        await keeper.end(ifAccessToken: "b-1")
+        let ended = await keeper.current
+        XCTAssertNil(ended)
+    }
+
+    func testTheKeychainReplacesTheSessionInPlace() {
+        let keychain = KeychainSessionStorage(service: "com.namidavoodzadeh.presence.tests", account: UUID().uuidString)
+        let first = Session(accessToken: "a", refreshToken: "r", expiresAt: Date(timeIntervalSince1970: 1_893_456_000))
+        let second = Session(accessToken: "b", refreshToken: "s", expiresAt: Date(timeIntervalSince1970: 1_893_459_600))
+        keychain.save(first)
+        keychain.save(second)
+        XCTAssertEqual(keychain.load(), second)
+        keychain.clear()
+        XCTAssertNil(keychain.load())
+    }
+
     func testTheKeychainKeepsTheSession() {
         let keychain = KeychainSessionStorage(service: "com.namidavoodzadeh.presence.tests", account: UUID().uuidString)
         let session = Session(accessToken: "a", refreshToken: "r", expiresAt: Date(timeIntervalSince1970: 1_893_456_000))
@@ -199,6 +297,38 @@ private extension Result {
     var failure: Failure? {
         if case let .failure(failure) = self { return failure }
         return nil
+    }
+}
+
+private actor RefreshCounter {
+    private(set) var count = 0
+    func tick() { count += 1 }
+}
+
+/// Holds a refresh mid-flight until the test opens it.
+private actor RefreshGate {
+    private var started = false
+    private var isOpen = false
+    private var startWaiters: [CheckedContinuation<Void, Never>] = []
+    private var openWaiters: [CheckedContinuation<Void, Never>] = []
+
+    func wait() async {
+        started = true
+        startWaiters.forEach { $0.resume() }
+        startWaiters = []
+        if isOpen { return }
+        await withCheckedContinuation { openWaiters.append($0) }
+    }
+
+    func waitUntilStarted() async {
+        if started { return }
+        await withCheckedContinuation { startWaiters.append($0) }
+    }
+
+    func open() {
+        isOpen = true
+        openWaiters.forEach { $0.resume() }
+        openWaiters = []
     }
 }
 
