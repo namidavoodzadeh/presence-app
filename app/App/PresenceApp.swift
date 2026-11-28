@@ -15,10 +15,21 @@ struct PresenceApp: App {
 
     var body: some Scene {
         WindowGroup {
-            // The sign-in, Talk, You, Thread and Settings flows are injected with `api` as their screens land
-            // (#13, #14, #15, #16, #18 on the surface of #21); until then the template stands.
-            TemplateScreen(state: api == nil ? .failed(LoadFailure(kind: .server, canRetry: false)) : .loading, retry: {})
-                .testerReportButton()
+            root.testerReportButton()
         }
+    }
+
+    // The sign-in, Talk, You, Thread and Settings flows are injected with `api` as their screens land
+    // (#13, #14, #15, #16, #18 on the surface of #21); until then the template stands.
+    @MainActor @ViewBuilder private var root: some View {
+        #if DEBUG
+        if let name = ScreenGallery.requested {
+            ScreenGallery.view(name)
+        } else {
+            TemplateScreen(state: api == nil ? .failed(LoadFailure(kind: .server, canRetry: false)) : .loading, retry: {})
+        }
+        #else
+        TemplateScreen(state: api == nil ? .failed(LoadFailure(kind: .server, canRetry: false)) : .loading, retry: {})
+        #endif
     }
 }
