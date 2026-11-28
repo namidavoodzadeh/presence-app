@@ -12,14 +12,23 @@ struct PresenceApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Group {
-                if Self.opensSurface {
-                    SurfaceRoot()
-                } else {
-                    TemplateScreen(state: .loading, retry: {})
-                }
+            root.testerReportButton()
+        }
+    }
+
+    @MainActor @ViewBuilder private var root: some View {
+        if Self.opensSurface {
+            SurfaceRoot()
+        } else {
+            #if DEBUG
+            if let name = ScreenGallery.requested {
+                ScreenGallery.view(name)
+            } else {
+                TemplateScreen(state: .loading, retry: {})
             }
-            .testerReportButton()
+            #else
+            TemplateScreen(state: .loading, retry: {})
+            #endif
         }
     }
 }

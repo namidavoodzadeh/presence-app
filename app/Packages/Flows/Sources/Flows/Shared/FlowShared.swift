@@ -1,7 +1,7 @@
 import Foundation
 
 /// How a call the app performed for a flow failed. Calls are effects; their answers come back as events.
-public enum CallFailure: Equatable, Sendable {
+public enum CallFailure: Error, Equatable, Sendable {
     case http(status: Int, error: String? = nil, reason: String? = nil)
     case offline
     case timeout
@@ -11,6 +11,9 @@ public enum CallFailure: Equatable, Sendable {
         if case .http(401, _, _) = self { return true }
         return false
     }
+
+    /// The same as `endsSession` (the name some flows use).
+    public var isUnauthorized: Bool { endsSession }
 
     /// The failure a screen may show. A 403 `feature_off` or `owner_only` is "not open": no Try again.
     public var loadFailure: LoadFailure {
@@ -49,5 +52,18 @@ public enum Waiting {
 
     public static func mayHideKnot(shownFor: TimeInterval) -> Bool {
         shownFor >= knotMinimum
+    }
+}
+
+extension CallFailure {
+    /// The 403 code, when there is one (`feature_off`, `owner_only`, `ai_consent_required`).
+    public var forbiddenReason: String? {
+        if case let .http(403, _, reason) = self { return reason }
+        return nil
+    }
+
+    /// 403 `feature_off` or `owner_only`: the feature is not open for this account.
+    public var isNotOpen: Bool {
+        forbiddenReason == "feature_off" || forbiddenReason == "owner_only"
     }
 }
